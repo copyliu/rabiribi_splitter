@@ -15,11 +15,11 @@ and unzip to LiveSplit\Components folder
 
 2. Edit your LiveSplit Layout, add LiveSPlit Server ( Control -> LiveSplit Server)
 
-![](https://puu.sh/si2vC/3ba6a1b0f8.png)
+  ![](https://puu.sh/si2vC/3ba6a1b0f8.png)
 
 3. Start the server
 
-![](https://puu.sh/si2xn/2e70684da7.png)
+  ![](https://puu.sh/si2xn/2e70684da7.png)
 
 4. Connect to Server with Irisu.
 
