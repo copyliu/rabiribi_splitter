@@ -1,0 +1,159 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace rabiribi_splitter
+{
+    public static class StaticData
+    {
+        public static Dictionary<int, string> BossNames = new Dictionary<int, string>()
+        {
+            {1009, "Cocoa"},
+            {1011, "Rumi"},
+            {1012, "Ashuri"},
+            {1013, "Rita"},
+            {1014, "Ribbon"},
+            {1015, "Cocoa"},
+            {1018, "Cicini"},
+            {1020, "Saya"},
+            {1021, "Syaro"},
+            {1022, "Pandora"},
+            {1023, "Nieve"},
+            {1024, "Nixie"},
+            {1025, "Aruraune"},
+            {1030, "Seana"},
+            {1031, "Lilith"},
+            {1032, "Vanilla"},
+            {1033, "Chocolate"},
+            {1035, "Illusion Alius"},
+            {1036, "Pink Kotri"},
+            {1037, "Noah 1"},
+            {1038, "Irisu"},
+            {1039, "Miriam"},
+            {1043, "Miru"},
+            {1053, "Noah 3"},
+            {1054, "Keke Bunny"},
+
+
+        };
+
+        public static string[] MapNames = new string[]
+        {
+            "Southern Woodland",
+            "Western Coast",
+            "Island Core",
+            "Northern Tundra",
+            "Eastern Highlands",
+            "Rabi Rabi Town",
+            "Plurkwood",
+            "Subterranean Area",
+            "Warp Destination",
+            "System Interior",
+        };
+
+        public static int[][] MapBoss = new int[][]
+        {
+            new[] {1011, 1009, 1025, 1014, 1018},
+            new[] {1036, 1038, 1031, 1022, 1012},
+            new[] {1032, 1036, 1030, 1033},
+            new[] {1024, 1023, 1013, 1030},
+            new[] {1012, 1020,},
+            new int[0],
+            new[] {1054},
+            new[] {1036, 1039},
+            new[] {1037, 1053, 1035, 1043},
+            new[] {1021},
+
+        };
+
+        public static string[] MusicNames = new[]
+        {
+            "-NO MUSIC-",
+            "ADVENTURE STARTS HERE",
+            "SPECTRAL CAVE",
+            "FORGOTTEN CAVE",
+            "UNDERWATER AMBIENT",
+            "LIBRARY AMBIENT",
+            "FORGOTTEN CAVE II",
+            "STARTING FOREST NIGHT",
+            "BOUNCE BOUNCE",
+            "RABI RABI BEACH",
+            "PANDORA'S PALACE",
+            "RABI RABI RAVINE",
+            "HOME SWEET HOME",
+            "RABI RABI PARK",
+            "INSIDE UPRPRC",
+            "SKY ISLAND TOWN",
+            "WINTER WONDERLAND",
+            "CYBERSPACE.EXE",
+            "EVERNIGHT PEAK",
+            "EXOTIC LABORATORY",
+            "GOLDEN RIVERBANK",
+            "FLOATING GRAVEYARD",
+            "SYSTEM INTERIOR II",
+            "AURORA PALACE",
+            "SPEICHER GALERIE",
+            "DEEP UNDER THE SEA",
+            "SKY-HIGH BRIDGE",
+            "WARP DESTINATION",
+            "VOLCANIC CANERNS",
+            "PLURKWOOD",
+            "ANOTHER D",
+            "ICY SUMMIT",
+            "PREPARE EVENT",
+            "MIDBOSS BATTLE",
+            "MIDSTREAM JAM",
+            "MIRIAM'S SHOP",
+            "BUNNY PANIC!!!",
+            "THE TRUTH NEVER SPOKEN",
+            "BRAWL BREAKS VER.2",
+            "BRAWL BREAKS",
+            "SANDBAG MINI GAME",
+            "STAFF ROLL",
+            "RFN - III",
+            "NO REMORSE",
+            "GET ON WITH IT",
+            "THEME OF RABI-RIBI 8BIT",
+            "THEME OF RABI-RIBI",
+            "FULL ON COMBAT",
+            "HI-TECH DUEL",
+            "UNFAMILIAR PLACE",
+            "UNFAMILIAR PLACE AGAIN",
+            "KITTY ATTACK",
+            "M.R.",
+            "MAIN MENU",
+            "SUDDEN DEATH",
+            "RABI RABI RAVINE VER.2",
+            "WASTE",
+            "ARTBOOK INTRO",
+            "RABI-RIBI PIANO TITLE",
+            "…",
+        };
+
+        public static Dictionary<string, int> MusicAddr = new Dictionary<string, int>()
+        {
+            {"1.65", 0xA46294},
+            {"1.70", 0xA69D98}
+        };
+
+        public static string[] VerNames = new string[] {"1.65", "1.70"};
+
+        public static int[] BossMusics = new[]
+        {
+            44,
+            38,
+            47,
+            34,
+            51,
+            43,
+            52,
+            37,
+            39,
+            42,
+            48,
+            8,
+            54
+        };
+    }
+}

@@ -28,15 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.label2 = new System.Windows.Forms.Label();
             this.connectBtn = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.rbStatus = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.mapLabel = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.bossLabel = new System.Windows.Forms.Label();
             this.portNum = new System.Windows.Forms.NumericUpDown();
+            this.cbBossStart = new System.Windows.Forms.CheckBox();
+            this.cbBossEnd = new System.Windows.Forms.CheckBox();
+            this.musicLabel = new System.Windows.Forms.Label();
+            this.cbBoss = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.portNum)).BeginInit();
             this.SuspendLayout();
             // 
@@ -77,42 +78,6 @@
             this.rbStatus.TabIndex = 6;
             this.rbStatus.Text = "label4";
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(13, 58);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(77, 12);
-            this.label5.TabIndex = 7;
-            this.label5.Text = "Current Map:";
-            // 
-            // mapLabel
-            // 
-            this.mapLabel.AutoSize = true;
-            this.mapLabel.Location = new System.Drawing.Point(126, 58);
-            this.mapLabel.Name = "mapLabel";
-            this.mapLabel.Size = new System.Drawing.Size(41, 12);
-            this.mapLabel.TabIndex = 8;
-            this.mapLabel.Text = "label6";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(13, 78);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(83, 12);
-            this.label7.TabIndex = 9;
-            this.label7.Text = "Current Boss:";
-            // 
-            // bossLabel
-            // 
-            this.bossLabel.AutoSize = true;
-            this.bossLabel.Location = new System.Drawing.Point(126, 80);
-            this.bossLabel.Name = "bossLabel";
-            this.bossLabel.Size = new System.Drawing.Size(41, 12);
-            this.bossLabel.TabIndex = 10;
-            this.bossLabel.Text = "label8";
-            // 
             // portNum
             // 
             this.portNum.Location = new System.Drawing.Point(149, 9);
@@ -130,20 +95,63 @@
             0,
             0});
             // 
+            // cbBossStart
+            // 
+            this.cbBossStart.AutoSize = true;
+            this.cbBossStart.Location = new System.Drawing.Point(15, 53);
+            this.cbBossStart.Name = "cbBossStart";
+            this.cbBossStart.Size = new System.Drawing.Size(198, 16);
+            this.cbBossStart.TabIndex = 12;
+            this.cbBossStart.Text = "Split when BOSS music STARTED";
+            this.cbBossStart.UseVisualStyleBackColor = true;
+            // 
+            // cbBossEnd
+            // 
+            this.cbBossEnd.AutoSize = true;
+            this.cbBossEnd.Checked = true;
+            this.cbBossEnd.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbBossEnd.Location = new System.Drawing.Point(15, 75);
+            this.cbBossEnd.Name = "cbBossEnd";
+            this.cbBossEnd.Size = new System.Drawing.Size(192, 16);
+            this.cbBossEnd.TabIndex = 13;
+            this.cbBossEnd.Text = "Split when BOSS music STOPED";
+            this.cbBossEnd.UseVisualStyleBackColor = true;
+            // 
+            // musicLabel
+            // 
+            this.musicLabel.AutoSize = true;
+            this.musicLabel.Location = new System.Drawing.Point(15, 98);
+            this.musicLabel.Name = "musicLabel";
+            this.musicLabel.Size = new System.Drawing.Size(41, 12);
+            this.musicLabel.TabIndex = 14;
+            this.musicLabel.Text = "label1";
+            // 
+            // cbBoss
+            // 
+            this.cbBoss.AutoSize = true;
+            this.cbBoss.Enabled = false;
+            this.cbBoss.Location = new System.Drawing.Point(15, 113);
+            this.cbBoss.Name = "cbBoss";
+            this.cbBoss.Size = new System.Drawing.Size(138, 16);
+            this.cbBoss.TabIndex = 15;
+            this.cbBoss.Text = "BOSS music playing!";
+            this.cbBoss.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(334, 221);
+            this.Controls.Add(this.cbBoss);
+            this.Controls.Add(this.musicLabel);
+            this.Controls.Add(this.cbBossEnd);
+            this.Controls.Add(this.cbBossStart);
             this.Controls.Add(this.portNum);
-            this.Controls.Add(this.bossLabel);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.mapLabel);
-            this.Controls.Add(this.label5);
             this.Controls.Add(this.rbStatus);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.connectBtn);
             this.Controls.Add(this.label2);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Irisu is watching you";
             ((System.ComponentModel.ISupportInitialize)(this.portNum)).EndInit();
@@ -157,11 +165,11 @@
         private System.Windows.Forms.Button connectBtn;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label rbStatus;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label mapLabel;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label bossLabel;
         private System.Windows.Forms.NumericUpDown portNum;
+        private System.Windows.Forms.CheckBox cbBossStart;
+        private System.Windows.Forms.CheckBox cbBossEnd;
+        private System.Windows.Forms.Label musicLabel;
+        private System.Windows.Forms.CheckBox cbBoss;
     }
 }
 

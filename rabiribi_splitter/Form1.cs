@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace rabiribi_splitter
@@ -26,73 +27,14 @@ namespace rabiribi_splitter
         private static TcpClient tcpclient;
         private static NetworkStream networkStream;
         private static System.Threading.Timer timer;
-        private int MapAddress = 0xA3353C;
-        private int PtrAddr = 0x00940EE0;
-        private int EnitiyOffset = 0x4e4;
-        private int EntitySize = 0x6F4;
-        private int MaxEntityEntry = 50;
+//        private int MapAddress = 0xA3353C;
+//        private int PtrAddr = 0x00940EE0;
+//        private int EnitiyOffset = 0x4e4;
+//        private int EntitySize = 0x6F4;
+//        private int MaxEntityEntry = 50;
         private bool bossbattle = false;
-
-        private static Dictionary<int, string> BossNames = new Dictionary<int, string>()
-        {
-            {1009, "Cocoa"},
-            {1011, "Rumi"},
-            {1012, "Ashuri"},
-            {1013, "Rita"},
-            {1014, "Ribbon"},
-            {1015, "Cocoa"},
-            {1018, "Cicini"},
-            {1020, "Saya"},
-            {1021, "Syaro"},
-            {1022, "Pandora"},
-            {1023, "Nieve"},
-            {1024, "Nixie"},
-            {1025, "Aruraune"},
-            {1030, "Seana"},
-            {1031, "Lilith"},
-            {1032, "Vanilla"},
-            {1033, "Chocolate"},
-            {1035, "Illusion Alius"},
-            {1036, "Pink Kotri"},
-            {1037, "Noah 1"},
-            {1038, "Irisu"},
-            {1039, "Miriam"},
-            {1043, "Miru"},
-            {1053, "Noah 3"},
-            {1054, "Keke Bunny"},
-
-
-        };
-
-        static string[] MapNames = new string[]
-        {
-            "Southern Woodland",
-            "Western Coast",
-            "Island Core",
-            "Northern Tundra",
-            "Eastern Highlands",
-            "Rabi Rabi Town",
-            "Plurkwood",
-            "Subterranean Area",
-            "Warp Destination",
-            "System Interior",
-        };
-
-        static int[][] MapBoss = new int[][]
-        {
-            new[] {1011, 1009, 1025, 1014},
-            new[] {1036, 1038, 1031, 1022, 1012},
-            new[] {1032, 1036, 1030, 1033},
-            new[] {1024, 1023, 1013, 1030},
-            new[] {1012, 1020,},
-            new int[0],
-            new[] {1054},
-            new[] {1036, 1039},
-            new[] {1037, 1053, 1035, 1043},
-            new[] {1021},
-
-        };
-
+        private int bossmusicid;
+        private Regex titleReg = new Regex(@"ver.*?(\d+\.?\d+.*)$");
         public Form1()
         {
             InitializeComponent();
@@ -103,66 +45,104 @@ namespace rabiribi_splitter
 
         private void readmemory(object state)
         {
+            string rabiver="";
             var processlist = Process.GetProcessesByName("rabiribi");
             if (processlist.Length > 0)
             {
-                rbStatus.Text = "Running";
+
                 Process process = processlist[0];
+                var result = titleReg.Match(process.MainWindowTitle);
+                if (result.Success)
+                {
+                    rabiver = result.Groups[1].Value;
+                    if (!StaticData.VerNames.Contains(rabiver))
+                    {
+                        this.Invoke(new Action(() =>
+                        {
+                            rbStatus.Text = rabiver + " Running (not support)";
+                            this.musicLabel.Text = "N/A";
+                        }));
+                   
+                      
+                        return;
+                    }
+
+                }
+                else
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        rbStatus.Text = rabiver + " Running (not support)";
+                        this.musicLabel.Text = "N/A";
+                    }));
+                    return;
+                }
+                this.Invoke(new Action(() => rbStatus.Text = rabiver + " Running"));
+                int addr = StaticData.MusicAddr[rabiver];
                 byte[] buffer = new byte[4] {0, 0, 0, 0};
                 int bytesRead = 0;
                 IntPtr processHandle = OpenProcess(PROCESS_WM_READ, false, process.Id);
-                ReadProcessMemory((int) processHandle, process.MainModule.BaseAddress.ToInt32() + MapAddress, buffer,
-                    1, ref bytesRead);
-                int mapid;
-                if (buffer[0] < MapNames.Length)
+                ReadProcessMemory((int) processHandle, process.MainModule.BaseAddress.ToInt32() + addr, buffer,
+                    4, ref bytesRead);
+                if (buffer[0] < StaticData.MusicNames.Length)
                 {
-                    this.mapLabel.Text = MapNames[buffer[0]];
-                    mapid = buffer[0];
-                    ReadProcessMemory((int) processHandle, process.MainModule.BaseAddress.ToInt32() + PtrAddr, buffer, 4,
-                        ref bytesRead);
-                    var ptr = BitConverter.ToInt32(buffer, 0) + EnitiyOffset;
-                    List<int> bosses = new List<int>();
-                    for (var i = 0; i < 50; i++)
+                   
+                    int musicid = BitConverter.ToInt32(buffer,0);
+                    this.Invoke(new Action(() => this.musicLabel.Text = StaticData.MusicNames[musicid]));
+                    
+                    var flag = StaticData.BossMusics.Contains(musicid);
+                    if (flag)
                     {
-                        ptr += 0x6f4;
-                        ReadProcessMemory((int) processHandle, ptr, buffer, buffer.Length, ref bytesRead);
-                        var emyid = BitConverter.ToInt32(buffer, 0);
-                        if (BossNames.ContainsKey(emyid))
+                        if (bossmusicid > 0 && bossmusicid != musicid)
                         {
-                            bosses.Add(emyid);
-                        }
-
-                    }
-                    //Now checking map
-                    bool flag = false;
-                    this.bossLabel.Text = "";
-                    foreach (var i in MapBoss[mapid])
-                    {
-                        if (bosses.Contains(i))
-                        {
-                            flag = true;
-                            this.bossLabel.Text += BossNames[i] + " ";
+                            //直接换boss曲
+                            if (cbBossStart.Checked || cbBossEnd.Checked)
+                            {
+                                sendsplit();
+                            }
+                            bossbattle = true;
+                            this.Invoke(new Action(() => cbBoss.Checked = bossbattle));
+                            bossmusicid = musicid;
+                            return;
                         }
                     }
                     if (flag != bossbattle)
                     {
-                        sendsplit();
+                        if (flag)
+                        {
+                            if (cbBossStart.Checked)
+                            {
+                                sendsplit();
+                               
+                            }
+                            bossmusicid = musicid;
+                        }
+                        else
+                        {
+                            if (cbBossEnd.Checked)
+                            {
+                                sendsplit();
+                            }
+                        }
                     }
                     bossbattle = flag;
+                    this.Invoke(new Action(() => cbBoss.Checked = bossbattle));
                 }
                 else
                 {
-                    this.mapLabel.Text = "N/A";
-                    this.bossLabel.Text = "";
+                    this.Invoke(new Action(() => this.musicLabel.Text = "N/A"));
                 }
 
 
             }
             else
             {
-                rbStatus.Text = "Not Found";
-                this.mapLabel.Text = "N/A";
-                this.bossLabel.Text = "";
+                this.Invoke(new Action(() =>
+                {
+                    rbStatus.Text = "Not Found";
+                    this.musicLabel.Text = "N/A";
+                }));
+               
             }
         }
 
