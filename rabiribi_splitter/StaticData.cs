@@ -131,14 +131,6 @@ namespace rabiribi_splitter
             "…",
         };
 
-        public static Dictionary<string, int> MusicAddr = new Dictionary<string, int>()
-        {
-            {"1.65", 0xA46294},
-            {"1.70", 0xA69D98}
-        };
-
-        public static string[] VerNames = new string[] {"1.65", "1.70"};
-
         public static int[] BossMusics = new[]
         {
             44,
@@ -155,5 +147,21 @@ namespace rabiribi_splitter
             8,
             54
         };
+
+
+        public static int[] MapAddress =  { 0xA3353C,0};
+        public static int[] EnenyPtrAddr = { 0x00940EE0,0};
+        public static int[] EnenyEnitiyOffset = { 0x4e4,0};
+        public static int[] EnenyEntitySize = {0x6F4, 0x6F4 };
+        public static int[] MaxEntityEntry = { 50,50 };
+        public static int[] MoneyAddress = { 0xD3823C, };
+        public static string[] VerNames = {"1.65", "1.70"};
+        public static int[] MusicAddr = 
+        {
+            0xA46294,
+           0xA69D98
+        };
+
+      
     }
 }

@@ -38,6 +38,7 @@
             this.cbBossEnd = new System.Windows.Forms.CheckBox();
             this.musicLabel = new System.Windows.Forms.Label();
             this.cbBoss = new System.Windows.Forms.CheckBox();
+            this.cbComputer = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.portNum)).BeginInit();
             this.SuspendLayout();
             // 
@@ -100,9 +101,9 @@
             this.cbBossStart.AutoSize = true;
             this.cbBossStart.Location = new System.Drawing.Point(15, 53);
             this.cbBossStart.Name = "cbBossStart";
-            this.cbBossStart.Size = new System.Drawing.Size(198, 16);
+            this.cbBossStart.Size = new System.Drawing.Size(192, 16);
             this.cbBossStart.TabIndex = 12;
-            this.cbBossStart.Text = "Split when BOSS music STARTED";
+            this.cbBossStart.Text = "Split when BOSS music STARTS";
             this.cbBossStart.UseVisualStyleBackColor = true;
             // 
             // cbBossEnd
@@ -112,15 +113,15 @@
             this.cbBossEnd.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbBossEnd.Location = new System.Drawing.Point(15, 75);
             this.cbBossEnd.Name = "cbBossEnd";
-            this.cbBossEnd.Size = new System.Drawing.Size(192, 16);
+            this.cbBossEnd.Size = new System.Drawing.Size(180, 16);
             this.cbBossEnd.TabIndex = 13;
-            this.cbBossEnd.Text = "Split when BOSS music STOPED";
+            this.cbBossEnd.Text = "Split when BOSS music ENDS";
             this.cbBossEnd.UseVisualStyleBackColor = true;
             // 
             // musicLabel
             // 
             this.musicLabel.AutoSize = true;
-            this.musicLabel.Location = new System.Drawing.Point(15, 98);
+            this.musicLabel.Location = new System.Drawing.Point(13, 159);
             this.musicLabel.Name = "musicLabel";
             this.musicLabel.Size = new System.Drawing.Size(41, 12);
             this.musicLabel.TabIndex = 14;
@@ -130,18 +131,31 @@
             // 
             this.cbBoss.AutoSize = true;
             this.cbBoss.Enabled = false;
-            this.cbBoss.Location = new System.Drawing.Point(15, 113);
+            this.cbBoss.Location = new System.Drawing.Point(15, 174);
             this.cbBoss.Name = "cbBoss";
             this.cbBoss.Size = new System.Drawing.Size(138, 16);
             this.cbBoss.TabIndex = 15;
             this.cbBoss.Text = "BOSS music playing!";
             this.cbBoss.UseVisualStyleBackColor = true;
             // 
+            // cbComputer
+            // 
+            this.cbComputer.AutoSize = true;
+            this.cbComputer.Checked = true;
+            this.cbComputer.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbComputer.Location = new System.Drawing.Point(15, 97);
+            this.cbComputer.Name = "cbComputer";
+            this.cbComputer.Size = new System.Drawing.Size(192, 16);
+            this.cbComputer.TabIndex = 16;
+            this.cbComputer.Text = "Split when find the computer";
+            this.cbComputer.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(334, 221);
+            this.Controls.Add(this.cbComputer);
             this.Controls.Add(this.cbBoss);
             this.Controls.Add(this.musicLabel);
             this.Controls.Add(this.cbBossEnd);
@@ -170,6 +184,7 @@
         private System.Windows.Forms.CheckBox cbBossEnd;
         private System.Windows.Forms.Label musicLabel;
         private System.Windows.Forms.CheckBox cbBoss;
+        private System.Windows.Forms.CheckBox cbComputer;
     }
 }
 
