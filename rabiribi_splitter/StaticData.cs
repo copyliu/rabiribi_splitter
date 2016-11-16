@@ -149,12 +149,13 @@ namespace rabiribi_splitter
         };
 
 
-        public static int[] MapAddress =  { 0xA3353C,0};
-        public static int[] EnenyPtrAddr = { 0x00940EE0,0};
-        public static int[] EnenyEnitiyOffset = { 0x4e4,0};
-        public static int[] EnenyEntitySize = {0x6F4, 0x6F4 };
+        public static int[] MapAddress =  { 0xA3353C, 0xA57020 };
+        public static int[] EnenyPtrAddr = { 0x00940EE0, 0x00964A1C };
+        public static int[] EnenyEnitiyHPOffset = { 0x4c8, 0x4d0 };
+        public static int[] EnenyEnitiyIDOffset = { 0x4e4,0x4ec};
+        public static int[] EnenyEntitySize = {0x6F4, 0x6FC };
         public static int[] MaxEntityEntry = { 50,50 };
-        public static int[] MoneyAddress = { 0xD3823C, };
+        public static int[] MoneyAddress = { 0xD3823C, 0xD5B9FC };
         public static string[] VerNames = {"1.65", "1.70"};
         public static int[] MusicAddr = 
         {

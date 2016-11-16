@@ -18,7 +18,7 @@ namespace rabiribi_splitter
 
         private const int PROCESS_WM_READ = 0x0010;
 
-        public static T GetMemoryValue<T>(Process process, int addr)
+        public static T GetMemoryValue<T>(Process process, int addr,bool baseaddr=true)
         {
             int datasize;
             switch (Type.GetTypeCode(typeof(T)))
@@ -49,9 +49,17 @@ namespace rabiribi_splitter
 
             byte[] buffer = new byte[datasize];
             int bytesRead = 0;
+
             IntPtr processHandle = OpenProcess(PROCESS_WM_READ, false, process.Id);
-            ReadProcessMemory((int) processHandle, process.MainModule.BaseAddress.ToInt32() + addr, buffer,
-                datasize, ref bytesRead);
+            if (baseaddr)
+            { ReadProcessMemory((int) processHandle, process.MainModule.BaseAddress.ToInt32() + addr, buffer,
+                    datasize, ref bytesRead);}
+            else
+            {
+                ReadProcessMemory((int)processHandle, addr, buffer,
+                       datasize, ref bytesRead);
+
+            }
             switch (Type.GetTypeCode(typeof(T)))
             {
 

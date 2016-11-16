@@ -39,6 +39,12 @@
             this.musicLabel = new System.Windows.Forms.Label();
             this.cbBoss = new System.Windows.Forms.CheckBox();
             this.cbComputer = new System.Windows.Forms.CheckBox();
+            this.cbBoss1 = new System.Windows.Forms.CheckBox();
+            this.cbBoss3 = new System.Windows.Forms.CheckBox();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.t1 = new System.Windows.Forms.Label();
+            this.t2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.portNum)).BeginInit();
             this.SuspendLayout();
             // 
@@ -120,8 +126,9 @@
             // 
             // musicLabel
             // 
+            this.musicLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.musicLabel.AutoSize = true;
-            this.musicLabel.Location = new System.Drawing.Point(13, 159);
+            this.musicLabel.Location = new System.Drawing.Point(13, 477);
             this.musicLabel.Name = "musicLabel";
             this.musicLabel.Size = new System.Drawing.Size(41, 12);
             this.musicLabel.TabIndex = 14;
@@ -129,13 +136,14 @@
             // 
             // cbBoss
             // 
+            this.cbBoss.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbBoss.AutoSize = true;
             this.cbBoss.Enabled = false;
-            this.cbBoss.Location = new System.Drawing.Point(15, 174);
+            this.cbBoss.Location = new System.Drawing.Point(15, 492);
             this.cbBoss.Name = "cbBoss";
-            this.cbBoss.Size = new System.Drawing.Size(138, 16);
+            this.cbBoss.Size = new System.Drawing.Size(84, 16);
             this.cbBoss.TabIndex = 15;
-            this.cbBoss.Text = "BOSS music playing!";
+            this.cbBoss.Text = "BOSS event";
             this.cbBoss.UseVisualStyleBackColor = true;
             // 
             // cbComputer
@@ -150,11 +158,79 @@
             this.cbComputer.Text = "Split when find the computer";
             this.cbComputer.UseVisualStyleBackColor = true;
             // 
+            // cbBoss1
+            // 
+            this.cbBoss1.AutoSize = true;
+            this.cbBoss1.Checked = true;
+            this.cbBoss1.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbBoss1.Location = new System.Drawing.Point(15, 119);
+            this.cbBoss1.Name = "cbBoss1";
+            this.cbBoss1.Size = new System.Drawing.Size(318, 16);
+            this.cbBoss1.TabIndex = 17;
+            this.cbBoss1.Text = "Split when Miru/Nixie despawn, ignore their music";
+            this.cbBoss1.UseVisualStyleBackColor = true;
+            // 
+            // cbBoss3
+            // 
+            this.cbBoss3.AutoSize = true;
+            this.cbBoss3.Checked = true;
+            this.cbBoss3.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbBoss3.Location = new System.Drawing.Point(15, 141);
+            this.cbBoss3.Name = "cbBoss3";
+            this.cbBoss3.Size = new System.Drawing.Size(276, 16);
+            this.cbBoss3.TabIndex = 19;
+            this.cbBoss3.Text = "Split when Noah 3 HP = 0, ignore her music";
+            this.cbBoss3.UseVisualStyleBackColor = true;
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(804, 496);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(41, 12);
+            this.linkLabel1.TabIndex = 20;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "GitHub";
+            // 
+            // t1
+            // 
+            this.t1.AutoSize = true;
+            this.t1.Location = new System.Drawing.Point(498, 37);
+            this.t1.Name = "t1";
+            this.t1.Size = new System.Drawing.Size(41, 12);
+            this.t1.TabIndex = 21;
+            this.t1.Text = "label1";
+            // 
+            // t2
+            // 
+            this.t2.AutoSize = true;
+            this.t2.Location = new System.Drawing.Point(694, 36);
+            this.t2.Name = "t2";
+            this.t2.Size = new System.Drawing.Size(41, 12);
+            this.t2.TabIndex = 22;
+            this.t2.Text = "label4";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(500, 13);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(59, 12);
+            this.label1.TabIndex = 23;
+            this.label1.Text = "DebugArea";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(334, 221);
+            this.ClientSize = new System.Drawing.Size(857, 520);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.t2);
+            this.Controls.Add(this.t1);
+            this.Controls.Add(this.linkLabel1);
+            this.Controls.Add(this.cbBoss3);
+            this.Controls.Add(this.cbBoss1);
             this.Controls.Add(this.cbComputer);
             this.Controls.Add(this.cbBoss);
             this.Controls.Add(this.musicLabel);
@@ -185,6 +261,12 @@
         private System.Windows.Forms.Label musicLabel;
         private System.Windows.Forms.CheckBox cbBoss;
         private System.Windows.Forms.CheckBox cbComputer;
+        private System.Windows.Forms.CheckBox cbBoss1;
+        private System.Windows.Forms.CheckBox cbBoss3;
+        private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.Label t1;
+        private System.Windows.Forms.Label t2;
+        private System.Windows.Forms.Label label1;
     }
 }
 
