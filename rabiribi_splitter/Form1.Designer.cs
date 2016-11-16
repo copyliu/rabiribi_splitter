@@ -128,7 +128,7 @@
             // 
             this.musicLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.musicLabel.AutoSize = true;
-            this.musicLabel.Location = new System.Drawing.Point(13, 477);
+            this.musicLabel.Location = new System.Drawing.Point(13, 182);
             this.musicLabel.Name = "musicLabel";
             this.musicLabel.Size = new System.Drawing.Size(41, 12);
             this.musicLabel.TabIndex = 14;
@@ -139,7 +139,7 @@
             this.cbBoss.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbBoss.AutoSize = true;
             this.cbBoss.Enabled = false;
-            this.cbBoss.Location = new System.Drawing.Point(15, 492);
+            this.cbBoss.Location = new System.Drawing.Point(15, 197);
             this.cbBoss.Name = "cbBoss";
             this.cbBoss.Size = new System.Drawing.Size(84, 16);
             this.cbBoss.TabIndex = 15;
@@ -186,7 +186,7 @@
             // 
             this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(804, 496);
+            this.linkLabel1.Location = new System.Drawing.Point(293, 201);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(41, 12);
             this.linkLabel1.TabIndex = 20;
@@ -224,7 +224,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(857, 520);
+            this.ClientSize = new System.Drawing.Size(346, 225);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.t2);
             this.Controls.Add(this.t1);
