@@ -180,7 +180,7 @@
             this.cbBoss3.Name = "cbBoss3";
             this.cbBoss3.Size = new System.Drawing.Size(276, 16);
             this.cbBoss3.TabIndex = 19;
-            this.cbBoss3.Text = "Split when Noah 3 HP = 0, ignore her music";
+            this.cbBoss3.Text = "Split when Noah 3 HP = 1, ignore her music";
             this.cbBoss3.UseVisualStyleBackColor = true;
             // 
             // linkLabel1
