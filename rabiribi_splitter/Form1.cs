@@ -126,10 +126,11 @@ namespace rabiribi_splitter
 
                 int musicaddr = StaticData.MusicAddr[veridx];
                 int musicid = MemoryHelper.GetMemoryValue<int>(process, musicaddr);
-                if (musicid >= 0 && musicid < StaticData.MusicNames.Length)
+                if (musicid > 0 && musicid < StaticData.MusicNames.Length)
                 {
                     if (lastmusicid != musicid)
                     {
+                        Console.WriteLine("new music:"+musicid);
                         this.Invoke(new Action(() => this.musicLabel.Text = StaticData.MusicNames[musicid]));
 
                         var bossmusicflag = StaticData.BossMusics.Contains(musicid);
@@ -141,6 +142,7 @@ namespace rabiribi_splitter
                                 if (cbBossStart.Checked || cbBossEnd.Checked)
                                 {
                                     sendsplit();
+                                    Console.WriteLine("splilt 1");
                                 }
 
                                 this.Invoke(new Action(() => cbBoss.Checked = bossbattle));
@@ -158,6 +160,7 @@ namespace rabiribi_splitter
                                 if (cbBossStart.Checked)
                                 {
                                     sendsplit();
+                                    Console.WriteLine("splilt 2");
                                 }
                             }
                         }
@@ -169,6 +172,7 @@ namespace rabiribi_splitter
                                 if (cbBossEnd.Checked)
                                 {
                                     sendsplit();
+                                    Console.WriteLine("splilt 3");
                                 }
                             }
                         }
