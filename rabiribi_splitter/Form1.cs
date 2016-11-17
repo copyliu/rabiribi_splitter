@@ -32,6 +32,20 @@ namespace rabiribi_splitter
         private List<int> lastbosslist = new List<int>();
         private int lastnoah3hp = -1;
 
+        void DebugLog(string log)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() =>
+                {
+                    this.debugLog.AppendText(log + "\n");
+                }));
+            }
+            else
+            {
+                this.debugLog.AppendText(log + "\n");
+            }
+        }
         public Form1()
         {
             InitializeComponent();
@@ -107,6 +121,9 @@ namespace rabiribi_splitter
 
                 if (veridx < 0) return;
 
+
+               
+
                 #region CheckMoney
 
                 if (cbComputer.Checked)
@@ -122,6 +139,10 @@ namespace rabiribi_splitter
 
                 #endregion
 
+                int mapid = MemoryHelper.GetMemoryValue<int>(process, StaticData.MapAddress[veridx]);
+
+               
+
                 #region Music
 
                 int musicaddr = StaticData.MusicAddr[veridx];
@@ -130,7 +151,7 @@ namespace rabiribi_splitter
                 {
                     if (lastmusicid != musicid)
                     {
-                        Console.WriteLine("new music:"+musicid);
+                        DebugLog("new music:"+musicid);
                         this.Invoke(new Action(() => this.musicLabel.Text = StaticData.MusicNames[musicid]));
 
                         var bossmusicflag = StaticData.BossMusics.Contains(musicid);
@@ -142,7 +163,7 @@ namespace rabiribi_splitter
                                 if (cbBossStart.Checked || cbBossEnd.Checked)
                                 {
                                     sendsplit();
-                                    Console.WriteLine("splilt 1");
+                                    DebugLog("splilt 1");
                                 }
 
                                 this.Invoke(new Action(() => cbBoss.Checked = bossbattle));
@@ -152,15 +173,23 @@ namespace rabiribi_splitter
                         }
                         if (!bossbattle)
                         {
-                            if (bossmusicflag) //boss music start!
+                            if (mapid == 5 && cbSideCh.Checked)
                             {
-                                bossbattle = true;
-                                lastbosslist = new List<int>();
-                                lastnoah3hp = -1;
-                                if (cbBossStart.Checked)
+                                bossbattle = false;
+
+                            }
+                            else
+                            {
+                                if (bossmusicflag)
                                 {
-                                    sendsplit();
-                                    Console.WriteLine("splilt 2");
+                                    bossbattle = true;
+                                    lastbosslist = new List<int>();
+                                    lastnoah3hp = -1;
+                                    if (cbBossStart.Checked)
+                                    {
+                                        sendsplit();
+                                        DebugLog("splilt 2");
+                                    }
                                 }
                             }
                         }
@@ -172,7 +201,7 @@ namespace rabiribi_splitter
                                 if (cbBossEnd.Checked)
                                 {
                                     sendsplit();
-                                    Console.WriteLine("splilt 3");
+                                    DebugLog("splilt 3");
                                 }
                             }
                         }
@@ -194,7 +223,7 @@ namespace rabiribi_splitter
                     if (cbBoss1.Checked || cbBoss3.Checked)
                     {
                         int Noah3HP = -1;
-                        int mapid = MemoryHelper.GetMemoryValue<int>(process, StaticData.MapAddress[veridx]);
+                        
                         if (mapid >= 0 && mapid < StaticData.MapNames.Length)
                         {
                             int ptr = MemoryHelper.GetMemoryValue<int>(process, StaticData.EnenyPtrAddr[veridx]);
@@ -227,6 +256,7 @@ namespace rabiribi_splitter
                                         if (!bosses.Contains(boss)) //despawn
                                         {
                                             sendsplit();
+                                            DebugLog("split:4");
                                             bossbattle = false;
 
                                         }
@@ -239,6 +269,7 @@ namespace rabiribi_splitter
                                 if (bosses.Contains(1053) && Noah3HP < lastnoah3hp && Noah3HP == 1)
                                 {
                                     sendsplit();
+                                    DebugLog("split:5");
                                     bossbattle = false;
                                 }
                             }
@@ -255,30 +286,30 @@ namespace rabiribi_splitter
 
                 #endregion SpecialBOSS
 
+                if (debugArea.Checked)
+                {
+                    int ptr = MemoryHelper.GetMemoryValue<int>(process, StaticData.EnenyPtrAddr[veridx]);
+                    List<int> bosses = new List<int>();
+                    List<int> HPS = new List<int>();
+                    for (var i = 0; i < 5; i++)
+                    {
+                        ptr += StaticData.EnenyEntitySize[veridx];
 
-//                {
-//                    int ptr = MemoryHelper.GetMemoryValue<int>(process, StaticData.EnenyPtrAddr[veridx]);
-//                    List<int> bosses = new List<int>();
-//                    List<int> HPS = new List<int>();
-//                    for (var i = 0; i < 50; i++)
-//                    {
-//                        ptr += StaticData.EnenyEntitySize[veridx];
-//
-//
-//                        bosses.Add(MemoryHelper.GetMemoryValue<int>(process,
-//                            ptr + StaticData.EnenyEnitiyIDOffset[veridx], false));
-//                        HPS.Add(MemoryHelper.GetMemoryValue<int>(process,
-//                            ptr + StaticData.EnenyEnitiyHPOffset[veridx], false));
-//
-//
-//                        this.Invoke(new Action(() =>
-//                        {
-//                            t1.Text = string.Join("\n", bosses);
-//                            t2.Text = string.Join("\n", HPS);
-//                        }));
-//
-//                    }
-//                }
+
+                        bosses.Add(MemoryHelper.GetMemoryValue<int>(process,
+                            ptr + StaticData.EnenyEnitiyIDOffset[veridx], false));
+                        HPS.Add(MemoryHelper.GetMemoryValue<int>(process,
+                            ptr + StaticData.EnenyEnitiyHPOffset[veridx], false));
+
+
+                        this.Invoke(new Action(() =>
+                        {
+                            t1.Text = string.Join("\n", bosses);
+                            t2.Text = string.Join("\n", HPS);
+                        }));
+
+                    }
+                }
                 this.Invoke(new Action(() => cbBoss.Checked = bossbattle));
             }
             else

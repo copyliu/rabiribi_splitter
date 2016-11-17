@@ -44,8 +44,10 @@
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.t1 = new System.Windows.Forms.Label();
             this.t2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.cbSideCh = new System.Windows.Forms.CheckBox();
+            this.debugLog = new System.Windows.Forms.TextBox();
+            this.debugArea = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.portNum)).BeginInit();
             this.SuspendLayout();
             // 
@@ -129,7 +131,7 @@
             // 
             this.musicLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.musicLabel.AutoSize = true;
-            this.musicLabel.Location = new System.Drawing.Point(13, 172);
+            this.musicLabel.Location = new System.Drawing.Point(13, 195);
             this.musicLabel.Name = "musicLabel";
             this.musicLabel.Size = new System.Drawing.Size(41, 12);
             this.musicLabel.TabIndex = 14;
@@ -140,7 +142,7 @@
             this.cbBoss.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbBoss.AutoSize = true;
             this.cbBoss.Enabled = false;
-            this.cbBoss.Location = new System.Drawing.Point(15, 187);
+            this.cbBoss.Location = new System.Drawing.Point(15, 210);
             this.cbBoss.Name = "cbBoss";
             this.cbBoss.Size = new System.Drawing.Size(84, 16);
             this.cbBoss.TabIndex = 15;
@@ -154,9 +156,9 @@
             this.cbComputer.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbComputer.Location = new System.Drawing.Point(15, 97);
             this.cbComputer.Name = "cbComputer";
-            this.cbComputer.Size = new System.Drawing.Size(192, 16);
+            this.cbComputer.Size = new System.Drawing.Size(216, 16);
             this.cbComputer.TabIndex = 16;
-            this.cbComputer.Text = "Split when find the computer";
+            this.cbComputer.Text = "Split when the computer is found";
             this.cbComputer.UseVisualStyleBackColor = true;
             // 
             // cbBoss1
@@ -174,8 +176,6 @@
             // cbBoss3
             // 
             this.cbBoss3.AutoSize = true;
-            this.cbBoss3.Checked = true;
-            this.cbBoss3.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbBoss3.Location = new System.Drawing.Point(15, 141);
             this.cbBoss3.Name = "cbBoss3";
             this.cbBoss3.Size = new System.Drawing.Size(276, 16);
@@ -187,7 +187,7 @@
             // 
             this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(301, 191);
+            this.linkLabel1.Location = new System.Drawing.Point(300, 214);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(41, 12);
             this.linkLabel1.TabIndex = 20;
@@ -212,32 +212,58 @@
             this.t2.TabIndex = 22;
             this.t2.Text = "label4";
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(500, 13);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(59, 12);
-            this.label1.TabIndex = 23;
-            this.label1.Text = "DebugArea";
-            // 
             // label4
             // 
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(253, 191);
+            this.label4.Location = new System.Drawing.Point(252, 214);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(41, 12);
             this.label4.TabIndex = 24;
             this.label4.Text = "v0.0.3";
             // 
+            // cbSideCh
+            // 
+            this.cbSideCh.AutoSize = true;
+            this.cbSideCh.Checked = true;
+            this.cbSideCh.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbSideCh.Location = new System.Drawing.Point(15, 163);
+            this.cbSideCh.Name = "cbSideCh";
+            this.cbSideCh.Size = new System.Drawing.Size(138, 16);
+            this.cbSideCh.TabIndex = 25;
+            this.cbSideCh.Text = "Ignore side chapter";
+            this.cbSideCh.UseVisualStyleBackColor = true;
+            // 
+            // debugLog
+            // 
+            this.debugLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.debugLog.Location = new System.Drawing.Point(402, 163);
+            this.debugLog.Multiline = true;
+            this.debugLog.Name = "debugLog";
+            this.debugLog.Size = new System.Drawing.Size(0, 43);
+            this.debugLog.TabIndex = 26;
+            // 
+            // debugArea
+            // 
+            this.debugArea.AutoSize = true;
+            this.debugArea.Location = new System.Drawing.Point(500, 14);
+            this.debugArea.Name = "debugArea";
+            this.debugArea.Size = new System.Drawing.Size(78, 16);
+            this.debugArea.TabIndex = 27;
+            this.debugArea.Text = "debugArea";
+            this.debugArea.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(354, 215);
+            this.ClientSize = new System.Drawing.Size(353, 238);
+            this.Controls.Add(this.debugArea);
+            this.Controls.Add(this.debugLog);
+            this.Controls.Add(this.cbSideCh);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.t2);
             this.Controls.Add(this.t1);
             this.Controls.Add(this.linkLabel1);
@@ -278,8 +304,10 @@
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Label t1;
         private System.Windows.Forms.Label t2;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.CheckBox cbSideCh;
+        private System.Windows.Forms.TextBox debugLog;
+        private System.Windows.Forms.CheckBox debugArea;
     }
 }
 
