@@ -185,13 +185,8 @@ namespace rabiribi_splitter
                         }
                         if (!bossbattle)
                         {
-                            if (mapid == 5 && cbSideCh.Checked)
-                            {
-                                bossbattle = false;
-                                DebugLog("boss music in town, ignore");
 
-                            }
-                            else if (cbASG.Checked  && musicid==54)
+                            if (cbASG.Checked && musicid == 54)
                             {
                                 bossbattle = false;
                                 DebugLog("Alius music, ignore once");
@@ -201,13 +196,22 @@ namespace rabiribi_splitter
                             {
                                 if (bossmusicflag)
                                 {
-                                    bossbattle = true;
-                                    lastbosslist = new List<int>();
-                                    lastnoah3hp = -1;
-                                    if (cbBossStart.Checked)
+                                    if (mapid == 5 && musicid == 44 && cbSideCh.Checked )
                                     {
-                                        sendsplit();
-                                        DebugLog("music start, split");
+                                        bossbattle = false;
+                                        DebugLog("sidechapter, ignore");
+
+                                    }
+                                    else
+                                    {
+                                        bossbattle = true;
+                                        lastbosslist = new List<int>();
+                                        lastnoah3hp = -1;
+                                        if (cbBossStart.Checked)
+                                        {
+                                            sendsplit();
+                                            DebugLog("music start, split");
+                                        }
                                     }
                                 }
                             }
@@ -292,7 +296,7 @@ namespace rabiribi_splitter
                                     bossbattle = false;
                                 }
                             }
-                            if (cbTM.Checked)
+                            if (cbTM.Checked && musicid==8)
                             {
                                 bool f = true;
                                 foreach (var boss in lastbosslist)
