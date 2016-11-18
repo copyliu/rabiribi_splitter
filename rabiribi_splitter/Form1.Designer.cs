@@ -133,7 +133,7 @@
             // 
             this.musicLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.musicLabel.AutoSize = true;
-            this.musicLabel.Location = new System.Drawing.Point(13, 209);
+            this.musicLabel.Location = new System.Drawing.Point(13, 211);
             this.musicLabel.Name = "musicLabel";
             this.musicLabel.Size = new System.Drawing.Size(41, 12);
             this.musicLabel.TabIndex = 14;
@@ -144,7 +144,7 @@
             this.cbBoss.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbBoss.AutoSize = true;
             this.cbBoss.Enabled = false;
-            this.cbBoss.Location = new System.Drawing.Point(15, 224);
+            this.cbBoss.Location = new System.Drawing.Point(15, 226);
             this.cbBoss.Name = "cbBoss";
             this.cbBoss.Size = new System.Drawing.Size(84, 16);
             this.cbBoss.TabIndex = 15;
@@ -170,9 +170,9 @@
             this.cbBoss1.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbBoss1.Location = new System.Drawing.Point(15, 119);
             this.cbBoss1.Name = "cbBoss1";
-            this.cbBoss1.Size = new System.Drawing.Size(162, 16);
+            this.cbBoss1.Size = new System.Drawing.Size(168, 16);
             this.cbBoss1.TabIndex = 17;
-            this.cbBoss1.Text = "Split when Miru despawn";
+            this.cbBoss1.Text = "Split when Miru despawns";
             this.cbBoss1.UseVisualStyleBackColor = true;
             // 
             // cbBoss3
@@ -189,7 +189,7 @@
             // 
             this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(259, 228);
+            this.linkLabel1.Location = new System.Drawing.Point(279, 230);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(41, 12);
             this.linkLabel1.TabIndex = 20;
@@ -218,7 +218,7 @@
             // 
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(224, 228);
+            this.label4.Location = new System.Drawing.Point(244, 230);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(29, 12);
             this.label4.TabIndex = 24;
@@ -231,9 +231,9 @@
             this.cbSideCh.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbSideCh.Location = new System.Drawing.Point(15, 141);
             this.cbSideCh.Name = "cbSideCh";
-            this.cbSideCh.Size = new System.Drawing.Size(138, 16);
+            this.cbSideCh.Size = new System.Drawing.Size(162, 16);
             this.cbSideCh.TabIndex = 25;
-            this.cbSideCh.Text = "Ignore side chapter";
+            this.cbSideCh.Text = "Ignore the Side Chapter";
             this.cbSideCh.UseVisualStyleBackColor = true;
             // 
             // debugLog
@@ -245,7 +245,7 @@
             this.debugLog.MinimumSize = new System.Drawing.Size(10, 10);
             this.debugLog.Multiline = true;
             this.debugLog.Name = "debugLog";
-            this.debugLog.Size = new System.Drawing.Size(10, 58);
+            this.debugLog.Size = new System.Drawing.Size(10, 60);
             this.debugLog.TabIndex = 26;
             // 
             // debugArea
@@ -265,9 +265,9 @@
             this.cbASG.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbASG.Location = new System.Drawing.Point(15, 163);
             this.cbASG.Name = "cbASG";
-            this.cbASG.Size = new System.Drawing.Size(180, 16);
+            this.cbASG.Size = new System.Drawing.Size(306, 16);
             this.cbASG.TabIndex = 28;
-            this.cbASG.Text = "Ignore next \"SUDDEN DEATH\"";
+            this.cbASG.Text = "Ignore the next \"SUDDEN DEATH\" (Ignore Alius I)";
             this.cbASG.UseVisualStyleBackColor = true;
             // 
             // cbTM
@@ -277,16 +277,16 @@
             this.cbTM.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbTM.Location = new System.Drawing.Point(15, 185);
             this.cbTM.Name = "cbTM";
-            this.cbTM.Size = new System.Drawing.Size(276, 16);
+            this.cbTM.Size = new System.Drawing.Size(282, 16);
             this.cbTM.TabIndex = 29;
-            this.cbTM.Text = "Split when town member +2 or Nixie despawn";
+            this.cbTM.Text = "Split when Town Member +2 or Nixie despawns";
             this.cbTM.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(312, 252);
+            this.ClientSize = new System.Drawing.Size(332, 254);
             this.Controls.Add(this.cbTM);
             this.Controls.Add(this.cbASG);
             this.Controls.Add(this.debugArea);

@@ -128,7 +128,7 @@ namespace rabiribi_splitter
             "WASTE",
             "ARTBOOK INTRO",
             "RABI-RIBI PIANO TITLE",
-            "…",
+            "MISCHIEVOUS MASQUERADE",
         };
 
         public static int[] BossMusics = new[]
