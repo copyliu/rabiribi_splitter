@@ -31,19 +31,21 @@ namespace rabiribi_splitter
         private int veridx;
         private List<int> lastbosslist = new List<int>();
         private int lastnoah3hp = -1;
-
+        private int lastmapid;
+        private int lastTM;
+        
         void DebugLog(string log)
         {
             if (this.InvokeRequired)
             {
                 this.Invoke(new Action(() =>
                 {
-                    this.debugLog.AppendText(log + "\n");
+                    this.debugLog.AppendText(log + "\r\n");
                 }));
             }
             else
             {
-                this.debugLog.AppendText(log + "\n");
+                this.debugLog.AppendText(log + "\r\n");
             }
         }
         public Form1()
@@ -132,7 +134,7 @@ namespace rabiribi_splitter
                     if (newmoney - lastmoney == 17500)
                     {
                         sendsplit();
-
+                        DebugLog("get 17500 en, split");
                     }
                     lastmoney = newmoney;
                 }
@@ -140,8 +142,18 @@ namespace rabiribi_splitter
                 #endregion
 
                 int mapid = MemoryHelper.GetMemoryValue<int>(process, StaticData.MapAddress[veridx]);
+                if (lastmapid != mapid)
+                {
+                    DebugLog("newmap: "+mapid+":"+StaticData.MapNames[mapid]);
+                    lastmapid = mapid;
+                }
 
-               
+
+                #region checkTM
+
+              
+
+                #endregion
 
                 #region Music
 
@@ -151,7 +163,7 @@ namespace rabiribi_splitter
                 {
                     if (lastmusicid != musicid)
                     {
-                        DebugLog("new music:"+musicid);
+                        DebugLog("new music:"+musicid+":"+StaticData.MusicNames[musicid]);
                         this.Invoke(new Action(() => this.musicLabel.Text = StaticData.MusicNames[musicid]));
 
                         var bossmusicflag = StaticData.BossMusics.Contains(musicid);
@@ -163,7 +175,7 @@ namespace rabiribi_splitter
                                 if (cbBossStart.Checked || cbBossEnd.Checked)
                                 {
                                     sendsplit();
-                                    DebugLog("splilt 1");
+                                    DebugLog("new boss music, split");
                                 }
 
                                 this.Invoke(new Action(() => cbBoss.Checked = bossbattle));
@@ -176,7 +188,14 @@ namespace rabiribi_splitter
                             if (mapid == 5 && cbSideCh.Checked)
                             {
                                 bossbattle = false;
+                                DebugLog("boss music in town, ignore");
 
+                            }
+                            else if (cbASG.Checked  && musicid==54)
+                            {
+                                bossbattle = false;
+                                DebugLog("Alius music, ignore once");
+                                this.Invoke(new Action(() => cbASG.Checked = false));
                             }
                             else
                             {
@@ -188,7 +207,7 @@ namespace rabiribi_splitter
                                     if (cbBossStart.Checked)
                                     {
                                         sendsplit();
-                                        DebugLog("splilt 2");
+                                        DebugLog("music start, split");
                                     }
                                 }
                             }
@@ -201,7 +220,7 @@ namespace rabiribi_splitter
                                 if (cbBossEnd.Checked)
                                 {
                                     sendsplit();
-                                    DebugLog("splilt 3");
+                                    DebugLog("music end, split");
                                 }
                             }
                         }
@@ -251,12 +270,12 @@ namespace rabiribi_splitter
                                 foreach (var boss in lastbosslist)
                                 {
 
-                                    if (boss == 1024 || boss == 1043)
+                                    if (boss == 1043)
                                     {
                                         if (!bosses.Contains(boss)) //despawn
                                         {
                                             sendsplit();
-                                            DebugLog("split:4");
+                                            DebugLog("miru despawn, split");
                                             bossbattle = false;
 
                                         }
@@ -269,9 +288,39 @@ namespace rabiribi_splitter
                                 if (bosses.Contains(1053) && Noah3HP < lastnoah3hp && Noah3HP == 1)
                                 {
                                     sendsplit();
-                                    DebugLog("split:5");
+                                    DebugLog("noah3 hp 1, split");
                                     bossbattle = false;
                                 }
+                            }
+                            if (cbTM.Checked)
+                            {
+                                bool f = true;
+                                foreach (var boss in lastbosslist)
+                                {
+
+                                    if (boss == 1024)
+                                    {
+                                        if (!bosses.Contains(boss)) //despawn
+                                        {
+                                            sendsplit();
+                                            DebugLog("nixie despawn, split");
+                                            bossbattle = false;
+                                            f = false;
+                                            break;
+                                        }
+                                    }
+                                }
+                                
+                                int newTM = MemoryHelper.GetMemoryValue<int>(process, StaticData.TownMemberAddr[veridx]);
+                                if (newTM - lastTM == 2 && f)
+                                {
+                                    bossbattle = false;
+                                    sendsplit();
+                                    DebugLog("TM+2, split");
+
+
+                                }
+                                lastTM = newTM;
                             }
                             lastbosslist = bosses;
                             lastnoah3hp = Noah3HP;

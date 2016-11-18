@@ -163,6 +163,7 @@ namespace rabiribi_splitter
            0xA69D98
         };
 
-      
+        public static int[] TownMemberAddr = {0xD38934, 0xD5C0F4};
+
     }
 }
