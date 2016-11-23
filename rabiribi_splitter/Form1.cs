@@ -344,6 +344,7 @@ namespace rabiribi_splitter
                     int ptr = MemoryHelper.GetMemoryValue<int>(process, StaticData.EnenyPtrAddr[veridx]);
                     List<int> bosses = new List<int>();
                     List<int> HPS = new List<int>();
+                    ptr += StaticData.EnenyEntitySize[veridx]*3;
                     for (var i = 0; i < 5; i++)
                     {
                         ptr += StaticData.EnenyEntitySize[veridx];
