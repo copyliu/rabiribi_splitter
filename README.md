@@ -21,7 +21,7 @@ and unzip to LiveSplit\Components folder
 
   ![](https://puu.sh/si2xn/2e70684da7.png)
 
-4. Connect to Server with Irisu.
+4. Connect to Server with Irisu ([Download Here](https://github.com/copyliu/rabiribi_splitter/releases)).
 
 5. fun
 
