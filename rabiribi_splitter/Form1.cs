@@ -33,7 +33,7 @@ namespace rabiribi_splitter
         private int lastnoah3hp = -1;
         private int lastmapid;
         private int lastTM;
-        
+        private DateTime LastTMAddTime=DateTime.MinValue;
         void DebugLog(string log)
         {
             if (this.InvokeRequired)
@@ -316,13 +316,23 @@ namespace rabiribi_splitter
                                 }
                                 
                                 int newTM = MemoryHelper.GetMemoryValue<int>(process, StaticData.TownMemberAddr[veridx]);
-                                if (newTM - lastTM == 2 && f)
+                                if (newTM - lastTM == 1 && f) //for after 1.71 , 1.71 isn't TM+2 at once when skip Nixie, it's TM+1 twice
+
+                                {
+                                    if (DateTime.Now- LastTMAddTime  < TimeSpan.FromSeconds(1))
+                                    {
+                                        var d = DateTime.Now - LastTMAddTime;
+                                        bossbattle = false;
+                                        sendsplit();
+                                        DebugLog("TM+2 in "+d.TotalMilliseconds+" ms, split");
+                                    }
+                                    LastTMAddTime = DateTime.Now;
+                                }
+                                else if (newTM - lastTM == 2 && f)//for 1.65-1.70
                                 {
                                     bossbattle = false;
                                     sendsplit();
                                     DebugLog("TM+2, split");
-
-
                                 }
                                 lastTM = newTM;
                             }
