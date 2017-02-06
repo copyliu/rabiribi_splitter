@@ -222,7 +222,7 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(41, 12);
             this.label4.TabIndex = 24;
-            this.label4.Text = "v0.1.4";
+            this.label4.Text = "v0.1.5";
             // 
             // cbSideCh
             // 

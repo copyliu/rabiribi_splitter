@@ -149,7 +149,7 @@ namespace rabiribi_splitter
         };
 
 
-        public static int[] MapAddress =  { 0xA3353C, 0xA57020, 0xA5E0AC, 0xD642C4 };
+        public static int[] MapAddress =  { 0xA3353C, 0xA57020, 0xA5E0AC, 0xA600AC };
         public static int[] EnenyPtrAddr = { 0x00940EE0, 0x00964A1C, 0x0096BA3C, 0x0096DA3C };
         public static int[] EnenyEnitiyHPOffset = { 0x4c8, 0x4d0,0x4d8, 0x4d8 };
         public static int[] EnenyEnitiyIDOffset = { 0x4e4,0x4ec, 0x4F4, 0x4F4 };
