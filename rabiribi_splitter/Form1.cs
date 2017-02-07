@@ -60,7 +60,7 @@ namespace rabiribi_splitter
                 while (true)
                 {
                     readmemory();
-                    Thread.Sleep(10);
+                    Thread.Sleep(1000/60);
                 }
 
             });
@@ -124,7 +124,14 @@ namespace rabiribi_splitter
                 if (veridx < 0) return;
 
 
-               
+                #region read igt
+
+                int igt = MemoryHelper.GetMemoryValue<int>(process, StaticData.IGTAddr[veridx]);
+                if (igt>0 && cbIGT.Checked )
+                {
+                    sendigt((float)igt/60);
+                }
+                #endregion
 
                 #region CheckMoney
 
@@ -408,6 +415,22 @@ namespace rabiribi_splitter
             }
         }
 
+        void sendigt(float time)
+        {
+            if (tcpclient != null && tcpclient.Connected)
+            {
+                try
+                {
+                    var b = Encoding.UTF8.GetBytes($"setgametime {time}\r\n");
+                    networkStream.Write(b, 0, b.Length);
+                }
+                catch (Exception)
+                {
+
+                    disconnect();
+                }
+            }
+        }
         void disconnect()
         {
             tcpclient = null;
