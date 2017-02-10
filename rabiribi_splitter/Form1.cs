@@ -193,10 +193,16 @@ namespace rabiribi_splitter
                         if (!bossbattle)
                         {
 
-                            if (cbASG.Checked && musicid == 54)
+                            if (musicid == 54 && cbASG.Checked )
                             {
                                 bossbattle = false;
                                 DebugLog("Alius music, ignore once");
+                                this.Invoke(new Action(() => cbASG.Checked = false));
+                            }
+                            if (musicid == 42 && mapid == 1 && cbIrisu.Checked)
+                            {
+                                bossbattle = false;
+                                DebugLog("Irisu P1, ignore");
                                 this.Invoke(new Action(() => cbASG.Checked = false));
                             }
                             else

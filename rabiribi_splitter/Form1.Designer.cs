@@ -51,6 +51,7 @@
             this.cbASG = new System.Windows.Forms.CheckBox();
             this.cbTM = new System.Windows.Forms.CheckBox();
             this.cbIGT = new System.Windows.Forms.CheckBox();
+            this.cbIrisu = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.portNum)).BeginInit();
             this.SuspendLayout();
             // 
@@ -134,7 +135,7 @@
             // 
             this.musicLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.musicLabel.AutoSize = true;
-            this.musicLabel.Location = new System.Drawing.Point(13, 237);
+            this.musicLabel.Location = new System.Drawing.Point(13, 256);
             this.musicLabel.Name = "musicLabel";
             this.musicLabel.Size = new System.Drawing.Size(41, 12);
             this.musicLabel.TabIndex = 14;
@@ -145,7 +146,7 @@
             this.cbBoss.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbBoss.AutoSize = true;
             this.cbBoss.Enabled = false;
-            this.cbBoss.Location = new System.Drawing.Point(15, 252);
+            this.cbBoss.Location = new System.Drawing.Point(15, 271);
             this.cbBoss.Name = "cbBoss";
             this.cbBoss.Size = new System.Drawing.Size(84, 16);
             this.cbBoss.TabIndex = 15;
@@ -190,7 +191,7 @@
             // 
             this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(279, 256);
+            this.linkLabel1.Location = new System.Drawing.Point(279, 275);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(41, 12);
             this.linkLabel1.TabIndex = 20;
@@ -219,11 +220,11 @@
             // 
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(232, 256);
+            this.label4.Location = new System.Drawing.Point(232, 275);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(41, 12);
             this.label4.TabIndex = 24;
-            this.label4.Text = "v0.2.0";
+            this.label4.Text = "v0.2.1";
             // 
             // cbSideCh
             // 
@@ -246,7 +247,7 @@
             this.debugLog.MinimumSize = new System.Drawing.Size(10, 10);
             this.debugLog.Multiline = true;
             this.debugLog.Name = "debugLog";
-            this.debugLog.Size = new System.Drawing.Size(10, 86);
+            this.debugLog.Size = new System.Drawing.Size(10, 105);
             this.debugLog.TabIndex = 26;
             // 
             // debugArea
@@ -286,18 +287,31 @@
             // cbIGT
             // 
             this.cbIGT.AutoSize = true;
-            this.cbIGT.Location = new System.Drawing.Point(15, 207);
+            this.cbIGT.Location = new System.Drawing.Point(15, 229);
             this.cbIGT.Name = "cbIGT";
             this.cbIGT.Size = new System.Drawing.Size(132, 16);
             this.cbIGT.TabIndex = 30;
             this.cbIGT.Text = "Track In-Game Time";
             this.cbIGT.UseVisualStyleBackColor = true;
             // 
+            // cbIrisu
+            // 
+            this.cbIrisu.AutoSize = true;
+            this.cbIrisu.Checked = true;
+            this.cbIrisu.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbIrisu.Location = new System.Drawing.Point(15, 207);
+            this.cbIrisu.Name = "cbIrisu";
+            this.cbIrisu.Size = new System.Drawing.Size(144, 16);
+            this.cbIrisu.TabIndex = 31;
+            this.cbIrisu.Text = "Ignore Irisu Phase 1";
+            this.cbIrisu.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(332, 280);
+            this.ClientSize = new System.Drawing.Size(332, 299);
+            this.Controls.Add(this.cbIrisu);
             this.Controls.Add(this.cbIGT);
             this.Controls.Add(this.cbTM);
             this.Controls.Add(this.cbASG);
@@ -352,6 +366,7 @@
         private System.Windows.Forms.CheckBox cbASG;
         private System.Windows.Forms.CheckBox cbTM;
         private System.Windows.Forms.CheckBox cbIGT;
+        private System.Windows.Forms.CheckBox cbIrisu;
     }
 }
 
