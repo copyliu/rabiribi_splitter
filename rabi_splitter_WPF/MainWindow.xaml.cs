@@ -80,6 +80,11 @@ namespace rabi_splitter_WPF
                 {
                     sendigt((float)igt / 60);
                 }
+                if (igt > 0 && igt < 3600)
+                {
+                    mainContext.AliusI = true;
+                    mainContext.Noah1Reload = false;
+                }
 
                 #endregion
 
@@ -128,13 +133,25 @@ namespace rabi_splitter_WPF
                         {
                             if (mainContext.bossbattle)
                             {
-                                //直接换boss曲
-                                if (mainContext.MusicStart || mainContext.MusicEnd)
+                                if (mainContext.Noah1Reload && (mainContext.lastmusicid == 52 || musicid == 52))
                                 {
-                                    sendsplit();
-                                    DebugLog("new boss music, split");
+                                    DebugLog("noah 1 reload? ignore");
                                 }
-                                debugContext.BossEvent = true;
+                                else
+                                {
+                                    if (mainContext.MusicStart || mainContext.MusicEnd)
+                                    {
+                                        sendsplit();
+                                        DebugLog("new boss music, split");
+                                       
+                                    }
+                                    if (musicid == 37)
+                                    {
+                                        mainContext.Noah1Reload = true;
+                                        DebugLog("noah1 music start, ignore MR forever");
+                                    }
+                                }
+
                                 mainContext.lastmusicid = musicid;
                                 return;
                             }
@@ -145,15 +162,13 @@ namespace rabi_splitter_WPF
                             if (musicid == 54 && mainContext.AliusI)
                             {
                                 mainContext.bossbattle = false;
-                                debugContext.BossEvent = false;
                                 mainContext.AliusI = false;
                                 DebugLog("Alius music, ignore once");
                                
                             }
-                            if (musicid == 42 && mapid == 1 && mainContext.Irisu1)
+                            else if (musicid == 42 && mapid == 1 && mainContext.Irisu1)
                             {
                                 mainContext.bossbattle = false;
-                                debugContext.BossEvent = false;
                                 DebugLog("Irisu P1, ignore");
                                 
                             }
@@ -164,20 +179,24 @@ namespace rabi_splitter_WPF
                                     if (mapid == 5 && musicid == 44 && mainContext.SideCh)
                                     {
                                         mainContext.bossbattle = false;
-                                        debugContext.BossEvent = false;
                                         DebugLog("sidechapter, ignore");
 
                                     }
                                     else
                                     {
                                         mainContext.bossbattle = true;
-                                        debugContext.BossEvent = true;
                                         mainContext.lastbosslist = new List<int>();
                                         mainContext.lastnoah3hp = -1;
+                                        if (musicid == 37)
+                                        {
+                                            mainContext.Noah1Reload = true;
+                                            DebugLog("noah1 music start, ignore MR forever");
+                                        }
                                         if (mainContext.MusicStart)
                                         {
                                             sendsplit();
                                             DebugLog("music start, split");
+                                            
                                         }
                                     }
                                 }
@@ -192,6 +211,7 @@ namespace rabi_splitter_WPF
                                 {
                                     sendsplit();
                                     DebugLog("music end, split");
+                                    
                                 }
                             }
                         }
@@ -236,7 +256,7 @@ namespace rabi_splitter_WPF
                                 }
 
                             }
-                            if (mainContext.MiruDe)
+                            if (mainContext.MiruDe && mapid==8)
                             {
                                 foreach (var boss in mainContext.lastbosslist)
                                 {
@@ -319,32 +339,22 @@ namespace rabi_splitter_WPF
                 if (mainContext.DebugArea)
                 {
                     int ptr = MemoryHelper.GetMemoryValue<int>(process, StaticData.EnenyPtrAddr[mainContext.veridx]);
-//                    List<int> bosses = new List<int>();
-//                    List<int> HPS = new List<int>();
-                    debugContext.BossList.Clear();
+                    //                    List<int> bosses = new List<int>();
+                    //                    List<int> HPS = new List<int>();
+//                    this.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => debugContext.BossList.Clear()));
 //                    ptr += StaticData.EnenyEntitySize[mainContext.veridx] * 3;
                     for (var i = 0; i < 50; i++)
                     {
                         ptr += StaticData.EnenyEntitySize[mainContext.veridx];
-
-                        debugContext.BossList.Add(new BossData()
-                        {
-                            BossIdx = i,
-                            BossID = MemoryHelper.GetMemoryValue<int>(process,
-                            ptr + StaticData.EnenyEnitiyIDOffset[mainContext.veridx], false),
-                            BossHP = MemoryHelper.GetMemoryValue<int>(process,
-                            ptr + StaticData.EnenyEnitiyHPOffset[mainContext.veridx], false)
-                        });  
-                       
+                        debugContext.BossList[i].BossID = MemoryHelper.GetMemoryValue<int>(process,
+                            ptr + StaticData.EnenyEnitiyIDOffset[mainContext.veridx], false);
+                        debugContext.BossList[i].BossHP = MemoryHelper.GetMemoryValue<int>(process,
+                            ptr + StaticData.EnenyEnitiyHPOffset[mainContext.veridx], false);
 
 
-//                        this.Invoke(new Action(() =>
-//                        {
-//                            t1.Text = string.Join("\n", bosses);
-//                            t2.Text = string.Join("\n", HPS);
-//                        }));
 
                     }
+                   
                 }
                 debugContext.BossEvent = mainContext.bossbattle;
             }
@@ -415,11 +425,21 @@ namespace rabi_splitter_WPF
             debugContext=new DebugContext();
             this.DataContext = mainContext;
             DebugPanel.DataContext = debugContext;
+            this.Grid.ItemsSource = debugContext.BossList;
+            BossEventDebug.DataContext = debugContext;
             memoryThread = new Thread(() =>
             {
                 while (true)
                 {
-                    ReadMemory();
+                    try
+                    {
+                        ReadMemory();
+                    }
+                    catch (Exception e)
+                    {
+                        DebugLog(e.ToString());
+                    }
+                   
                     Thread.Sleep(1000 / 60);
                 }
 
@@ -452,6 +472,20 @@ namespace rabi_splitter_WPF
         private void TextBlock_MouseUp(object sender, MouseButtonEventArgs e)
         {
             Process.Start("https://github.com/copyliu/rabiribi_splitter");
+        }
+
+        private void CheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var s = sender as TextBox;
+            if (s != null)
+            {
+                s.ScrollToEnd();
+            }
         }
     }
 }

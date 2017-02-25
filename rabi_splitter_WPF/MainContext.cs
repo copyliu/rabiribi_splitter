@@ -10,10 +10,42 @@ namespace rabi_splitter_WPF
 {
     public class BossData:INotifyPropertyChanged
     {
+        private int _bossIdx;
+        private int _bossId;
+        private int _bossHp;
 
-        public int BossIdx { get; set; }
-        public int BossID { get; set; }
-        public int BossHP { get; set; }
+        public int BossIdx
+        {
+            get { return _bossIdx; }
+            set
+            {
+                if (value == _bossIdx) return;
+                _bossIdx = value;
+                OnPropertyChanged(nameof(BossIdx));
+            }
+        }
+
+        public int BossID
+        {
+            get { return _bossId; }
+            set
+            {
+                if (value == _bossId) return;
+                _bossId = value;
+                OnPropertyChanged(nameof(BossID));
+            }
+        }
+
+        public int BossHP
+        {
+            get { return _bossHp; }
+            set
+            {
+                if (value == _bossHp) return;
+                _bossHp = value;
+                OnPropertyChanged(nameof(BossHP));
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -30,6 +62,18 @@ namespace rabi_splitter_WPF
         private string _debugLog;
 
         public ObservableCollection<BossData> BossList = new ObservableCollection<BossData>();
+
+        public DebugContext()
+        {
+            BossList=new ObservableCollection<BossData>();
+            for (int i = 0; i < 50; i++)
+            {
+                BossList.Add(new BossData()
+                {
+                    BossIdx = i
+                });
+            }
+        }
 
         public bool BossEvent
         {
@@ -78,6 +122,17 @@ namespace rabi_splitter_WPF
         private string _gameVer;
         private string _gameMusic;
         private bool _igt;
+
+        public bool Noah1Reload
+        {
+            get { return _noah1Reload; }
+            set
+            {
+                if (value == _noah1Reload) return;
+                _noah1Reload = value;
+                OnPropertyChanged(nameof(Noah1Reload));
+            }
+        }
 
         public bool MusicStart
         {
@@ -233,6 +288,7 @@ namespace rabi_splitter_WPF
         public int lastnoah3hp;
         public int lastTM;
         public DateTime LastTMAddTime;
+        private bool _noah1Reload;
 
         public MainContext()
         {
@@ -247,6 +303,7 @@ namespace rabi_splitter_WPF
             this.DebugArea = false;
             this.ServerPort = 16834;
             this.Igt = true;
+            this.Noah1Reload = false;
 
 
         }

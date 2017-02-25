@@ -4,13 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:rabi_splitter_WPF"
-        mc:Ignorable="d"
-        Title="Irisu is watching you" d:DataContext="{d:DesignData local:MainContext}" SizeToContent="WidthAndHeight">
+        mc:Ignorable="d" SizeToContent="Width"
+        Title="Irisu is watching you" d:DataContext="{d:DesignData local:MainContext}"  d:DesignWidth="835.476" Height="391.628">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Window.Resources>
     <DockPanel>
-        <StackPanel Orientation="Horizontal" Margin="5" DockPanel.Dock="Top">
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <TextBlock Text="v0.3" Margin="0,0,30,0" VerticalAlignment="Top" />
+            <TextBlock Text="GitHub" MouseUp="TextBlock_MouseUp" Cursor="Hand" Foreground="Blue" TextDecorations="Underline" VerticalAlignment="Top"   />
+        </StackPanel>
+        <DockPanel Margin="5" DockPanel.Dock="Top">
             <StackPanel Margin="0,0,100,0">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,3">
                     <TextBlock TextWrapping="Wrap" Text="LiveSplit Server Port" VerticalAlignment="Center" FontSize="16" Margin="0,0,10,0"/>
@@ -24,37 +28,38 @@
                 <TextBlock TextWrapping="Wrap" Text="{Binding GameMusic}" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4"/>
                 <CheckBox Content="Split when BOSS music STARTS" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding MusicStart, Mode=TwoWay}"/>
                 <CheckBox Content="Split when BOSS music ENDS" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding MusicEnd, Mode=TwoWay}"/>
-                <CheckBox Content="Split when the computer is found" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding Computer,Mode=TwoWay}"/>
-                <CheckBox Content="Split when Miru despawns" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding MiruDe,Mode=TwoWay}"/>
-                <CheckBox Content="Ignore the Side Chapter" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding SideCh,Mode=TwoWay}"/>
-                <CheckBox Content="Ignore the next &quot;SUDDEN DEATH&quot; (Ignore Alius I)" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding AliusI,Mode=TwoWay}" IsEnabled="False"/>
-                <CheckBox Content="Split when Town Member +2 or Nixie despawns" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding Tm2,Mode=TwoWay}"/>
-                <CheckBox Content="Ignore Irisu Phase 1" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding Irisu1,Mode=TwoWay}"/>
-                <CheckBox Content="Track In-Game Time" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding Igt,Mode=TwoWay}"/>
-                <CheckBox Content="Show debug area" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding DebugArea,Mode=TwoWay}"/>
+                <CheckBox Content="Split when the computer is found" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding Computer, Mode=TwoWay}"/>
+                <CheckBox Content="Split when Miru despawns" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding MiruDe, Mode=TwoWay}"/>
+                <CheckBox Content="Ignore the Side Chapter" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding SideCh, Mode=TwoWay}"/>
+                <CheckBox Content="Ignore the next &quot;SUDDEN DEATH&quot; (Ignore Alius I)" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding AliusI, Mode=TwoWay}" IsEnabled="False"/>
+                <CheckBox Content="Ignore the &quot;M.R.&quot; (Reload on Noah 1)" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding Noah1Reload, Mode=TwoWay}" IsEnabled="False"/>
+                <CheckBox Content="Split when Town Member +2 or Nixie despawns" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding Tm2, Mode=TwoWay}"/>
+                <CheckBox Content="Ignore Irisu Phase 1" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding Irisu1, Mode=TwoWay}"/>
+                <CheckBox Content="Track In-Game Time" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding Igt, Mode=TwoWay}"/>
+                <CheckBox Content="Show debug area" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding DebugArea, Mode=TwoWay}"/>
             </StackPanel>
-            <StackPanel Visibility="{Binding DebugArea, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}" >
-                <DockPanel x:Name="DebugPanel" LastChildFill="True" d:DataContext="{d:DesignData local:DebugContext}">
-                    <TextBlock TextWrapping="Wrap" Text="debug area" DockPanel.Dock="Top"/>
-                    <CheckBox IsEnabled="False" Content="(DEBUG)BOSS event tracked" FontSize="15" Margin="0,0,0,4" VerticalAlignment="Top" HorizontalAlignment="Left" DockPanel.Dock="Top" IsChecked="{Binding BossEvent,Mode=TwoWay}"/>
-                    <DataGrid ItemsSource="{Binding BossList}" CanUserAddRows="False"  IsReadOnly="True" AutoGenerateColumns="False"  SelectionUnit="FullRow"  DockPanel.Dock="Top"  
-                               d:DataContext="{d:DesignData local:BossData}">
+            <DockPanel Visibility="{Binding DebugArea, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}" >
+                <TextBlock TextWrapping="Wrap" Text="debug area" Height="15.24" Width="352.251" DockPanel.Dock="Top"/>
+                <CheckBox x:Name="BossEventDebug" IsEnabled="False" Content="(DEBUG)BOSS event tracked" FontSize="15" VerticalAlignment="Top" HorizontalAlignment="Left" IsChecked="{Binding BossEvent, Mode=TwoWay}" DockPanel.Dock="Top"/>
+                <Grid x:Name="DebugPanel" d:DataContext="{d:DesignData local:DebugContext}" DockPanel.Dock="Top">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <DataGrid  x:Name="Grid" ItemsSource="{Binding BossList}" CanUserAddRows="False"  IsReadOnly="True" AutoGenerateColumns="False"  SelectionUnit="FullRow"  
+                        d:DataContext="{d:DesignData local:BossData}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding BossIdx}" ClipboardContentBinding="{Binding BossIdx}" Header="Index"/>
                             <DataGridTextColumn Binding="{Binding BossID}" ClipboardContentBinding="{Binding BossID}" Header="Entity ID"/>
                             <DataGridTextColumn Binding="{Binding BossHP}" ClipboardContentBinding="{Binding BossHP}" Header="HP"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <TextBox TextWrapping="Wrap" Text="{Binding DebugLog,Mode=TwoWay}" DockPanel.Dock="Bottom" MinHeight="203"/>
-                </DockPanel>
-            </StackPanel>
+                    <TextBox TextWrapping="Wrap" Text="{Binding DebugLog, Mode=TwoWay}"  Grid.Row="1" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" TextChanged="TextBox_TextChanged" VerticalScrollBarVisibility="Visible"/>
+                </Grid>
+            </DockPanel>
 
-        </StackPanel>
-        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
-            <TextBlock Text="v0.3" Margin="0,0,30,0" ></TextBlock>
-            <TextBlock Text="GitHub" MouseUp="TextBlock_MouseUp" Cursor="Hand" Foreground="Blue" TextDecorations="Underline"   ></TextBlock>
-        </StackPanel>
+        </DockPanel>
     </DockPanel>
-  
+
 </Window>
 
