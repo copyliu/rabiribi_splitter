@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26206.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rabiribi_splitter", "rabiribi_splitter\rabiribi_splitter.csproj", "{1933C91E-7300-42A1-A0C5-2D54B95C5BBB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rabi_splitter_WPF", "rabi_splitter_WPF\rabi_splitter_WPF.csproj", "{7BEE24D8-8C97-41A3-9F90-6C60D450C3C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{1933C91E-7300-42A1-A0C5-2D54B95C5BBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1933C91E-7300-42A1-A0C5-2D54B95C5BBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1933C91E-7300-42A1-A0C5-2D54B95C5BBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BEE24D8-8C97-41A3-9F90-6C60D450C3C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BEE24D8-8C97-41A3-9F90-6C60D450C3C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BEE24D8-8C97-41A3-9F90-6C60D450C3C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BEE24D8-8C97-41A3-9F90-6C60D450C3C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
