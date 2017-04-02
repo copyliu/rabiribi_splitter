@@ -4,10 +4,33 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Windows.Data;
 using rabi_splitter_WPF.Annotations;
 
 namespace rabi_splitter_WPF
 {
+    [ValueConversion(typeof(bool), typeof(bool))]
+    public class InverseBooleanConverter : IValueConverter
+    {
+        #region IValueConverter Members
+
+        public object Convert(object value, Type targetType, object parameter,
+            System.Globalization.CultureInfo culture)
+        {
+            if (targetType != typeof(bool))
+                throw new InvalidOperationException("The target must be a boolean");
+
+            return !(bool)value;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter,
+            System.Globalization.CultureInfo culture)
+        {
+            throw new NotSupportedException();
+        }
+
+        #endregion
+    }
     public class BossData:INotifyPropertyChanged
     {
         private int _bossIdx;
@@ -122,7 +145,7 @@ namespace rabi_splitter_WPF
         private string _gameVer;
         private string _gameMusic;
         private bool _igt;
-
+        public bool _autoReset;
         public bool Noah1Reload
         {
             get { return _noah1Reload; }
@@ -277,6 +300,18 @@ namespace rabi_splitter_WPF
             }
         }
 
+        public bool AutoReset
+        {
+            get { return _autoReset; }
+            set
+            {
+                if (value == _autoReset) return;
+                _autoReset = value;
+                OnPropertyChanged(nameof(AutoReset));
+
+            }
+        }
+
 
         public string oldtitle;
         public int veridx;
@@ -304,6 +339,7 @@ namespace rabi_splitter_WPF
             this.ServerPort = 16834;
             this.Igt = true;
             this.Noah1Reload = false;
+            this.AutoReset = true;
 
 
         }

@@ -5,13 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:rabi_splitter_WPF"
         mc:Ignorable="d" SizeToContent="Width"
-        Title="Irisu is watching you" d:DataContext="{d:DesignData local:MainContext}"  d:DesignWidth="835.476" Height="391.628">
+        Title="Irisu is watching you" d:DataContext="{d:DesignData local:MainContext}"  d:DesignWidth="835.476" Height="403.069">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <local:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
     </Window.Resources>
     <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <TextBlock Text="v0.3" Margin="0,0,30,0" VerticalAlignment="Top" />
+            <TextBlock Text="v0.3.1" Margin="0,0,30,0" VerticalAlignment="Top" />
             <TextBlock Text="GitHub" MouseUp="TextBlock_MouseUp" Cursor="Hand" Foreground="Blue" TextDecorations="Underline" VerticalAlignment="Top"   />
         </StackPanel>
         <DockPanel Margin="5" DockPanel.Dock="Top">
@@ -31,11 +32,12 @@
                 <CheckBox Content="Split when the computer is found" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding Computer, Mode=TwoWay}"/>
                 <CheckBox Content="Split when Miru despawns" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding MiruDe, Mode=TwoWay}"/>
                 <CheckBox Content="Ignore the Side Chapter" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding SideCh, Mode=TwoWay}"/>
-                <CheckBox Content="Ignore the next &quot;SUDDEN DEATH&quot; (Ignore Alius I)" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding AliusI, Mode=TwoWay}" IsEnabled="False"/>
-                <CheckBox Content="Ignore the &quot;M.R.&quot; (Reload on Noah 1)" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding Noah1Reload, Mode=TwoWay}" IsEnabled="False"/>
+                <CheckBox Content="Ignore the next &quot;SUDDEN DEATH&quot; (Ignore Alius I)" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding AliusI, Mode=TwoWay}" IsEnabled="{Binding AutoReset, Converter={StaticResource InverseBooleanConverter},Mode=TwoWay}" />
+                <CheckBox Content="Ignore the &quot;M.R.&quot; (Reload on Noah 1)" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding Noah1Reload, Mode=TwoWay}" IsEnabled="{Binding AutoReset, Converter={StaticResource InverseBooleanConverter},Mode=TwoWay}"/>
                 <CheckBox Content="Split when Town Member +2 or Nixie despawns" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding Tm2, Mode=TwoWay}"/>
                 <CheckBox Content="Ignore Irisu Phase 1" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding Irisu1, Mode=TwoWay}"/>
                 <CheckBox Content="Track In-Game Time" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding Igt, Mode=TwoWay}"/>
+                <CheckBox Content="Reset timer when returning to title screen" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding AutoReset, Mode=TwoWay}"/>
                 <CheckBox Content="Show debug area" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding DebugArea, Mode=TwoWay}"/>
             </StackPanel>
             <DockPanel Visibility="{Binding DebugArea, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}" >

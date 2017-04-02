@@ -80,11 +80,6 @@ namespace rabi_splitter_WPF
                 {
                     sendigt((float)igt / 60);
                 }
-                if (igt > 0 && igt < 3600)
-                {
-                    mainContext.AliusI = true;
-                    mainContext.Noah1Reload = false;
-                }
 
                 #endregion
 
@@ -128,90 +123,101 @@ namespace rabi_splitter_WPF
                         DebugLog("new music:" + musicid + ":" + StaticData.MusicNames[musicid]);
                         mainContext.GameMusic = StaticData.MusicNames[musicid];
 
-                        var bossmusicflag = StaticData.BossMusics.Contains(musicid);
-                        if (bossmusicflag)
+                        if ((musicid == 45 || musicid == 46 || musicid == 53) && mainContext.AutoReset)
                         {
-                            if (mainContext.bossbattle)
-                            {
-                                if (mainContext.Noah1Reload && (mainContext.lastmusicid == 52 || musicid == 52))
-                                {
-                                    DebugLog("noah 1 reload? ignore");
-                                }
-                                else
-                                {
-                                    if (mainContext.MusicStart || mainContext.MusicEnd)
-                                    {
-                                        sendsplit();
-                                        DebugLog("new boss music, split");
-                                       
-                                    }
-                                    if (musicid == 37)
-                                    {
-                                        mainContext.Noah1Reload = true;
-                                        DebugLog("noah1 music start, ignore MR forever");
-                                    }
-                                }
-
-                                mainContext.lastmusicid = musicid;
-                                return;
-                            }
+                            //reset
+                            sendreset();
+                            mainContext.AliusI = true;
+                            mainContext.Noah1Reload = false;
                         }
-                        if (!mainContext.bossbattle)
+
+                        else
                         {
-
-                            if (musicid == 54 && mainContext.AliusI)
+                            var bossmusicflag = StaticData.BossMusics.Contains(musicid);
+                            if (bossmusicflag)
                             {
-                                mainContext.bossbattle = false;
-                                mainContext.AliusI = false;
-                                DebugLog("Alius music, ignore once");
-                               
-                            }
-                            else if (musicid == 42 && mapid == 1 && mainContext.Irisu1)
-                            {
-                                mainContext.bossbattle = false;
-                                DebugLog("Irisu P1, ignore");
-                                
-                            }
-                            else
-                            {
-                                if (bossmusicflag)
+                                if (mainContext.bossbattle)
                                 {
-                                    if (mapid == 5 && musicid == 44 && mainContext.SideCh)
+                                    if (mainContext.Noah1Reload && (mainContext.lastmusicid == 52 || musicid == 52))
                                     {
-                                        mainContext.bossbattle = false;
-                                        DebugLog("sidechapter, ignore");
-
+                                        DebugLog("noah 1 reload? ignore");
                                     }
                                     else
                                     {
-                                        mainContext.bossbattle = true;
-                                        mainContext.lastbosslist = new List<int>();
-                                        mainContext.lastnoah3hp = -1;
+                                        if (mainContext.MusicStart || mainContext.MusicEnd)
+                                        {
+                                            sendsplit();
+                                            DebugLog("new boss music, split");
+
+                                        }
                                         if (musicid == 37)
                                         {
                                             mainContext.Noah1Reload = true;
                                             DebugLog("noah1 music start, ignore MR forever");
                                         }
-                                        if (mainContext.MusicStart)
+                                    }
+
+                                    mainContext.lastmusicid = musicid;
+                                    return;
+                                }
+                            }
+                            if (!mainContext.bossbattle)
+                            {
+
+                                if (musicid == 54 && mainContext.AliusI)
+                                {
+                                    mainContext.bossbattle = false;
+                                    mainContext.AliusI = false;
+                                    DebugLog("Alius music, ignore once");
+
+                                }
+                                else if (musicid == 42 && mapid == 1 && mainContext.Irisu1)
+                                {
+                                    mainContext.bossbattle = false;
+                                    DebugLog("Irisu P1, ignore");
+
+                                }
+                                else
+                                {
+                                    if (bossmusicflag)
+                                    {
+                                        if (mapid == 5 && musicid == 44 && mainContext.SideCh)
                                         {
-                                            sendsplit();
-                                            DebugLog("music start, split");
-                                            
+                                            mainContext.bossbattle = false;
+                                            DebugLog("sidechapter, ignore");
+
+                                        }
+                                        else
+                                        {
+                                            mainContext.bossbattle = true;
+                                            mainContext.lastbosslist = new List<int>();
+                                            mainContext.lastnoah3hp = -1;
+                                            if (musicid == 37)
+                                            {
+                                                mainContext.Noah1Reload = true;
+                                                DebugLog("noah1 music start, ignore MR forever");
+                                            }
+                                            if (mainContext.MusicStart)
+                                            {
+                                                sendsplit();
+                                                DebugLog("music start, split");
+
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
-                        else
-                        {
-                            if (!bossmusicflag) //boss music end!
+                            else
                             {
-                                mainContext.bossbattle = false;
-                                if (mainContext.MusicEnd)
+                                if (!bossmusicflag) //boss music end!
                                 {
-                                    sendsplit();
-                                    DebugLog("music end, split");
-                                    
+                                    mainContext.bossbattle = false;
+                                    if (mainContext.MusicEnd)
+                                    {
+                                        sendsplit();
+                                        DebugLog("music end, split");
+
+                                    }
                                 }
                             }
                         }
@@ -391,6 +397,22 @@ namespace rabi_splitter_WPF
             }
         }
 
+        private void sendreset()
+        {
+            if (tcpclient != null && tcpclient.Connected)
+            {
+                try
+                {
+                    var b = Encoding.UTF8.GetBytes("reset\r\n");
+                    networkStream.Write(b, 0, b.Length);
+                }
+                catch (Exception)
+                {
+
+                    disconnect();
+                }
+            }
+        }
         private void sendigt(float time)
         {
             if (tcpclient != null && tcpclient.Connected)
