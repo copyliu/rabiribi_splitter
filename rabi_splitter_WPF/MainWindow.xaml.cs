@@ -125,10 +125,12 @@ namespace rabi_splitter_WPF
 
                         if ((musicid == 45 || musicid == 46 || musicid == 53) && mainContext.AutoReset)
                         {
+                            DebugLog("Title music, reset");
                             //reset
                             sendreset();
                             mainContext.AliusI = true;
                             mainContext.Noah1Reload = false;
+                            mainContext.bossbattle = false;
                         }
 
                         else
