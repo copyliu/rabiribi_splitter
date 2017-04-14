@@ -98,32 +98,15 @@ namespace rabi_splitter_WPF
                 #region Detect Start Game
 
                 {
-                    int blackness = MemoryHelper.GetMemoryValue<int>(process, StaticData.BlacknessAddr[mainContext.veridx]); // blackness
-                    if (blackness == 0)
+                    int blackness = MemoryHelper.GetMemoryValue<int>(process, StaticData.BlacknessAddr[mainContext.veridx]);
+                    if (mainContext.previousBlackness == 0 && blackness >= 100000)
                     {
-                        if (!mainContext.readyToStartGame)
-                        {
-                            mainContext.readyToStartGame = true;
-                        }
+                        // Sudden increase by 100000
+                        // Have to be careful, though. I don't know whether anything else causes blackness to increase by 100000
+                        if (mainContext.AutoStart) sendstarttimer();
+                        DebugLog("Start Game!");
                     }
-                    else if (blackness >= 100000)
-                    {
-                        if (mainContext.readyToStartGame)
-                        {
-                            // suddent jump to 100000.
-                            mainContext.readyToStartGame = false;
-                            if (mainContext.AutoStart) sendstarttimer();
-                            DebugLog("Start Game!");
-                        }
-                    }
-                    else // 0 < blackness < 100000
-                    {
-                        if (mainContext.readyToStartGame)
-                        {
-                            // disarm ready trigger.
-                            mainContext.readyToStartGame = false;
-                        }
-                    }
+                    mainContext.previousBlackness = blackness;
                 }
 
                 #endregion

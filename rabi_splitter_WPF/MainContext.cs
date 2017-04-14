@@ -336,7 +336,7 @@ namespace rabi_splitter_WPF
             }
         }
 
-        public bool readyToStartGame = false;
+        public int previousBlackness = -1;
         public string oldtitle;
         public int veridx;
         public int lastmoney;
