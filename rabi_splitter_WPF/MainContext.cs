@@ -140,6 +140,7 @@ namespace rabi_splitter_WPF
         private bool _aliusI;
         private bool _tm2;
         private bool _irisu1;
+        private bool _dontSplitOnReload;
         private bool _debugArea;
         private int _serverPort;
         private string _gameVer;
@@ -245,6 +246,17 @@ namespace rabi_splitter_WPF
             }
         }
 
+        public bool DontSplitOnReload
+        {
+            get { return _dontSplitOnReload; }
+            set
+            {
+                if (value == _dontSplitOnReload) return;
+                _dontSplitOnReload = value;
+                OnPropertyChanged(nameof(DontSplitOnReload));
+            }
+        }
+
         public bool DebugArea
         {
             get { return _debugArea; }
@@ -318,6 +330,7 @@ namespace rabi_splitter_WPF
         public int lastmoney;
         public int lastmapid;
         public int lastmusicid;
+        public int lastplaytime = 0;
         public bool bossbattle;
         public List<int> lastbosslist;
         public int lastnoah3hp;
@@ -335,6 +348,7 @@ namespace rabi_splitter_WPF
             this.AliusI = true;
             this.Tm2 = true;
             this.Irisu1 = true;
+            this.DontSplitOnReload = false;
             this.DebugArea = false;
             this.ServerPort = 16834;
             this.Igt = true;

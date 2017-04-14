@@ -83,6 +83,18 @@ namespace rabi_splitter_WPF
 
                 #endregion
 
+                #region Detect Reload
+
+                bool reloaded = false;
+                {
+                    int playtime = MemoryHelper.GetMemoryValue<int>(process, StaticData.PlaytimeAddr[mainContext.veridx]);
+                    reloaded = playtime != 0 && playtime < mainContext.lastplaytime;
+                    if (reloaded) DebugLog("Reload Game!");
+                    mainContext.lastplaytime = playtime;
+                }
+
+                #endregion
+                
                 #region CheckMoney
 
                 if (mainContext.Computer)
@@ -216,8 +228,8 @@ namespace rabi_splitter_WPF
                                     mainContext.bossbattle = false;
                                     if (mainContext.MusicEnd)
                                     {
-                                        sendsplit();
-                                        DebugLog("music end, split");
+                                        if (!mainContext.DontSplitOnReload || !reloaded) sendsplit();
+                                        DebugLog(reloaded ? "music end, don't split (reload)" : "music end, split");
 
                                     }
                                 }
