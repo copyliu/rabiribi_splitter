@@ -94,7 +94,40 @@ namespace rabi_splitter_WPF
                 }
 
                 #endregion
-                
+
+                #region Detect Start Game
+
+                {
+                    int blackness = MemoryHelper.GetMemoryValue<int>(process, StaticData.BlacknessAddr[mainContext.veridx]); // blackness
+                    if (blackness == 0)
+                    {
+                        if (!mainContext.readyToStartGame)
+                        {
+                            mainContext.readyToStartGame = true;
+                        }
+                    }
+                    else if (blackness >= 100000)
+                    {
+                        if (mainContext.readyToStartGame)
+                        {
+                            // suddent jump to 100000.
+                            mainContext.readyToStartGame = false;
+                            if (mainContext.AutoStart) sendstarttimer();
+                            DebugLog("Start Game!");
+                        }
+                    }
+                    else // 0 < blackness < 100000
+                    {
+                        if (mainContext.readyToStartGame)
+                        {
+                            // disarm ready trigger.
+                            mainContext.readyToStartGame = false;
+                        }
+                    }
+                }
+
+                #endregion
+
                 #region CheckMoney
 
                 if (mainContext.Computer)
@@ -396,44 +429,31 @@ namespace rabi_splitter_WPF
 
         private void sendsplit()
         {
-            if (tcpclient != null && tcpclient.Connected)
-            {
-                try
-                {
-                    var b = Encoding.UTF8.GetBytes("split\r\n");
-                    networkStream.Write(b, 0, b.Length);
-                }
-                catch (Exception)
-                {
-
-                    disconnect();
-                }
-            }
+            SendMessage("split\r\n");
         }
 
         private void sendreset()
         {
-            if (tcpclient != null && tcpclient.Connected)
-            {
-                try
-                {
-                    var b = Encoding.UTF8.GetBytes("reset\r\n");
-                    networkStream.Write(b, 0, b.Length);
-                }
-                catch (Exception)
-                {
-
-                    disconnect();
-                }
-            }
+            SendMessage("reset\r\n");
         }
+
+        private void sendstarttimer()
+        {
+            SendMessage("starttimer\r\n");
+        }
+
         private void sendigt(float time)
+        {
+            SendMessage($"setgametime {time}\r\n");
+        }
+
+        private void SendMessage(string message)
         {
             if (tcpclient != null && tcpclient.Connected)
             {
                 try
                 {
-                    var b = Encoding.UTF8.GetBytes($"setgametime {time}\r\n");
+                    var b = Encoding.UTF8.GetBytes(message);
                     networkStream.Write(b, 0, b.Length);
                 }
                 catch (Exception)

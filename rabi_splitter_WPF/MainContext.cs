@@ -147,6 +147,7 @@ namespace rabi_splitter_WPF
         private string _gameMusic;
         private bool _igt;
         public bool _autoReset;
+        public bool _autoStart;
         public bool Noah1Reload
         {
             get { return _noah1Reload; }
@@ -312,6 +313,17 @@ namespace rabi_splitter_WPF
             }
         }
 
+        public bool AutoStart
+        {
+            get { return _autoStart; }
+            set
+            {
+                if (value == _autoStart) return;
+                _autoStart = value;
+                OnPropertyChanged(nameof(AutoStart));
+            }
+        }
+
         public bool AutoReset
         {
             get { return _autoReset; }
@@ -324,7 +336,7 @@ namespace rabi_splitter_WPF
             }
         }
 
-
+        public bool readyToStartGame = false;
         public string oldtitle;
         public int veridx;
         public int lastmoney;
@@ -353,6 +365,7 @@ namespace rabi_splitter_WPF
             this.ServerPort = 16834;
             this.Igt = true;
             this.Noah1Reload = false;
+            this.AutoStart = false;
             this.AutoReset = true;
 
 
