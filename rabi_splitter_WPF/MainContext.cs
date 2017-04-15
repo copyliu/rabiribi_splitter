@@ -148,6 +148,46 @@ namespace rabi_splitter_WPF
         private bool _igt;
         public bool _autoReset;
         public bool _autoStart;
+
+        public string BOSSTimer
+        {
+            get
+            {
+                if (LastBossStart == null) return "N/A";
+                else
+                {
+                    var dt = DateTime.Now;
+                    if (LastBossEnd.HasValue && LastBossStart.Value<LastBossEnd.Value)
+                    {
+                        dt = LastBossEnd.Value;
+                    }
+                    var ts = dt- LastBossStart.Value;
+                    return ts.ToString(@"mm\:ss\.f");
+                }
+                
+            }
+        }
+
+        public string RoutingTimer
+        {
+            get
+            {
+                if (LastBossEnd == null) return "N/A";
+                else
+                {
+                    var dt = DateTime.Now;
+                    if (LastBossStart.HasValue && LastBossStart.Value > LastBossEnd.Value)
+                    {
+                        dt = LastBossStart.Value;
+                    }
+                    var ts = dt - LastBossEnd.Value;
+                    return ts.ToString(@"mm\:ss\.f");
+                }
+            }
+        }
+
+        public DateTime? LastBossStart;
+        public DateTime? LastBossEnd;
         public bool Noah1Reload
         {
             get { return _noah1Reload; }
@@ -348,6 +388,26 @@ namespace rabi_splitter_WPF
             }
         }
 
+        public bool Bossbattle
+        {
+            get { return bossbattle; }
+            set
+            {
+                if (value == bossbattle) return;
+                bossbattle = value;
+                if (value)
+                {
+                    this.LastBossStart = DateTime.Now;
+                }
+                else
+                {
+                    this.LastBossEnd=DateTime.Now;
+                }
+               
+               
+            }
+        }
+
         public int previousBlackness = -1;
         public string oldtitle;
         public int veridx;
@@ -355,7 +415,7 @@ namespace rabi_splitter_WPF
         public int lastmapid;
         public int lastmusicid;
         public int lastplaytime = 0;
-        public bool bossbattle;
+        private bool bossbattle;
         public List<int> lastbosslist;
         public int lastnoah3hp;
         public int lastTM;
@@ -382,6 +442,12 @@ namespace rabi_splitter_WPF
             this.ForceAlius1 = false;
 
 
+        }
+
+        public void NotifyTimer()
+        {
+            OnPropertyChanged(nameof(BOSSTimer));
+            OnPropertyChanged(nameof(RoutingTimer));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

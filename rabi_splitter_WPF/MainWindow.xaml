@@ -26,7 +26,12 @@
                     <TextBlock TextWrapping="Wrap" Text="Rabi-Ribi Status:" FontSize="16"/>
                     <TextBlock TextWrapping="Wrap" Text="{Binding GameVer}" FontSize="16"/>
                 </StackPanel>
-                <TextBlock TextWrapping="Wrap" Text="{Binding GameMusic}" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,3">
+                    <TextBlock TextWrapping="Wrap" Text="Practice Timer:" FontSize="16"/>
+                    <TextBlock TextWrapping="Wrap" Text="{Binding BOSSTimer}" FontSize="16"/>
+                    <TextBlock TextWrapping="Wrap" Text="/" FontSize="16" Margin="10,0"/>
+                    <TextBlock TextWrapping="Wrap" Text="{Binding RoutingTimer}" FontSize="16"/>
+                </StackPanel>
                 <CheckBox Content="Split when BOSS music STARTS" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding MusicStart, Mode=TwoWay}"/>
                 <CheckBox Content="Split when BOSS music ENDS" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding MusicEnd, Mode=TwoWay}"/>
                 <CheckBox Content="Split when the computer is found" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding Computer, Mode=TwoWay}"/>
@@ -45,6 +50,7 @@
             <DockPanel Visibility="{Binding DebugArea, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}" >
                 <TextBlock TextWrapping="Wrap" Text="debug area" Height="15.24" Width="352.251" DockPanel.Dock="Top"/>
                 <CheckBox x:Name="BossEventDebug" IsEnabled="False" Content="(DEBUG)BOSS event tracked" FontSize="15" VerticalAlignment="Top" HorizontalAlignment="Left" IsChecked="{Binding BossEvent, Mode=TwoWay}" DockPanel.Dock="Top"/>
+                <TextBlock TextWrapping="Wrap" Text="{Binding GameMusic}" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" DockPanel.Dock="Top"/>
                 <Grid x:Name="DebugPanel" d:DataContext="{d:DesignData local:DebugContext}" DockPanel.Dock="Top">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"/>

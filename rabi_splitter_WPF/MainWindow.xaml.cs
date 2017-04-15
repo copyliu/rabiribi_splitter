@@ -141,6 +141,7 @@ namespace rabi_splitter_WPF
                         // Have to be careful, though. I don't know whether anything else causes blackness to increase by 100000
                         if (mainContext.AutoStart) sendstarttimer();
                         DebugLog("Start Game!");
+                        mainContext.LastBossEnd=DateTime.Now;
                     }
                     mainContext.previousBlackness = blackness;
                 }
@@ -162,7 +163,9 @@ namespace rabi_splitter_WPF
                             sendreset();
                             mainContext.Alius1 = true;
                             mainContext.Noah1Reload = false;
-                            mainContext.bossbattle = false;
+                            mainContext.Bossbattle = false;
+                            mainContext.LastBossEnd = null;
+                            mainContext.LastBossStart = null;
                         }
 
                         else
@@ -170,7 +173,7 @@ namespace rabi_splitter_WPF
                             var bossmusicflag = StaticData.BossMusics.Contains(musicid);
                             if (bossmusicflag)
                             {
-                                if (mainContext.bossbattle)
+                                if (mainContext.Bossbattle)
                                 {
                                     if (mainContext.Noah1Reload && (mainContext.lastmusicid == 52 || musicid == 52))
                                     {
@@ -195,19 +198,19 @@ namespace rabi_splitter_WPF
                                     return;
                                 }
                             }
-                            if (!mainContext.bossbattle)
+                            if (!mainContext.Bossbattle)
                             {
 
                                 if (musicid == 54 && mainContext.Alius1 && !mainContext.ForceAlius1)
                                 {
-                                    mainContext.bossbattle = false;
+                                    mainContext.Bossbattle = false;
                                     mainContext.Alius1 = false;
                                     DebugLog("Alius music, ignore once");
 
                                 }
                                 else if (musicid == 42 && mapid == 1 && mainContext.Irisu1)
                                 {
-                                    mainContext.bossbattle = false;
+                                    mainContext.Bossbattle = false;
                                     DebugLog("Irisu P1, ignore");
 
                                 }
@@ -217,13 +220,13 @@ namespace rabi_splitter_WPF
                                     {
                                         if (mapid == 5 && musicid == 44 && mainContext.SideCh)
                                         {
-                                            mainContext.bossbattle = false;
+                                            mainContext.Bossbattle = false;
                                             DebugLog("sidechapter, ignore");
 
                                         }
                                         else
                                         {
-                                            mainContext.bossbattle = true;
+                                            mainContext.Bossbattle = true;
                                             mainContext.lastbosslist = new List<int>();
                                             mainContext.lastnoah3hp = -1;
                                             if (musicid == 37)
@@ -245,7 +248,7 @@ namespace rabi_splitter_WPF
                             {
                                 if (!bossmusicflag) //boss music end!
                                 {
-                                    mainContext.bossbattle = false;
+                                    mainContext.Bossbattle = false;
                                     if (mainContext.MusicEnd)
                                     {
                                         if (!mainContext.DontSplitOnReload || !reloaded) sendsplit();
@@ -268,7 +271,7 @@ namespace rabi_splitter_WPF
 
                 #region SpecialBOSS
 
-                if (mainContext.bossbattle)
+                if (mainContext.Bossbattle)
                 {
                     if (mainContext.MiruDe || false)//todo noah3 option
                     {
@@ -307,7 +310,7 @@ namespace rabi_splitter_WPF
                                         {
                                             sendsplit();
                                             DebugLog("miru despawn, split");
-                                            mainContext.bossbattle = false;
+                                            mainContext.Bossbattle = false;
 
                                         }
                                     }
@@ -335,7 +338,7 @@ namespace rabi_splitter_WPF
                                         {
                                             sendsplit();
                                             DebugLog("nixie despawn, split");
-                                            mainContext.bossbattle = false;
+                                            mainContext.Bossbattle = false;
                                             f = false;
                                             break;
                                         }
@@ -349,7 +352,7 @@ namespace rabi_splitter_WPF
                                     if (DateTime.Now - mainContext.LastTMAddTime < TimeSpan.FromSeconds(1))
                                     {
                                         var d = DateTime.Now - mainContext.LastTMAddTime;
-                                        mainContext.bossbattle = false;
+                                        mainContext.Bossbattle = false;
                                         sendsplit();
                                         DebugLog("TM+2 in " + d.TotalMilliseconds + " ms, split");
                                     }
@@ -357,7 +360,7 @@ namespace rabi_splitter_WPF
                                 }
                                 else if (newTM - mainContext.lastTM == 2 && f)//for 1.65-1.70
                                 {
-                                    mainContext.bossbattle = false;
+                                    mainContext.Bossbattle = false;
                                     sendsplit();
                                     DebugLog("TM+2, split");
                                 }
@@ -396,7 +399,7 @@ namespace rabi_splitter_WPF
                     }
                    
                 }
-                debugContext.BossEvent = mainContext.bossbattle;
+                debugContext.BossEvent = mainContext.Bossbattle;
             }
             else
             {
@@ -407,6 +410,7 @@ namespace rabi_splitter_WPF
                 mainContext.GameMusic = "N/A";
 
             }
+            mainContext.NotifyTimer();
         }
 
         private void DebugLog(string log)
