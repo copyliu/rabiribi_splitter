@@ -95,21 +95,6 @@ namespace rabi_splitter_WPF
 
                 #endregion
 
-                #region Detect Start Game
-
-                {
-                    int blackness = MemoryHelper.GetMemoryValue<int>(process, StaticData.BlacknessAddr[mainContext.veridx]);
-                    if (mainContext.previousBlackness == 0 && blackness >= 100000)
-                    {
-                        // Sudden increase by 100000
-                        // Have to be careful, though. I don't know whether anything else causes blackness to increase by 100000
-                        if (mainContext.AutoStart) sendstarttimer();
-                        DebugLog("Start Game!");
-                    }
-                    mainContext.previousBlackness = blackness;
-                }
-
-                #endregion
 
                 #region CheckMoney
 
@@ -144,6 +129,25 @@ namespace rabi_splitter_WPF
 
                 int musicaddr = StaticData.MusicAddr[mainContext.veridx];
                 int musicid = MemoryHelper.GetMemoryValue<int>(process, musicaddr);
+
+
+                #region Detect Start Game
+
+                if (musicid == 53){
+                    int blackness = MemoryHelper.GetMemoryValue<int>(process, StaticData.BlacknessAddr[mainContext.veridx]);
+                    if (mainContext.previousBlackness == 0 && blackness >= 100000)
+                    {
+                        // Sudden increase by 100000
+                        // Have to be careful, though. I don't know whether anything else causes blackness to increase by 100000
+                        if (mainContext.AutoStart) sendstarttimer();
+                        DebugLog("Start Game!");
+                    }
+                    mainContext.previousBlackness = blackness;
+                }
+
+                #endregion
+
+
                 if (musicid > 0 && musicid < StaticData.MusicNames.Length)
                 {
                     if (mainContext.lastmusicid != musicid)
@@ -156,7 +160,7 @@ namespace rabi_splitter_WPF
                             DebugLog("Title music, reset");
                             //reset
                             sendreset();
-                            mainContext.AliusI = true;
+                            mainContext.Alius1 = true;
                             mainContext.Noah1Reload = false;
                             mainContext.bossbattle = false;
                         }
@@ -194,10 +198,10 @@ namespace rabi_splitter_WPF
                             if (!mainContext.bossbattle)
                             {
 
-                                if (musicid == 54 && mainContext.AliusI)
+                                if (musicid == 54 && mainContext.Alius1 && !mainContext.ForceAlius1)
                                 {
                                     mainContext.bossbattle = false;
-                                    mainContext.AliusI = false;
+                                    mainContext.Alius1 = false;
                                     DebugLog("Alius music, ignore once");
 
                                 }
@@ -272,21 +276,21 @@ namespace rabi_splitter_WPF
 
                         if (mapid >= 0 && mapid < StaticData.MapNames.Length)
                         {
-                            int ptr = MemoryHelper.GetMemoryValue<int>(process, StaticData.EnenyPtrAddr[mainContext.veridx]);
+                            int ptr = MemoryHelper.GetMemoryValue<int>(process, StaticData.EnemyPtrAddr[mainContext.veridx]);
                             List<int> bosses = new List<int>();
                             for (var i = 0; i < 50; i++)
                             {
-                                ptr = ptr + StaticData.EnenyEntitySize[mainContext.veridx];
+                                ptr = ptr + StaticData.EnemyEntitySize[mainContext.veridx];
 
                                 var emyid = MemoryHelper.GetMemoryValue<int>(process,
-                                    ptr + StaticData.EnenyEnitiyIDOffset[mainContext.veridx], false);
+                                    ptr + StaticData.EnemyEnitiyIDOffset[mainContext.veridx], false);
                                 if (StaticData.BossNames.ContainsKey(emyid))
                                 {
                                     bosses.Add(emyid);
                                     if (emyid == 1053)
                                     {
                                         Noah3HP = MemoryHelper.GetMemoryValue<int>(process,
-                                            ptr + StaticData.EnenyEnitiyHPOffset[mainContext.veridx], false);
+                                            ptr + StaticData.EnemyEnitiyHPOffset[mainContext.veridx], false);
                                     }
 
                                 }
@@ -374,18 +378,18 @@ namespace rabi_splitter_WPF
 
                 if (mainContext.DebugArea)
                 {
-                    int ptr = MemoryHelper.GetMemoryValue<int>(process, StaticData.EnenyPtrAddr[mainContext.veridx]);
+                    int ptr = MemoryHelper.GetMemoryValue<int>(process, StaticData.EnemyPtrAddr[mainContext.veridx]);
                     //                    List<int> bosses = new List<int>();
                     //                    List<int> HPS = new List<int>();
 //                    this.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => debugContext.BossList.Clear()));
-//                    ptr += StaticData.EnenyEntitySize[mainContext.veridx] * 3;
+//                    ptr += StaticData.EnemyEntitySize[mainContext.veridx] * 3;
                     for (var i = 0; i < 50; i++)
                     {
-                        ptr += StaticData.EnenyEntitySize[mainContext.veridx];
+                        ptr += StaticData.EnemyEntitySize[mainContext.veridx];
                         debugContext.BossList[i].BossID = MemoryHelper.GetMemoryValue<int>(process,
-                            ptr + StaticData.EnenyEnitiyIDOffset[mainContext.veridx], false);
+                            ptr + StaticData.EnemyEnitiyIDOffset[mainContext.veridx], false);
                         debugContext.BossList[i].BossHP = MemoryHelper.GetMemoryValue<int>(process,
-                            ptr + StaticData.EnenyEnitiyHPOffset[mainContext.veridx], false);
+                            ptr + StaticData.EnemyEnitiyHPOffset[mainContext.veridx], false);
 
 
 

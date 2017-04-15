@@ -137,7 +137,7 @@ namespace rabi_splitter_WPF
         private bool _computer;
         private bool _miruDe;
         private bool _sideCh;
-        private bool _aliusI;
+        private bool _alius1;
         private bool _tm2;
         private bool _irisu1;
         private bool _dontSplitOnReload;
@@ -214,14 +214,15 @@ namespace rabi_splitter_WPF
             }
         }
 
-        public bool AliusI
+        private bool _forceAlius1;
+        public bool Alius1
         {
-            get { return _aliusI; }
+            get { return _alius1; }
             set
             {
-                if (value == _aliusI) return;
-                _aliusI = value;
-                OnPropertyChanged(nameof(AliusI));
+                if (value == _alius1) return;
+                _alius1 = value;
+                OnPropertyChanged(nameof(Alius1));
             }
         }
 
@@ -336,6 +337,17 @@ namespace rabi_splitter_WPF
             }
         }
 
+        public bool ForceAlius1
+        {
+            get => _forceAlius1;
+            set
+            {
+                if (value == _forceAlius1) return;
+                _forceAlius1 = value;
+                OnPropertyChanged(nameof(ForceAlius1));
+            }
+        }
+
         public int previousBlackness = -1;
         public string oldtitle;
         public int veridx;
@@ -357,7 +369,7 @@ namespace rabi_splitter_WPF
             this.Computer = true;
             this.MiruDe = true;
             this.SideCh = true;
-            this.AliusI = true;
+            this.Alius1 = true;
             this.Tm2 = true;
             this.Irisu1 = true;
             this.DontSplitOnReload = false;
@@ -367,6 +379,7 @@ namespace rabi_splitter_WPF
             this.Noah1Reload = false;
             this.AutoStart = false;
             this.AutoReset = true;
+            this.ForceAlius1 = false;
 
 
         }
