@@ -13,6 +13,9 @@ namespace rabi_splitter_WPF
         public static extern bool ReadProcessMemory(int hProcess,
             int lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesRead);
 
+        [DllImport("kernel32", SetLastError = true)]
+        static extern bool CloseHandle(IntPtr handle);
+
         private const int PROCESS_WM_READ = 0x0010;
 
         public static T GetMemoryValue<T>(Process process, int addr,bool baseaddr=true)
@@ -57,6 +60,7 @@ namespace rabi_splitter_WPF
                        datasize, ref bytesRead);
 
             }
+            CloseHandle(processHandle);
             switch (Type.GetTypeCode(typeof(T)))
             {
 
