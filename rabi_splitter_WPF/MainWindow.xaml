@@ -12,7 +12,7 @@
     </Window.Resources>
     <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <TextBlock Text="v0.3.3" Margin="0,0,30,0" VerticalAlignment="Top" />
+            <TextBlock Text="v0.3.4" Margin="0,0,30,0" VerticalAlignment="Top" />
             <TextBlock Text="GitHub" MouseUp="TextBlock_MouseUp" Cursor="Hand" Foreground="Blue" TextDecorations="Underline" VerticalAlignment="Top"   />
         </StackPanel>
         <DockPanel Margin="5" DockPanel.Dock="Top">
