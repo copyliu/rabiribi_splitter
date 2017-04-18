@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:rabi_splitter_WPF"
         mc:Ignorable="d" SizeToContent="Width"
-        Title="Irisu is watching you" d:DataContext="{d:DesignData local:MainContext}"  d:DesignWidth="835.476" Height="449.943">
+        Title="Irisu is watching you" d:DataContext="{d:DesignData local:MainContext}"  d:DesignWidth="835.476" Height="471.176">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <local:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
@@ -13,7 +13,7 @@
     </Window.Resources>
     <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <TextBlock Text="v0.3.4" Margin="0,0,30,0" VerticalAlignment="Top" />
+            <TextBlock Text="v0.4.0" Margin="0,0,30,0" VerticalAlignment="Top" />
             <TextBlock Text="GitHub" MouseUp="TextBlock_MouseUp" Cursor="Hand" Foreground="Blue" TextDecorations="Underline" VerticalAlignment="Top"   />
         </StackPanel>
         <DockPanel Margin="5" DockPanel.Dock="Top">
@@ -30,7 +30,7 @@
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,3">
                     <TextBlock TextWrapping="Wrap" Text="Practice Timer: " FontSize="16"/>
                     <TextBlock TextWrapping="Wrap" Text="{Binding BOSSTimer}" FontSize="16"/>
-                    <TextBlock TextWrapping="Wrap" Text="/" FontSize="16" Margin="10,0"/>
+                    <TextBlock TextWrapping="Wrap" Text="|" FontSize="16" Margin="10,0"/>
                     <TextBlock TextWrapping="Wrap" Text="{Binding RoutingTimer}" FontSize="16"/>
                 </StackPanel>
                 <CheckBox Content="Practice Mode" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding PracticeMode, Mode=TwoWay}"/>
