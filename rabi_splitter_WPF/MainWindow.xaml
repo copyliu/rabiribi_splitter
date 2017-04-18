@@ -23,11 +23,11 @@
                     <Button x:Name="BtnConnect" Content="Connect" VerticalAlignment="Center" FontSize="16" Width="80" Click="BtnConnect_Click"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,3">
-                    <TextBlock TextWrapping="Wrap" Text="Rabi-Ribi Status:" FontSize="16"/>
+                    <TextBlock TextWrapping="Wrap" Text="Rabi-Ribi Status: " FontSize="16"/>
                     <TextBlock TextWrapping="Wrap" Text="{Binding GameVer}" FontSize="16"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,3">
-                    <TextBlock TextWrapping="Wrap" Text="Practice Timer:" FontSize="16"/>
+                    <TextBlock TextWrapping="Wrap" Text="Practice Timer: " FontSize="16"/>
                     <TextBlock TextWrapping="Wrap" Text="{Binding BOSSTimer}" FontSize="16"/>
                     <TextBlock TextWrapping="Wrap" Text="/" FontSize="16" Margin="10,0"/>
                     <TextBlock TextWrapping="Wrap" Text="{Binding RoutingTimer}" FontSize="16"/>

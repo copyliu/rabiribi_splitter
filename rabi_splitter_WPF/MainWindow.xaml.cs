@@ -49,7 +49,7 @@ namespace rabi_splitter_WPF
                         mainContext.veridx = Array.IndexOf(StaticData.VerNames, rabiver);
                         if (mainContext.veridx < 0)
                         {
-                            mainContext.GameVer = rabiver + " Running (not support)";
+                            mainContext.GameVer = rabiver + " Running (not supported)";
                             
                             return;
                         }
