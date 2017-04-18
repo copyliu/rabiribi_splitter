@@ -379,7 +379,7 @@ namespace rabi_splitter_WPF
 
         public bool ForceAlius1
         {
-            get => _forceAlius1;
+            get { return _forceAlius1; }
             set
             {
                 if (value == _forceAlius1) return;
@@ -415,6 +415,8 @@ namespace rabi_splitter_WPF
         public int lastmapid;
         public int lastmusicid;
         public int lastplaytime = 0;
+        public bool canReload = false; // set to true when playtime increases
+
         private bool bossbattle;
         public List<int> lastbosslist;
         public int lastnoah3hp;

@@ -84,12 +84,27 @@ namespace rabi_splitter_WPF
                 #endregion
 
                 #region Detect Reload
-
+                
                 bool reloaded = false;
                 {
+                    // When reloading, the frame numbers look like this:
+                    // Case 1: (PLAYTIME frame steps down briefly before going to 0)
+                    //         1108, 1109, 1110, 1110, 1110, 540, 0, 0, 0, 0, 0, 540, 540, 541, 542, 544,
+                    // Case 2: (PLAYTIME frame goes straight to 0)
+                    //         1108, 1109, 1110, 1110, 1110, 0, 0, 0, 0, 0, 540, 540, 541, 542, 544,
+                    // This can sometimes cause reloads to be detected twice (which is usually not a problem though, but ocd lol)
+                    // So we use a switch to "prime" the canReload flag whenever it detects the PLAYTIME increasing.
+                    // the canReload flag is unset when a reload is detected, and remains unset until PLAYTIME starts increasing again.
+
                     int playtime = MemoryHelper.GetMemoryValue<int>(process, StaticData.PlaytimeAddr[mainContext.veridx]);
-                    reloaded = playtime != 0 && playtime < mainContext.lastplaytime;
-                    if (reloaded) DebugLog("Reload Game!");
+                    reloaded = playtime < mainContext.lastplaytime;
+
+                    if (playtime > mainContext.lastplaytime) mainContext.canReload = true;
+                    if (mainContext.canReload && playtime < mainContext.lastplaytime)
+                    {
+                        DebugLog("Reload Game!");
+                        mainContext.canReload = false;
+                    }
                     mainContext.lastplaytime = playtime;
                 }
 
