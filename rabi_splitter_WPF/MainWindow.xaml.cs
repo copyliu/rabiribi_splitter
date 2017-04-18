@@ -26,12 +26,14 @@ namespace rabi_splitter_WPF
     {
         private MainContext mainContext;
         private DebugContext debugContext;
+        private PracticeModeContext practiceModeContext;
         private static TcpClient tcpclient;
         private static NetworkStream networkStream;
         private readonly Regex titleReg = new Regex(@"ver.*?(\d+\.?\d+.*)$");
         private readonly Thread memoryThread;
         private void ReadMemory()
         {
+            practiceModeContext.ResetSendTriggers();
 
             var processlist = Process.GetProcessesByName("rabiribi");
             if (processlist.Length > 0)
@@ -102,6 +104,7 @@ namespace rabi_splitter_WPF
                     if (playtime > mainContext.lastplaytime) mainContext.canReload = true;
                     if (mainContext.canReload && playtime < mainContext.lastplaytime)
                     {
+                        PracticeModeSendTrigger(SplitTrigger.Reload);
                         DebugLog("Reload Game!");
                         mainContext.canReload = false;
                     }
@@ -118,7 +121,7 @@ namespace rabi_splitter_WPF
                     var newmoney = MemoryHelper.GetMemoryValue<int>(process, StaticData.MoneyAddress[mainContext.veridx]);
                     if (newmoney - mainContext.lastmoney == 17500)
                     {
-                        sendsplit();
+                        SpeedrunSendSplit();
                         DebugLog("get 17500 en, split");
                     }
                     mainContext.lastmoney = newmoney;
@@ -129,6 +132,7 @@ namespace rabi_splitter_WPF
                 int mapid = MemoryHelper.GetMemoryValue<int>(process, StaticData.MapAddress[mainContext.veridx]);
                 if (mainContext.lastmapid != mapid)
                 {
+                    PracticeModeSendTrigger(SplitTrigger.MapChange);
                     DebugLog("newmap: " + mapid + ":" + StaticData.MapNames[mapid]);
                     mainContext.lastmapid = mapid;
                 }
@@ -154,7 +158,7 @@ namespace rabi_splitter_WPF
                     {
                         // Sudden increase by 100000
                         // Have to be careful, though. I don't know whether anything else causes blackness to increase by 100000
-                        if (mainContext.AutoStart) sendstarttimer();
+                        if (mainContext.AutoStart) SpeedrunSendStartTimer();
                         DebugLog("Start Game!");
                         mainContext.LastBossEnd=DateTime.Now;
                     }
@@ -168,6 +172,7 @@ namespace rabi_splitter_WPF
                 {
                     if (mainContext.lastmusicid != musicid)
                     {
+                        PracticeModeSendTrigger(SplitTrigger.MusicChange);
                         DebugLog("new music:" + musicid + ":" + StaticData.MusicNames[musicid]);
                         mainContext.GameMusic = StaticData.MusicNames[musicid];
 
@@ -175,7 +180,7 @@ namespace rabi_splitter_WPF
                         {
                             DebugLog("Title music, reset");
                             //reset
-                            sendreset();
+                            SpeedrunSendReset();
                             mainContext.Alius1 = true;
                             mainContext.Noah1Reload = false;
                             mainContext.Bossbattle = false;
@@ -198,7 +203,7 @@ namespace rabi_splitter_WPF
                                     {
                                         if (mainContext.MusicStart || mainContext.MusicEnd)
                                         {
-                                            sendsplit();
+                                            SpeedrunSendSplit();
                                             DebugLog("new boss music, split");
 
                                         }
@@ -241,6 +246,7 @@ namespace rabi_splitter_WPF
                                         }
                                         else
                                         {
+                                            PracticeModeSendTrigger(SplitTrigger.BossStart);
                                             mainContext.Bossbattle = true;
                                             mainContext.lastbosslist = new List<int>();
                                             mainContext.lastnoah3hp = -1;
@@ -251,7 +257,7 @@ namespace rabi_splitter_WPF
                                             }
                                             if (mainContext.MusicStart)
                                             {
-                                                sendsplit();
+                                                SpeedrunSendSplit();
                                                 DebugLog("music start, split");
 
                                             }
@@ -266,7 +272,8 @@ namespace rabi_splitter_WPF
                                     mainContext.Bossbattle = false;
                                     if (mainContext.MusicEnd)
                                     {
-                                        if (!mainContext.DontSplitOnReload || !reloaded) sendsplit();
+                                        if (!mainContext.DontSplitOnReload || !reloaded) SpeedrunSendSplit();
+                                        if (!reloaded) PracticeModeSendTrigger(SplitTrigger.BossEnd);
                                         DebugLog(reloaded ? "music end, don't split (reload)" : "music end, split");
 
                                     }
@@ -323,7 +330,7 @@ namespace rabi_splitter_WPF
                                     {
                                         if (!bosses.Contains(boss)) //despawn
                                         {
-                                            sendsplit();
+                                            SpeedrunSendSplit();
                                             DebugLog("miru despawn, split");
                                             mainContext.Bossbattle = false;
 
@@ -351,7 +358,7 @@ namespace rabi_splitter_WPF
                                     {
                                         if (!bosses.Contains(boss)) //despawn
                                         {
-                                            sendsplit();
+                                            SpeedrunSendSplit();
                                             DebugLog("nixie despawn, split");
                                             mainContext.Bossbattle = false;
                                             f = false;
@@ -368,7 +375,7 @@ namespace rabi_splitter_WPF
                                     {
                                         var d = DateTime.Now - mainContext.LastTMAddTime;
                                         mainContext.Bossbattle = false;
-                                        sendsplit();
+                                        SpeedrunSendSplit();
                                         DebugLog("TM+2 in " + d.TotalMilliseconds + " ms, split");
                                     }
                                     mainContext.LastTMAddTime = DateTime.Now;
@@ -376,7 +383,7 @@ namespace rabi_splitter_WPF
                                 else if (newTM - mainContext.lastTM == 2 && f)//for 1.65-1.70
                                 {
                                     mainContext.Bossbattle = false;
-                                    sendsplit();
+                                    SpeedrunSendSplit();
                                     DebugLog("TM+2, split");
                                 }
                                 mainContext.lastTM = newTM;
@@ -426,6 +433,7 @@ namespace rabi_splitter_WPF
 
             }
             mainContext.NotifyTimer();
+            SendPracticeModeMessages();
         }
 
         private void DebugLog(string log)
@@ -433,24 +441,47 @@ namespace rabi_splitter_WPF
             this.debugContext.DebugLog += log + "\n";
         }
 
-        private void sendsplit()
+        private void SpeedrunSendSplit()
         {
-            SendMessage("split\r\n");
+            if (!mainContext.PracticeMode) SendMessage("split\r\n");
         }
 
-        private void sendreset()
+        private void SpeedrunSendReset()
         {
-            SendMessage("reset\r\n");
+            if (!mainContext.PracticeMode) SendMessage("reset\r\n");
         }
 
-        private void sendstarttimer()
+        private void SpeedrunSendStartTimer()
         {
-            SendMessage("starttimer\r\n");
+            if (!mainContext.PracticeMode) SendMessage("starttimer\r\n");
         }
-
+        
         private void sendigt(float time)
         {
             SendMessage($"setgametime {time}\r\n");
+        }
+
+        private void PracticeModeSendTrigger(SplitTrigger trigger)
+        {
+            if (mainContext.PracticeMode) DebugLog("Practice Mode Trigger " + (trigger.ToString()));
+            practiceModeContext.SendTrigger(trigger);
+        }
+
+        private void SendPracticeModeMessages()
+        {
+            if (!mainContext.PracticeMode) return;
+            if (practiceModeContext.SendStartTimerThisFrame())
+            {
+                SendMessage("starttimer\r\n");
+            }
+            if (practiceModeContext.SendSplitTimerThisFrame())
+            {
+                SendMessage("split\r\n");
+            }
+            if (practiceModeContext.SendResetTimerThisFrame())
+            {
+                SendMessage("reset\r\n");
+            }
         }
 
         private void SendMessage(string message)
@@ -485,10 +516,12 @@ namespace rabi_splitter_WPF
             InitializeComponent();
             mainContext=new MainContext();
             debugContext=new DebugContext();
+            practiceModeContext = new PracticeModeContext();
             this.DataContext = mainContext;
             DebugPanel.DataContext = debugContext;
             this.Grid.ItemsSource = debugContext.BossList;
             BossEventDebug.DataContext = debugContext;
+            this.PracticeModePanel.DataContext = practiceModeContext;
             memoryThread = new Thread(() =>
             {
                 while (true)
