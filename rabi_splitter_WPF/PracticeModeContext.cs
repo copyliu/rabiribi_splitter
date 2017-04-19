@@ -8,7 +8,7 @@ using System.Text;
 
 namespace rabi_splitter_WPF
 {
-    enum SplitTrigger
+    public enum SplitTrigger
     {
         None,
         BossStart,
@@ -17,13 +17,11 @@ namespace rabi_splitter_WPF
         MapChange,
         MusicChange,
     }
-    
-    
-    class PracticeModeContext : INotifyPropertyChanged
+
+    public class SplitCondition : INotifyPropertyChanged
     {
-        private SplitTrigger _startTimerSetting = SplitTrigger.BossStart;
-        private SplitTrigger _splitTimerSetting = SplitTrigger.BossEnd;
-        private SplitTrigger _stopTimerSetting = SplitTrigger.Reload;
+        private SplitTrigger _triggerType;
+    
         private static readonly Dictionary<SplitTrigger, string> _splitTriggerCaptions = new Dictionary<SplitTrigger, string>()
         {
             {SplitTrigger.None, "None"},
@@ -39,37 +37,46 @@ namespace rabi_splitter_WPF
             get { return _splitTriggerCaptions; }
         }
 
-        public SplitTrigger StartTimerSetting
+        public SplitTrigger TriggerType
+        {
+            get { return _triggerType; }
+            set
+            {
+                if (value == _triggerType) return;
+                _triggerType = value;
+                OnPropertyChanged(nameof(TriggerType));
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+    
+    
+    class PracticeModeContext : INotifyPropertyChanged
+    {
+        private SplitCondition _startTimerSetting = new SplitCondition() { TriggerType = SplitTrigger.BossStart };
+        private SplitCondition _splitTimerSetting = new SplitCondition() { TriggerType = SplitTrigger.BossEnd };
+        private SplitCondition _stopTimerSetting = new SplitCondition() { TriggerType = SplitTrigger.Reload };
+
+        public SplitCondition StartTimerSetting
         {
             get { return _startTimerSetting; }
-            set
-            {
-                if (value == _startTimerSetting) return;
-                _startTimerSetting = value;
-                OnPropertyChanged(nameof(StartTimerSetting));
-            }
         }
 
-        public SplitTrigger SplitTimerSetting
+        public SplitCondition SplitTimerSetting
         {
             get { return _splitTimerSetting; }
-            set
-            {
-                if (value == _splitTimerSetting) return;
-                _splitTimerSetting = value;
-                OnPropertyChanged(nameof(SplitTimerSetting));
-            }
         }
 
-        public SplitTrigger ResetTimerSetting
+        public SplitCondition ResetTimerSetting
         {
             get { return _stopTimerSetting; }
-            set
-            {
-                if (value == _stopTimerSetting) return;
-                _stopTimerSetting = value;
-                OnPropertyChanged(nameof(ResetTimerSetting));
-            }
         }
         
         private bool _sendStart;
@@ -78,9 +85,9 @@ namespace rabi_splitter_WPF
 
         public void SendTrigger(SplitTrigger trigger)
         {
-            if (StartTimerSetting == trigger) _sendStart = true;
-            if (SplitTimerSetting == trigger) _sendSplit = true;
-            if (ResetTimerSetting == trigger) _sendReset = true;
+            if (StartTimerSetting.TriggerType == trigger) _sendStart = true;
+            if (SplitTimerSetting.TriggerType == trigger) _sendSplit = true;
+            if (ResetTimerSetting.TriggerType == trigger) _sendReset = true;
         }
 
         public void ResetSendTriggers()

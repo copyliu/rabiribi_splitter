@@ -34,7 +34,7 @@ namespace rabi_splitter_WPF
         private void ReadMemory()
         {
             practiceModeContext.ResetSendTriggers();
-
+            
             var processlist = Process.GetProcessesByName("rabiribi");
             if (processlist.Length > 0)
             {
