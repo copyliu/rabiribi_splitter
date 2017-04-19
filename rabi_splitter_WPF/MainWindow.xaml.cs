@@ -133,7 +133,7 @@ namespace rabi_splitter_WPF
                 if (mainContext.lastmapid != mapid)
                 {
                     PracticeModeSendTrigger(SplitTrigger.MapChange);
-                    DebugLog("newmap: " + mapid + ":" + StaticData.MapNames[mapid]);
+                    DebugLog("newmap: " + mapid + ":" + StaticData.GetMapName(mapid));
                     mainContext.lastmapid = mapid;
                 }
 
@@ -148,7 +148,6 @@ namespace rabi_splitter_WPF
 
                 int musicaddr = StaticData.MusicAddr[mainContext.veridx];
                 int musicid = MemoryHelper.GetMemoryValue<int>(process, musicaddr);
-
 
                 #region Detect Start Game
 
@@ -168,13 +167,13 @@ namespace rabi_splitter_WPF
                 #endregion
 
 
-                if (musicid > 0 && musicid < StaticData.MusicNames.Length)
+                if (musicid > 0)
                 {
                     if (mainContext.lastmusicid != musicid)
                     {
                         PracticeModeSendTrigger(SplitTrigger.MusicChange);
-                        DebugLog("new music:" + musicid + ":" + StaticData.MusicNames[musicid]);
-                        mainContext.GameMusic = StaticData.MusicNames[musicid];
+                        DebugLog("new music:" + musicid + ":" + StaticData.GetMusicName(musicid));
+                        mainContext.GameMusic = StaticData.GetMusicName(musicid);
 
                         if ((musicid == 45 || musicid == 46 || musicid == 53) && mainContext.AutoReset)
                         {
@@ -190,7 +189,7 @@ namespace rabi_splitter_WPF
 
                         else
                         {
-                            var bossmusicflag = StaticData.BossMusics.Contains(musicid);
+                            var bossmusicflag = StaticData.IsBossMusic(musicid);
                             if (bossmusicflag)
                             {
                                 if (mainContext.Bossbattle)
@@ -299,7 +298,7 @@ namespace rabi_splitter_WPF
                     {
                         int Noah3HP = -1;
 
-                        if (mapid >= 0 && mapid < StaticData.MapNames.Length)
+                        if (StaticData.IsValidMap(mapid))
                         {
                             int ptr = MemoryHelper.GetMemoryValue<int>(process, StaticData.EnemyPtrAddr[mainContext.veridx]);
                             List<int> bosses = new List<int>();
@@ -309,7 +308,7 @@ namespace rabi_splitter_WPF
 
                                 var emyid = MemoryHelper.GetMemoryValue<int>(process,
                                     ptr + StaticData.EnemyEnitiyIDOffset[mainContext.veridx], false);
-                                if (StaticData.BossNames.ContainsKey(emyid))
+                                if (StaticData.IsBoss(emyid))
                                 {
                                     bosses.Add(emyid);
                                     if (emyid == 1053)
