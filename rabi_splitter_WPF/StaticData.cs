@@ -4,16 +4,16 @@ namespace rabi_splitter_WPF
 {
     public static partial class StaticData
     {
-        public static IdEnumAssociation<Boss> BossList = new IdEnumAssociation<Boss>
+        public static readonly IdEnumAssociation<Boss> BossList = new IdEnumAssociation<Boss>
         {
-            {1009, Boss.Cocoa, "Cocoa"},
+            {1009, Boss.Cocoa, "Cocoa"}, // Prologue Cocoa
             {1011, Boss.Rumi, "Rumi"},
             {1012, Boss.Ashuri, "Ashuri"},
             {1013, Boss.Rita, "Rita"},
             {1014, Boss.Ribbon, "Ribbon"},
-            {1015, Boss.Cocoa2, "Cocoa2"},
-            {1016, Boss.Cicini, "Cicini"},
-            {1018, Boss.Cicini2, "Cicini2"},
+            {1015, Boss.Cocoa2, "Cocoa2"}, // Cocoa2 boss fight / in town/cutscenes
+            {1016, Boss.Cicini, "Cicini"}, // Cicini boss fight
+            {1018, Boss.Cicini2, "Cicini2"}, // Cicini in town/cutscenes
             {1020, Boss.Saya, "Saya"},
             {1021, Boss.Syaro, "Syaro"},
             {1022, Boss.Pandora, "Pandora"},
@@ -25,7 +25,7 @@ namespace rabi_splitter_WPF
             {1032, Boss.Vanilla, "Vanilla"},
             {1033, Boss.Chocolate, "Chocolate"},
             {1035, Boss.IllusionAlius, "Illusion Alius"},
-            {1036, Boss.Kotri, "Kotri"},
+            {1036, Boss.Kotri, "Kotri"}, // All three kotris
             {1037, Boss.Noah1, "Noah 1"},
             {1038, Boss.Irisu, "Irisu"},
             {1039, Boss.Miriam, "Miriam"},
@@ -33,13 +33,13 @@ namespace rabi_splitter_WPF
             {1053, Boss.Noah3, "Noah 3"},
             {1054, Boss.KekeBunny, "Keke Bunny"},
 
-            {1056, Boss.Cats, "Plurkwood Cats"},
-            {1133, Boss.BigBox, "Big Box"},
-            {1136, Boss.RainbowMaid, "Robot Maid"},
-            {1143, Boss.TreasureCrystal, "Treasure Crystal"},
+            //{1056, Boss.Cats, "Plurkwood Cats"},
+            //{1133, Boss.BigBox, "Big Box"},
+            //{1136, Boss.RainbowMaid, "Robot Maid"},
+            //{1143, Boss.TreasureCrystal, "Treasure Crystal"},
         };
 
-        public static IndexEnumAssociation<Map> MapList = new IndexEnumAssociation<Map>
+        public static readonly IndexEnumAssociation<Map> MapList = new IndexEnumAssociation<Map>
         {
             {Map.SouthernWoodland, "Southern Woodland"},
             {Map.WesternCoast, "Western Coast"},
@@ -53,7 +53,7 @@ namespace rabi_splitter_WPF
             {Map.SystemInterior, "System Interior"},
         };
 
-        public static int[][] MapBoss = new int[][]
+        public static readonly int[][] MapBoss = new int[][]
         {
             new[] {1011, 1009, 1025, 1014, 1018},
             new[] {1036, 1038, 1031, 1022, 1012},
@@ -68,7 +68,7 @@ namespace rabi_splitter_WPF
 
         };
 
-        public static IndexEnumAssociation<Music> MusicList = new IndexEnumAssociation<Music>
+        public static readonly IndexEnumAssociation<Music> MusicList = new IndexEnumAssociation<Music>
         {
             {Music.NO_MUSIC, "-NO MUSIC-"},
             {Music.ADVENTURE_STARTS_HERE, "ADVENTURE STARTS HERE"},
@@ -132,7 +132,7 @@ namespace rabi_splitter_WPF
             {Music.MISCHIEVOUS_MASQUERADE, "MISCHIEVOUS MASQUERADE"},
         };
 
-        public static Music[] BossMusics = new[]
+        public static readonly Music[] BossMusics = new[]
         {
             Music.BOUNCE_BOUNCE,
             Music.MIDSTREAM_JAM,
