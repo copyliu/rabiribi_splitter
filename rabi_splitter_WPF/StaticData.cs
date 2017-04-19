@@ -153,8 +153,8 @@ namespace rabi_splitter_WPF
 
         public static int[] MapAddress = {0xA3353C, 0xA57020, 0xA5E0AC, 0xA600AC};
         public static int[] EnemyPtrAddr = {0x00940EE0, 0x00964A1C, 0x0096BA3C, 0x0096DA3C};
-        public static int[] EnemyEnitiyHPOffset = {0x4c8, 0x4d0, 0x4d8, 0x4d8};
-        public static int[] EnemyEnitiyIDOffset = {0x4e4, 0x4ec, 0x4F4, 0x4F4};
+        public static int[] EnemyEntityHPOffset = {0x4c8, 0x4d0, 0x4d8, 0x4d8};
+        public static int[] EnemyEntityIDOffset = {0x4e4, 0x4ec, 0x4F4, 0x4F4};
         public static int[] EnemyEntitySize = {0x6F4, 0x6FC, 0x704, 0x704};
         public static int[] MaxEntityEntry = {50, 50, 50, 50};
         public static int[] MoneyAddress = {0xD3823C, 0xD5B9FC, 0xD63D2C, 0xD654CC};

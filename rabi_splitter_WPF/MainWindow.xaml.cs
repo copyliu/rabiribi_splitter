@@ -307,14 +307,14 @@ namespace rabi_splitter_WPF
                                 ptr = ptr + StaticData.EnemyEntitySize[mainContext.veridx];
 
                                 var emyid = MemoryHelper.GetMemoryValue<int>(process,
-                                    ptr + StaticData.EnemyEnitiyIDOffset[mainContext.veridx], false);
+                                    ptr + StaticData.EnemyEntityIDOffset[mainContext.veridx], false);
                                 if (StaticData.IsBoss(emyid))
                                 {
                                     bosses.Add(emyid);
                                     if (emyid == 1053)
                                     {
                                         Noah3HP = MemoryHelper.GetMemoryValue<int>(process,
-                                            ptr + StaticData.EnemyEnitiyHPOffset[mainContext.veridx], false);
+                                            ptr + StaticData.EnemyEntityHPOffset[mainContext.veridx], false);
                                     }
 
                                 }
@@ -411,9 +411,9 @@ namespace rabi_splitter_WPF
                     {
                         ptr += StaticData.EnemyEntitySize[mainContext.veridx];
                         debugContext.BossList[i].BossID = MemoryHelper.GetMemoryValue<int>(process,
-                            ptr + StaticData.EnemyEnitiyIDOffset[mainContext.veridx], false);
+                            ptr + StaticData.EnemyEntityIDOffset[mainContext.veridx], false);
                         debugContext.BossList[i].BossHP = MemoryHelper.GetMemoryValue<int>(process,
-                            ptr + StaticData.EnemyEnitiyHPOffset[mainContext.veridx], false);
+                            ptr + StaticData.EnemyEntityHPOffset[mainContext.veridx], false);
 
 
 
