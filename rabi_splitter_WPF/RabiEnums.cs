@@ -135,15 +135,6 @@ namespace rabi_splitter_WPF
         }
     }
 
-    // A set of (exp, string)
-    public class ExpDescriptions : List<Tuple<int, string, string>>
-    {
-        public void Add(int exp, string shortDescript, string description)
-        {
-            Add(new Tuple<int, string, string>(exp, shortDescript, description));
-        }
-    }
-
     public static partial class StaticData {
 
         private static readonly Dictionary<int, Boss> _getBoss;
