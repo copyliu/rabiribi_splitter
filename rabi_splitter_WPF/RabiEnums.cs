@@ -117,7 +117,7 @@ namespace rabi_splitter_WPF
         MISCHIEVOUS_MASQUERADE,
     }
 
-    // A set of (id, enum, string)
+    // A list of tuples (id, enum, string)
     public class IdEnumAssociation<EnumType> : List<Tuple<int, EnumType, string>>
     {
         public void Add(int id, EnumType value, string name)
@@ -126,7 +126,7 @@ namespace rabi_splitter_WPF
         }
     }
 
-    // A set of (enum, string)
+    // A list of tuples (enum, string)
     public class IndexEnumAssociation<EnumType> : List<Tuple<EnumType, string>>
     {
         public void Add(EnumType value, string name)
