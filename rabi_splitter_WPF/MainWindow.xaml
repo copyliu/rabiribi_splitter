@@ -34,7 +34,7 @@
                     <TextBlock TextWrapping="Wrap" Text="{Binding RoutingTimer}" FontSize="16"/>
                 </StackPanel>
                 <CheckBox Content="Practice Mode" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding PracticeMode, Mode=TwoWay}"/>
-                <StackPanel Visibility="{Binding PracticeMode, Converter={StaticResource InvertableBooleanToVisibilityConverter}, ConverterParameter=VisibleWhenTrue, FallbackValue=Visible}">
+                <StackPanel Visibility="{Binding PracticeMode, Converter={StaticResource InvertableBooleanToVisibilityConverter}, ConverterParameter=VisibleWhenTrue, FallbackValue=Collapsed}">
                     <StackPanel Name="PracticeModePanel" d:DataContext="{d:DesignData local:PracticeModeContext}">
                         <local:SplitConditionSettings VerticalAlignment="Top" Label="Start Timer When" SplitConditionObject="{Binding StartTimerSetting}"/>
                         <local:SplitConditionSettings VerticalAlignment="Top" Label="Split Timer When" SplitConditionObject="{Binding SplitTimerSetting}"/>
