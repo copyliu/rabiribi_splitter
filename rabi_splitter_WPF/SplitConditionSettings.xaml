@@ -5,9 +5,32 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:rabi_splitter_WPF"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel Name="MainPanel">
+             d:DesignHeight="60" d:DesignWidth="300">
+    <UserControl.Resources>
+        <local:SplitTriggerToVisibilityConverter x:Key="SplitTriggerToVisibilityConverter"/>
+    </UserControl.Resources>
+    <StackPanel Name="MainPanel" Width="300" Height="60">
         <TextBlock Text="{Binding Path=Label}"/>
         <ComboBox ItemsSource="{Binding SplitConditionObject.SplitTriggerCaptions}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding Path=SplitConditionObject.TriggerType, Mode=TwoWay}"/>
+        <Grid Visibility="{Binding SplitConditionObject.TriggerType, Converter={StaticResource SplitTriggerToVisibilityConverter}, ConverterParameter=MapChange, FallbackValue=Visible}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+            <ComboBox Grid.Column="0" ItemsSource="{Binding SplitConditionObject.MapCaptions}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding Path=SplitConditionObject.MapTypeFrom, Mode=TwoWay}"/>
+            <TextBlock Grid.Column="1" Text=" &#x2794; " HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <ComboBox Grid.Column="2" ItemsSource="{Binding SplitConditionObject.MapCaptions}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding Path=SplitConditionObject.MapTypeTo, Mode=TwoWay}"/>
+        </Grid>
+        <Grid Visibility="{Binding SplitConditionObject.TriggerType, Converter={StaticResource SplitTriggerToVisibilityConverter}, ConverterParameter=MusicChange, FallbackValue=Visible}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+            <ComboBox Grid.Column="0" ItemsSource="{Binding SplitConditionObject.MusicCaptions}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding Path=SplitConditionObject.MusicTypeFrom, Mode=TwoWay}"/>
+            <TextBlock Grid.Column="1" Text=" &#x2794; " HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <ComboBox Grid.Column="2" ItemsSource="{Binding SplitConditionObject.MusicCaptions}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding Path=SplitConditionObject.MusicTypeTo, Mode=TwoWay}"/>
+        </Grid>
     </StackPanel>
 </UserControl>

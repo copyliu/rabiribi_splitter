@@ -14,6 +14,27 @@ using System.Windows.Shapes;
 
 namespace rabi_splitter_WPF
 {
+    [ValueConversion(typeof(SplitTrigger), typeof(Visibility))]
+    public class SplitTriggerToVisibilityConverter : IValueConverter
+    {
+        #region IValueConverter Members
+        public object Convert(object value, Type targetType, object parameter,
+            System.Globalization.CultureInfo culture)
+        {
+            var currentValue = (SplitTrigger)value;
+            var targetValue = (SplitTrigger)Enum.Parse(typeof(SplitTrigger), (string)parameter);
+
+            return (currentValue == targetValue) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter,
+            System.Globalization.CultureInfo culture)
+        {
+            return null;
+        }
+        #endregion
+    }
+
     /// <summary>
     /// Interaction logic for SplitConditionSettings.xaml
     /// </summary>
