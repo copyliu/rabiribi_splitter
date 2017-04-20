@@ -24,7 +24,7 @@ namespace rabi_splitter_WPF
         Any,
     }
 
-    public sealed class ExtendedOptions<EnumType>
+    public struct ExtendedOptions<EnumType> where EnumType : new()
     {
         public readonly ParameterOptions option;
         public readonly EnumType value;
@@ -33,6 +33,7 @@ namespace rabi_splitter_WPF
         private ExtendedOptions(ParameterOptions option)
         {
             this.option = option;
+            value = new EnumType();
         }
 
         private ExtendedOptions(EnumType value)
@@ -80,7 +81,9 @@ namespace rabi_splitter_WPF
         private ExtendedOptions<Map> _mapTypeTo;
         private ExtendedOptions<Music> _musicTypeFrom;
         private ExtendedOptions<Music> _musicTypeTo;
-        
+
+        #region Dictionaries 
+
         private static Dictionary<ExtendedOptions<Map>, string> _mapCaptions;
         private static Dictionary<ExtendedOptions<Music>, string> _musicCaptions;
 
@@ -91,8 +94,8 @@ namespace rabi_splitter_WPF
             {SplitTrigger.BossStart, "Boss Start"},
             {SplitTrigger.BossEnd, "Boss End"},
             {SplitTrigger.Reload, "Reload"},
-            {SplitTrigger.MapChange, "Map Change (Experimental)"},
-            {SplitTrigger.MusicChange, "Music Change (Experimental)"},
+            {SplitTrigger.MapChange, "Map Change"},
+            {SplitTrigger.MusicChange, "Music Change"},
         };
 
         // Captions for Split Trigger Parameter Options
@@ -132,6 +135,63 @@ namespace rabi_splitter_WPF
             }
         }
 
+        #endregion
+
+        #region Constructors to create Trigger Conditions
+        public SplitCondition()
+        {
+            // Default values
+            _mapTypeFrom = ExtendedOptions<Map>.Option(ParameterOptions.Any);
+            _mapTypeTo = ExtendedOptions<Map>.Option(ParameterOptions.Any);
+            _musicTypeFrom = ExtendedOptions<Music>.Option(ParameterOptions.Any);
+            _musicTypeTo = ExtendedOptions<Music>.Option(ParameterOptions.Any);
+        }
+
+        public static SplitCondition Trigger(SplitTrigger triggerType)
+        {
+            return new SplitCondition() { TriggerType = triggerType };
+        }
+
+        public static SplitCondition MapChange(int oldMapId, int newMapId)
+        {
+            Map? oldMap = StaticData.GetMap(oldMapId);
+            Map? newMap = StaticData.GetMap(newMapId);
+            var oldMapExtended = oldMap.HasValue ? ExtendedOptions<Map>.Enum(oldMap.Value) : ExtendedOptions<Map>.Option(ParameterOptions.Any);
+            var newMapExtended = newMap.HasValue ? ExtendedOptions<Map>.Enum(newMap.Value) : ExtendedOptions<Map>.Option(ParameterOptions.Any);
+
+            return new SplitCondition() { TriggerType = SplitTrigger.MapChange, MapTypeFrom = oldMapExtended, MapTypeTo = newMapExtended };
+        }
+
+        public static SplitCondition MusicChange(int oldMusicId, int newMusicId)
+        {
+            Music? oldMusic = StaticData.GetMusic(oldMusicId);
+            Music? newMusic = StaticData.GetMusic(newMusicId);
+            var oldMusicExtended = oldMusic.HasValue ? ExtendedOptions<Music>.Enum(oldMusic.Value) : ExtendedOptions<Music>.Option(ParameterOptions.Any);
+            var newMusicExtended = newMusic.HasValue ? ExtendedOptions<Music>.Enum(newMusic.Value) : ExtendedOptions<Music>.Option(ParameterOptions.Any);
+
+            return new SplitCondition() { TriggerType = SplitTrigger.MusicChange, MusicTypeFrom = oldMusicExtended, MusicTypeTo = newMusicExtended };
+        }
+
+        public bool Matches(SplitCondition condition)
+        {
+            if (TriggerType != condition.TriggerType) return false;
+            if (TriggerType == SplitTrigger.MapChange)
+            {
+                if (!(MapTypeFrom.option == ParameterOptions.Any || MapTypeFrom.Equals(condition.MapTypeFrom))) return false;
+                if (!(MapTypeTo.option == ParameterOptions.Any || MapTypeTo.Equals(condition.MapTypeTo))) return false;
+            }
+            if (TriggerType == SplitTrigger.MusicChange)
+            {
+                if (!(MusicTypeFrom.option == ParameterOptions.Any || MusicTypeFrom.Equals(condition.MusicTypeFrom))) return false;
+                if (!(MusicTypeTo.option == ParameterOptions.Any || MusicTypeTo.Equals(condition.MusicTypeTo))) return false;
+            }
+            return true;
+        }
+
+        #endregion
+
+        #region Parameters
+
         public SplitTrigger TriggerType
         {
             get { return _triggerType; }
@@ -148,7 +208,7 @@ namespace rabi_splitter_WPF
             get { return _mapTypeFrom; }
             set
             {
-                if (value == _mapTypeFrom) return;
+                if (value.Equals(_mapTypeFrom)) return;
                 _mapTypeFrom = value;
                 OnPropertyChanged(nameof(MapTypeFrom));
             }
@@ -159,7 +219,7 @@ namespace rabi_splitter_WPF
             get { return _mapTypeTo; }
             set
             {
-                if (value == _mapTypeTo) return;
+                if (value.Equals(_mapTypeTo)) return;
                 _mapTypeTo = value;
                 OnPropertyChanged(nameof(MapTypeTo));
             }
@@ -170,7 +230,7 @@ namespace rabi_splitter_WPF
             get { return _musicTypeFrom; }
             set
             {
-                if (value == _musicTypeFrom) return;
+                if (value.Equals(_musicTypeFrom)) return;
                 _musicTypeFrom = value;
                 OnPropertyChanged(nameof(MusicTypeFrom));
             }
@@ -181,11 +241,13 @@ namespace rabi_splitter_WPF
             get { return _musicTypeTo; }
             set
             {
-                if (value == _musicTypeTo) return;
+                if (value.Equals(_musicTypeTo)) return;
                 _musicTypeTo = value;
                 OnPropertyChanged(nameof(MusicTypeTo));
             }
         }
+
+        #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -221,12 +283,12 @@ namespace rabi_splitter_WPF
         private bool _sendStart;
         private bool _sendSplit;
         private bool _sendReset;
-
-        public void SendTrigger(SplitTrigger trigger)
+        
+        public void SendTrigger(SplitCondition splitCondition)
         {
-            if (StartTimerSetting.TriggerType == trigger) _sendStart = true;
-            if (SplitTimerSetting.TriggerType == trigger) _sendSplit = true;
-            if (ResetTimerSetting.TriggerType == trigger) _sendReset = true;
+            if (StartTimerSetting.Matches(splitCondition)) _sendStart = true;
+            if (SplitTimerSetting.Matches(splitCondition)) _sendSplit = true;
+            if (ResetTimerSetting.Matches(splitCondition)) _sendReset = true;
         }
 
         public void ResetSendTriggers()

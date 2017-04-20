@@ -132,7 +132,7 @@ namespace rabi_splitter_WPF
                 int mapid = MemoryHelper.GetMemoryValue<int>(process, StaticData.MapAddress[mainContext.veridx]);
                 if (mainContext.lastmapid != mapid)
                 {
-                    PracticeModeSendTrigger(SplitTrigger.MapChange);
+                    PracticeModeMapChangeTrigger(mainContext.lastmapid, mapid);
                     DebugLog("newmap: " + mapid + ":" + StaticData.GetMapName(mapid));
                     mainContext.lastmapid = mapid;
                 }
@@ -171,7 +171,7 @@ namespace rabi_splitter_WPF
                 {
                     if (mainContext.lastmusicid != musicid)
                     {
-                        PracticeModeSendTrigger(SplitTrigger.MusicChange);
+                        PracticeModeMusicChangeTrigger(mainContext.lastmusicid, musicid);
                         DebugLog("new music:" + musicid + ":" + StaticData.GetMusicName(musicid));
                         mainContext.GameMusic = StaticData.GetMusicName(musicid);
 
@@ -463,7 +463,19 @@ namespace rabi_splitter_WPF
         private void PracticeModeSendTrigger(SplitTrigger trigger)
         {
             if (mainContext.PracticeMode) DebugLog("Practice Mode Trigger " + (trigger.ToString()));
-            practiceModeContext.SendTrigger(trigger);
+            practiceModeContext.SendTrigger(SplitCondition.Trigger(trigger));
+        }
+
+        private void PracticeModeMapChangeTrigger(int oldMapId, int newMapId)
+        {
+            if (mainContext.PracticeMode) DebugLog("Practice Mode Trigger Map Change " + oldMapId + " -> " + newMapId);
+            practiceModeContext.SendTrigger(SplitCondition.MapChange(oldMapId, newMapId));
+        }
+
+        private void PracticeModeMusicChangeTrigger(int oldMusicId, int newMusicId)
+        {
+            if (mainContext.PracticeMode) DebugLog("Practice Mode Trigger Music Change " + oldMusicId + " -> " + newMusicId);
+            practiceModeContext.SendTrigger(SplitCondition.MusicChange(oldMusicId, newMusicId));
         }
 
         private void SendPracticeModeMessages()
