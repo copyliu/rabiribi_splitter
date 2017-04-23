@@ -1,9 +1,11 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/8e8721pkqd4cxtnc/branch/master?svg=true)](https://ci.appveyor.com/project/copyliu/rabiribi-splitter/branch/master)
+
 rabiribi_splitter
 =========
 
 a LiveSplit auto-splitter Client for [Rabi-Ribi](http://store.steampowered.com/app/400910/).
 
-##Download
+## Download
 https://github.com/copyliu/rabiribi_splitter/releases
 
 ## Usage
@@ -21,7 +23,7 @@ and unzip to LiveSplit\Components folder
 
   ![](https://puu.sh/si2xn/2e70684da7.png)
 
-4. Connect to Server with Irisu ([Download Here](https://github.com/copyliu/rabiribi_splitter/releases)).
+4. Open the rabiribi_splitter and click "Connect".
 
 5. fun
 
