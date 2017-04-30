@@ -36,12 +36,9 @@
                 <CheckBox Content="Practice Mode" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding PracticeMode, Mode=TwoWay}"/>
                 <StackPanel Visibility="{Binding PracticeMode, Converter={StaticResource InvertableBooleanToVisibilityConverter}, ConverterParameter=VisibleWhenTrue, FallbackValue=Collapsed}">
                     <StackPanel Name="PracticeModePanel" d:DataContext="{d:DesignData local:PracticeModeContext}">
-                        <TextBlock>Start Timer When:</TextBlock>
-                        <ComboBox ItemsSource="{Binding SplitTriggerCaptions}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding Path=StartTimerSetting, Mode=TwoWay}"/>
-                        <TextBlock>Split Timer When:</TextBlock>
-                        <ComboBox ItemsSource="{Binding SplitTriggerCaptions}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding Path=SplitTimerSetting, Mode=TwoWay}"/>
-                        <TextBlock>Reset Timer When:</TextBlock>
-                        <ComboBox ItemsSource="{Binding SplitTriggerCaptions}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding Path=ResetTimerSetting, Mode=TwoWay}"/>
+                        <local:SplitConditionSettings VerticalAlignment="Top" Label="Start Timer When" SplitConditionObject="{Binding StartTimerSetting}"/>
+                        <local:SplitConditionSettings VerticalAlignment="Top" Label="Split Timer When" SplitConditionObject="{Binding SplitTimerSetting}"/>
+                        <local:SplitConditionSettings VerticalAlignment="Top" Label="Reset Timer When" SplitConditionObject="{Binding ResetTimerSetting}"/>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Visibility="{Binding PracticeMode, Converter={StaticResource InvertableBooleanToVisibilityConverter}, ConverterParameter=VisibleWhenFalse, FallbackValue=Visible}">

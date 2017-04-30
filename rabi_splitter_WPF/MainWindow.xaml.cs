@@ -34,7 +34,7 @@ namespace rabi_splitter_WPF
         private void ReadMemory()
         {
             practiceModeContext.ResetSendTriggers();
-
+            
             var processlist = Process.GetProcessesByName("rabiribi");
             if (processlist.Length > 0)
             {
@@ -132,8 +132,8 @@ namespace rabi_splitter_WPF
                 int mapid = MemoryHelper.GetMemoryValue<int>(process, StaticData.MapAddress[mainContext.veridx]);
                 if (mainContext.lastmapid != mapid)
                 {
-                    PracticeModeSendTrigger(SplitTrigger.MapChange);
-                    DebugLog("newmap: " + mapid + ":" + StaticData.MapNames[mapid]);
+                    PracticeModeMapChangeTrigger(mainContext.lastmapid, mapid);
+                    DebugLog("newmap: " + mapid + ":" + StaticData.GetMapName(mapid));
                     mainContext.lastmapid = mapid;
                 }
 
@@ -148,7 +148,6 @@ namespace rabi_splitter_WPF
 
                 int musicaddr = StaticData.MusicAddr[mainContext.veridx];
                 int musicid = MemoryHelper.GetMemoryValue<int>(process, musicaddr);
-
 
                 #region Detect Start Game
 
@@ -168,13 +167,13 @@ namespace rabi_splitter_WPF
                 #endregion
 
 
-                if (musicid > 0 && musicid < StaticData.MusicNames.Length)
+                if (musicid > 0)
                 {
                     if (mainContext.lastmusicid != musicid)
                     {
-                        PracticeModeSendTrigger(SplitTrigger.MusicChange);
-                        DebugLog("new music:" + musicid + ":" + StaticData.MusicNames[musicid]);
-                        mainContext.GameMusic = StaticData.MusicNames[musicid];
+                        PracticeModeMusicChangeTrigger(mainContext.lastmusicid, musicid);
+                        DebugLog("new music:" + musicid + ":" + StaticData.GetMusicName(musicid));
+                        mainContext.GameMusic = StaticData.GetMusicName(musicid);
 
                         if ((musicid == 45 || musicid == 46 || musicid == 53) && mainContext.AutoReset)
                         {
@@ -190,7 +189,7 @@ namespace rabi_splitter_WPF
 
                         else
                         {
-                            var bossmusicflag = StaticData.BossMusics.Contains(musicid);
+                            var bossmusicflag = StaticData.IsBossMusic(musicid);
                             if (bossmusicflag)
                             {
                                 if (mainContext.Bossbattle)
@@ -299,7 +298,7 @@ namespace rabi_splitter_WPF
                     {
                         int Noah3HP = -1;
 
-                        if (mapid >= 0 && mapid < StaticData.MapNames.Length)
+                        if (StaticData.IsValidMap(mapid))
                         {
                             int ptr = MemoryHelper.GetMemoryValue<int>(process, StaticData.EnemyPtrAddr[mainContext.veridx]);
                             List<int> bosses = new List<int>();
@@ -308,14 +307,14 @@ namespace rabi_splitter_WPF
                                 ptr = ptr + StaticData.EnemyEntitySize[mainContext.veridx];
 
                                 var emyid = MemoryHelper.GetMemoryValue<int>(process,
-                                    ptr + StaticData.EnemyEnitiyIDOffset[mainContext.veridx], false);
-                                if (StaticData.BossNames.ContainsKey(emyid))
+                                    ptr + StaticData.EnemyEntityIDOffset[mainContext.veridx], false);
+                                if (StaticData.IsBoss(emyid))
                                 {
                                     bosses.Add(emyid);
                                     if (emyid == 1053)
                                     {
                                         Noah3HP = MemoryHelper.GetMemoryValue<int>(process,
-                                            ptr + StaticData.EnemyEnitiyHPOffset[mainContext.veridx], false);
+                                            ptr + StaticData.EnemyEntityHPOffset[mainContext.veridx], false);
                                     }
 
                                 }
@@ -412,9 +411,9 @@ namespace rabi_splitter_WPF
                     {
                         ptr += StaticData.EnemyEntitySize[mainContext.veridx];
                         debugContext.BossList[i].BossID = MemoryHelper.GetMemoryValue<int>(process,
-                            ptr + StaticData.EnemyEnitiyIDOffset[mainContext.veridx], false);
+                            ptr + StaticData.EnemyEntityIDOffset[mainContext.veridx], false);
                         debugContext.BossList[i].BossHP = MemoryHelper.GetMemoryValue<int>(process,
-                            ptr + StaticData.EnemyEnitiyHPOffset[mainContext.veridx], false);
+                            ptr + StaticData.EnemyEntityHPOffset[mainContext.veridx], false);
 
 
 
@@ -464,7 +463,19 @@ namespace rabi_splitter_WPF
         private void PracticeModeSendTrigger(SplitTrigger trigger)
         {
             if (mainContext.PracticeMode) DebugLog("Practice Mode Trigger " + (trigger.ToString()));
-            practiceModeContext.SendTrigger(trigger);
+            practiceModeContext.SendTrigger(SplitCondition.Trigger(trigger));
+        }
+
+        private void PracticeModeMapChangeTrigger(int oldMapId, int newMapId)
+        {
+            if (mainContext.PracticeMode) DebugLog("Practice Mode Trigger Map Change " + oldMapId + " -> " + newMapId);
+            practiceModeContext.SendTrigger(SplitCondition.MapChange(oldMapId, newMapId));
+        }
+
+        private void PracticeModeMusicChangeTrigger(int oldMusicId, int newMusicId)
+        {
+            if (mainContext.PracticeMode) DebugLog("Practice Mode Trigger Music Change " + oldMusicId + " -> " + newMusicId);
+            practiceModeContext.SendTrigger(SplitCondition.MusicChange(oldMusicId, newMusicId));
         }
 
         private void SendPracticeModeMessages()
