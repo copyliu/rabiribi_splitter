@@ -1,5 +1,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/8e8721pkqd4cxtnc/branch/master?svg=true)](https://ci.appveyor.com/project/copyliu/rabiribi-splitter/branch/master)
 
+<a href="https://discord.gg/dDfpNAr"><img src="https://discordapp.com/assets/f8389ca1a741a115313bede9ac02e2c0.svg" height="30">Rabi-Ribi Speedrunning Discord Server</a>
+
 rabiribi_splitter
 =========
 
