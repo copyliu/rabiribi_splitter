@@ -10,9 +10,11 @@ namespace Irisu.Events
     public static class EventFirer
     {
       
-        public static List<EventBase> ComparerSnapShotAndFireEvent(MemorySnapshot? memorySnapshot, MemorySnapshot? currentsnapshot1)
+        public static List<EventBase> ComparerSnapShotAndFireEvent(MemorySnapshot? oldss, MemorySnapshot? newss)
         {
+            //TODO
            return new List<EventBase>(){new TestEvent("ping!")};
+            
         }
     }
 }

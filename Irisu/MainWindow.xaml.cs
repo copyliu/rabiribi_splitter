@@ -341,23 +341,21 @@ namespace Irisu
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly Thread memoryThread;
         MainContext mainContext=new MainContext();
-        private readonly Regex titleReg = new Regex(@"ver.*?(\d+\.?\d+.*)$");
-        private static Process rabiProcess;
-        private static MemoryHelper rabiMemoryHelper;
-        private MemorySnapshot? currentsnapshot;
-        private MemorySnapshot? oldsnapshot;
-       
-        private IObservable<EventBase> obs;
+        private readonly Regex _titleReg = new Regex(@"ver.*?(\d+\.?\d+.*)$");
+        private static Process _rabiProcess;
+        private static MemoryHelper _rabiMemoryHelper;
+        private MemorySnapshot? _currentsnapshot;
+        private MemorySnapshot? _oldsnapshot;
+
         private MemorySnapshot? ReadMemory()
         {
-            if (rabiProcess == null || rabiProcess.HasExited)
+            if (_rabiProcess == null || _rabiProcess.HasExited)
             {
-                if (rabiMemoryHelper != null)
+                if (_rabiMemoryHelper != null)
                 {
-                    rabiMemoryHelper.Dispose();
-                    rabiMemoryHelper = null;
+                    _rabiMemoryHelper.Dispose();
+                    _rabiMemoryHelper = null;
                 }
                 var processlist = Process.GetProcessesByName("rabiribi");
                 if (processlist.Length > 0)
@@ -365,11 +363,10 @@ namespace Irisu
                     Process process = processlist[0];
                     if (process.MainWindowTitle != mainContext.oldtitle)
                     {
-                        var result = titleReg.Match(process.MainWindowTitle);
-                        string rabiver;
+                        var result = _titleReg.Match(process.MainWindowTitle);
                         if (result.Success)
                         {
-                            rabiver = result.Groups[1].Value;
+                            var rabiver = result.Groups[1].Value;
                             mainContext.veridx = Array.IndexOf(StaticData.VerNames, rabiver);
                             if (mainContext.veridx < 0)
                             {
@@ -389,7 +386,7 @@ namespace Irisu
                     }
                     if (mainContext.veridx < 0)
                     {
-                        rabiProcess = null;
+                        _rabiProcess = null;
                         mainContext.oldtitle = "";
                         mainContext.GameVer = "Not Found";
                         mainContext.GameMusic = "N/A";
@@ -397,8 +394,8 @@ namespace Irisu
                     }
                     else
                     {
-                        rabiProcess = process;
-                        rabiMemoryHelper = new MemoryHelper(rabiProcess);
+                        _rabiProcess = process;
+                        _rabiMemoryHelper = new MemoryHelper(_rabiProcess);
                     }
 
                 }
@@ -406,9 +403,9 @@ namespace Irisu
               
 
             }
-            if (rabiProcess != null && !rabiProcess.HasExited)
+            if (_rabiProcess != null && !_rabiProcess.HasExited)
             {
-                return  new MemorySnapshot(rabiMemoryHelper, mainContext.veridx);
+                return  new MemorySnapshot(_rabiMemoryHelper, mainContext.veridx);
                
             }
             return null;
@@ -417,39 +414,37 @@ namespace Irisu
         public MainWindow()
         {
             InitializeComponent();
-            Console.WriteLine(2);
-            obs = Observable.Create<EventBase>(o =>
+            var obs = Observable.Create<EventBase>(o =>
             {
                 return ThreadPoolScheduler.Instance.ScheduleAsync(async (ctrl, ct) =>
                 {
                     while (!ct.IsCancellationRequested) { 
-                    currentsnapshot = ReadMemory();
-                    if (currentsnapshot == null)
-                    {
-                        oldsnapshot = null;
-                    }
-                    else if (oldsnapshot == null)
-                    {
-                        oldsnapshot = currentsnapshot;
-                    }
-                    else
-                    {
-
-                        var result = EventFirer.ComparerSnapShotAndFireEvent(oldsnapshot, currentsnapshot);
-                        foreach (var eventBase in result)
+                        _currentsnapshot = ReadMemory();
+                        if (_currentsnapshot == null)
                         {
-                            o.OnNext(eventBase);
+                            _oldsnapshot = null;
                         }
-                    }
+                        else if (_oldsnapshot == null)
+                        {
+                            _oldsnapshot = _currentsnapshot;
+                        }
+                        else
+                        {
+
+                            var result = EventFirer.ComparerSnapShotAndFireEvent(_oldsnapshot, _currentsnapshot);
+                            foreach (var eventBase in result)
+                            {
+                                o.OnNext(eventBase);
+                            }
+                        }
                    
-                    await ctrl.Sleep(TimeSpan.FromSeconds(1.0/60), ct);
+                        await ctrl.Sleep(TimeSpan.FromSeconds(1.0/60), ct);
                     }
                 });
 
 
 
             });
-            var obs2 = Observable.Interval(TimeSpan.FromSeconds(1));
             obs.Where(p=>p.EventType==EventType.Test).Select(p=>(TestEvent)p)
                 .ObserveOnDispatcher() //UI thread
                 .Subscribe (b =>
