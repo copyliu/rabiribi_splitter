@@ -327,7 +327,7 @@ namespace Irisu.Memory
             mapid = memoryHelper.GetMemoryValue<int>(StaticData.MapAddress[veridx]);
             musicid = memoryHelper.GetMemoryValue<int>(StaticData.MusicAddr[veridx]);
             money = memoryHelper.GetMemoryValue<int>(StaticData.MoneyAddress[veridx]);
-
+            #warning dont hardcode here
             carrotXp = memoryHelper.GetMemoryValue<int>(0xD654BC);
             hammerXp = memoryHelper.GetMemoryValue<int>(0xD654B4);
             ribbonXp = memoryHelper.GetMemoryValue<int>(0xD654B8);

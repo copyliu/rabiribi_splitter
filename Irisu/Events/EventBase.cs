@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Irisu.Events
 {
+  
     public enum EventType
     {
         Test,
@@ -27,7 +28,7 @@ namespace Irisu.Events
         BossReload,
     }
 
-    public class EventBase
+    public class EventBase : EventArgs
     {
         public EventType EventType;
     }
