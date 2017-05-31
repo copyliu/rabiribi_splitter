@@ -5,9 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Irisu"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        <TextBox TextWrapping="Wrap" Text="TextBox" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"  Margin="10" x:Name="Box"/>
-
-    </Grid>
+        Title="Irisu is watching you" Height="350" Width="525">
+    <Grid/>
 </Window>

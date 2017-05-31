@@ -37,40 +37,7 @@ namespace Irisu
         public MainWindow()
         {
             InitializeComponent();
-//            var obs=Observable.FromEventPattern()
-////
-//            var obs = Observable.Create<EventBase>(o =>
-//            {
-//                return ThreadPoolScheduler.Instance.ScheduleAsync(async (ctrl, ct) =>
-//                {
-//                    while (!ct.IsCancellationRequested) { 
-//                        _currentsnapshot = ReadMemory();
-//                        if (_currentsnapshot == null)
-//                        {
-//                            _oldsnapshot = null;
-//                        }
-//                        else if (_oldsnapshot == null)
-//                        {
-//                            _oldsnapshot = _currentsnapshot;
-//                        }
-//                        else
-//                        {
-//
-//                            var result = EventFirer.ComparerSnapShotAndFireEvent(_oldsnapshot, _currentsnapshot);
-//                            foreach (var eventBase in result)
-//                            {
-//                                o.OnNext(eventBase);
-//                            }
-//                        }
-//                   
-//                        await ctrl.Sleep(TimeSpan.FromSeconds(1.0/60), ct);
-//                    }
-//                });
-//
-//
-//
-//            });
-//            
+
             var gamereader = new RabiReader();
             var obs = Observable.FromEventPattern<RabiEventHandler, EventBase>(h => gamereader.GameEvent += h, h => gamereader.GameEvent -= h);
             
@@ -78,7 +45,7 @@ namespace Irisu
                 .ObserveOnDispatcher() //UI thread
                 .Subscribe (b =>
                 {
-                    this.Box.AppendText(b.Msg);
+//                    this.Box.AppendText(b.Msg);
                 });
            
         }

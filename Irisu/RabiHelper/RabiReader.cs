@@ -25,9 +25,9 @@ namespace Irisu.RabiHelper
         private MemorySnapshot? _oldsnapshot;
         private readonly Regex _titleReg = new Regex(@"ver.*?(\d+\.?\d+.*)$");
         private string _gameVer;
-        private string oldtitle;
-        private int veridx;
-        private bool busy;
+        private string _oldtitle;
+        private int _veridx;
+        private bool _busy;
         public string GameVer
         {
             get { return _gameVer; }
@@ -49,8 +49,8 @@ namespace Irisu.RabiHelper
 
         private void TimerOnElapsed(object sender, ElapsedEventArgs elapsedEventArgs)
         {
-            if (busy) return;
-            busy = true;
+            if (_busy) return;
+            _busy = true;
             try
             {
                 _currentsnapshot = ReadMemory();
@@ -64,8 +64,7 @@ namespace Irisu.RabiHelper
                 }
                 else
                 {
-
-                    var result = EventFirer.ComparerSnapShotAndFireEvent(_oldsnapshot, _currentsnapshot);
+                    var result = SnapshotWorker.ComparerSnapShotAndFireEvent(_oldsnapshot.Value, _currentsnapshot.Value);
                     foreach (var eventBase in result)
                     {
                         GameEvent?.Invoke(this,eventBase);
@@ -78,7 +77,7 @@ namespace Irisu.RabiHelper
                 // ignored
             }
 
-            busy = false;
+            _busy = false;
         }
 
         private MemorySnapshot? ReadMemory()
@@ -94,33 +93,33 @@ namespace Irisu.RabiHelper
                 if (processlist.Length > 0)
                 {
                     Process process = processlist[0];
-                    if (process.MainWindowTitle != oldtitle)
+                    if (process.MainWindowTitle != _oldtitle)
                     {
                         var result = _titleReg.Match(process.MainWindowTitle);
                         if (result.Success)
                         {
                             var rabiver = result.Groups[1].Value;
-                            veridx = Array.IndexOf(StaticData.VerNames, rabiver);
-                            if (veridx < 0)
+                            _veridx = Array.IndexOf(StaticData.VerNames, rabiver);
+                            if (_veridx < 0)
                             {
                                 GameVer = rabiver + " Running (not supported)";
                                 GameVer = rabiver + " Running";
-                                oldtitle = process.MainWindowTitle;
+                                _oldtitle = process.MainWindowTitle;
 
                             }
                         }
                         else
                         {
-                            veridx = -1;
+                            _veridx = -1;
                             GameVer = "Running (Unknown version)";
 
                         }
 
                     }
-                    if (veridx < 0)
+                    if (_veridx < 0)
                     {
                         _rabiProcess = null;
-                        oldtitle = "";
+                        _oldtitle = "";
                         GameVer = "Not Found";
 
                     }
@@ -137,7 +136,7 @@ namespace Irisu.RabiHelper
             }
             if (_rabiProcess != null && !_rabiProcess.HasExited)
             {
-                return new MemorySnapshot(_rabiMemoryHelper, veridx);
+                return new MemorySnapshot(_rabiMemoryHelper, _veridx);
 
             }
             return null;
