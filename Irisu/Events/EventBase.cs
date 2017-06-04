@@ -34,6 +34,10 @@ namespace Irisu.Events
     public class EventBase : EventArgs
     {
         public EventType EventType;
+        public override string ToString()
+        {
+            return this.EventType + "";
+        }
     }
 
     public class TestEvent : EventBase
@@ -113,9 +117,14 @@ namespace Irisu.Events
 
     public class ItemGetEvent : EventBase
     {
-        public ItemGetEvent()
+        public float Percent;
+        //todo items
+        //public HashSet<Item> AddItems;
+        public ItemGetEvent(float p)
         {
-            throw new NotImplementedException();
+            EventType=EventType.Item;
+            Percent = p;
+
         }
     }
 
@@ -156,6 +165,11 @@ namespace Irisu.Events
         {
             Event = evt;
             EventType = EventType.Special;
+        }
+
+        public override string ToString()
+        {
+            return $"Sp: {this.Event}";
         }
     }
 }

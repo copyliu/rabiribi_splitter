@@ -1,27 +1,100 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Windows.Documents;
+using Irisu.EventHelper;
 using Irisu.Memory;
 
 namespace Irisu.Events
 {
-    public enum InGameActivity
+    enum InGameActivity
     {
         STARTING,
         WALKING,
         BOSS_BATTLE,
     }
+
+    class InGameState
+    {
+        public int nRestarts;
+        public int nDeaths;
+
+        public int nDeathsAlt;
+
+        public InGameActivity currentActivity;
+        public BossFight currentBossFight;
+        public DateTime currentBossStartTime;
+
+        public BossFight lastBossFight;
+        public TimeSpan lastBossFightDuration;
+
+        public int lastNonZeroPlayTime = -1;
+
+        public InGameState()
+        {
+            currentActivity = InGameActivity.STARTING;
+            currentBossFight = null;
+            lastBossFight = null;
+        }
+
+        public bool CurrentActivityIs(InGameActivity gameActivity)
+        {
+            return currentActivity == gameActivity;
+        }
+
+        public bool IsGameStarted()
+        {
+            return !CurrentActivityIs(InGameActivity.STARTING);
+        }
+
+        public void StartBossFight(BossFight bossFight)
+        {
+            currentActivity = InGameActivity.BOSS_BATTLE;
+            currentBossStartTime = DateTime.Now;
+            currentBossFight = bossFight;
+        }
+
+        public void StopBossFight()
+        {
+            currentActivity = InGameActivity.WALKING;
+            currentBossFight = null;
+        }
+
+        public void FinishBossFight()
+        {
+            lastBossFight = currentBossFight;
+            lastBossFightDuration = (DateTime.Now - currentBossStartTime);
+            currentActivity = InGameActivity.WALKING;
+            currentBossFight = null;
+        }
+    }
+
     public static class SnapshotWorker
     {
-        public static InGameActivity CurrentActivity;
-
-        public static List<EventBase> ComparerSnapShotAndFireEvent(MemorySnapshot prevSnapshot, MemorySnapshot snapshot)
+        private  static InGameState _inGameState=new InGameState();
+        public static List<EventBase> FindEvents(MemorySnapshot prevSnapshot, MemorySnapshot snapshot)
         {
             
             List<EventBase> events=new List<EventBase>();
 
             //TODO
+
+
+            #region Detect Reload
+
+            bool reloading = snapshot.playtime == 0 || ( (snapshot.playtime < prevSnapshot.playtime));
+            if (_inGameState.IsGameStarted() && snapshot.playtime > 0)
+            {
+               
+                _inGameState.lastNonZeroPlayTime = snapshot.playtime;
+            }
+            if (reloading)
+            {
+                events.Add(new SpecialEvent(SpecialEvents.GameReload));
+            }
+
+            #endregion
 
             #region music
 
@@ -45,19 +118,42 @@ namespace Irisu.Events
             #endregion
 
 
-            #region minimap shift
+            #region minimap shift , bossevent
 
-            //todo
+
+            if ( prevSnapshot.minimapPosition != snapshot.minimapPosition)
+            {
+
+                if (snapshot.minimapPosition == 1)
+                {
+                    var bossFight = BossFightIdentifier.IdentifyBossFight(snapshot);
+                    if (bossFight.startingBosses.Count > 0)
+                    {
+                        events.Add(new BossStartEvent(bossFight.startingBosses.First()));
+                    }
+                    _inGameState.StartBossFight(bossFight);
+                }
+                else // snapshot.minimapPosition == 0
+                {
+                    if (reloading)
+                    {
+                        _inGameState.StopBossFight();
+                        events.Add(new SpecialEvent(SpecialEvents.BossReload));
+                    }
+                    else
+                    {
+                        if (_inGameState.currentBossFight.startingBosses.Count > 0)
+                        {
+                            events.Add(new BossEndEvent(_inGameState.currentBossFight.startingBosses.First()));
+                        }
+                        _inGameState.FinishBossFight();
+                    }
+                }
+            }
 
             #endregion
 
-            #region Boss
 
-            //todo boss start
-
-            //todo boss end
-
-            #endregion
 
             #region death
 
@@ -66,19 +162,31 @@ namespace Irisu.Events
             #endregion
 
             #region startgame
+            if ((snapshot.CurrentMusicIs(Music.MAIN_MENU) || snapshot.CurrentMusicIs(Music.ARTBOOK_INTRO))
+                && prevSnapshot.blackness == 0 && snapshot.blackness >= 100000)
+            {
+                // Sudden increase by 100000
 
+                events.Add(new SpecialEvent(SpecialEvents.GameStart));
+                _inGameState=new InGameState();
+            }
             //todo
 
             #endregion
 
             #region item
 
-            //todo
+            //todo all items
+            if (snapshot.itemPercent != prevSnapshot.itemPercent)
+            {
+                events.Add(new ItemGetEvent(snapshot.itemPercent));
+            }
+
 
             #endregion
 
 
-            events.Add(new TestEvent("ping!"));
+//            events.Add(new TestEvent("ping!"));
 
             return events;
            

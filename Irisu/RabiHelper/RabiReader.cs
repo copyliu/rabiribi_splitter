@@ -28,6 +28,7 @@ namespace Irisu.RabiHelper
         private string _oldtitle;
         private int _veridx;
         private bool _busy;
+        private readonly object _lock=new object();
         public string GameVer
         {
             get { return _gameVer; }
@@ -49,8 +50,11 @@ namespace Irisu.RabiHelper
 
         private void TimerOnElapsed(object sender, ElapsedEventArgs elapsedEventArgs)
         {
-            if (_busy) return;
-            _busy = true;
+            lock (_lock)
+            {
+                if (_busy) return;
+                _busy = true;
+            }
             try
             {
                 _currentsnapshot = ReadMemory();
@@ -64,17 +68,18 @@ namespace Irisu.RabiHelper
                 }
                 else
                 {
-                    var result = SnapshotWorker.ComparerSnapShotAndFireEvent(_oldsnapshot.Value, _currentsnapshot.Value);
+                    var result = SnapshotWorker.FindEvents(_oldsnapshot.Value, _currentsnapshot.Value);
                     foreach (var eventBase in result)
                     {
                         GameEvent?.Invoke(this,eventBase);
                     }
+                    _oldsnapshot = _currentsnapshot;
                 }
 
             }
-            catch
+            catch (Exception ex)
             {
-                // ignored
+                App.Logging(ex.ToString());
             }
 
             _busy = false;

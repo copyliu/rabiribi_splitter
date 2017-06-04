@@ -13,5 +13,13 @@ namespace Irisu
     /// </summary>
     public partial class App : Application
     {
+        public static void Logging(string text)
+        {
+            var window = Application.Current.MainWindow as MainWindow;
+            window?.Dispatcher.Invoke(new Action(() =>
+            {
+                window.Box.AppendText(text);
+            }));
+        }
     }
 }

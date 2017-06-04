@@ -41,11 +41,12 @@ namespace Irisu
             var gamereader = new RabiReader();
             var obs = Observable.FromEventPattern<RabiEventHandler, EventBase>(h => gamereader.GameEvent += h, h => gamereader.GameEvent -= h);
             
-            obs.Where(p=>p.EventArgs.EventType==EventType.Test).Select(p=>(TestEvent)p.EventArgs)
+            obs//.Where(p=>p.EventArgs.EventType==EventType.Test).Select(p=>(TestEvent)p.EventArgs)
                 .ObserveOnDispatcher() //UI thread
                 .Subscribe (b =>
                 {
-//                    this.Box.AppendText(b.Msg);
+                    this.Box.AppendText(b.EventArgs.ToString());
+                    this.Box.ScrollToEnd();
                 });
            
         }
