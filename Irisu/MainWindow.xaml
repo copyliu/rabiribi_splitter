@@ -5,9 +5,199 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Irisu"
         mc:Ignorable="d"
-        Title="Irisu is watching you" Height="350" Width="525">
-    <Grid>
-        <TextBox TextWrapping="Wrap" Text="TextBox" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"  Margin="10" x:Name="Box" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+        Title="Irisu is watching you" d:DesignWidth="1012" d:DesignHeight="596" >
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <TextBlock Text="v0.9" Margin="0,0,30,0" VerticalAlignment="Top" />
+            <TextBlock Text="GitHub" MouseUp="TextBlock_MouseUp" Cursor="Hand" Foreground="Blue" TextDecorations="Underline" VerticalAlignment="Top"   />
+        </StackPanel>
+        <DockPanel>
+            <StackPanel DockPanel.Dock="Left" Width="450">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,3">
+                    <TextBlock TextWrapping="Wrap" Text="LiveSplit Server Port" VerticalAlignment="Center" FontSize="16" Margin="0,0,10,0"/>
+                    <TextBox  TextWrapping="Wrap" Text="{Binding ServerPort}" VerticalAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center" FontSize="16" Padding="6,0"/>
+                    <Button x:Name="BtnConnect" Content="Connect" VerticalAlignment="Center" FontSize="16" Width="80" Click="BtnConnect_Click"/>
+                </StackPanel>
 
-    </Grid>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,3" >
+                    <TextBlock TextWrapping="Wrap" Text="Preset: " FontSize="16" />
+                    <ComboBox Width="120" SelectedIndex="0">
+                        <ComboBoxItem Content="10TM" HorizontalAlignment="Left" Width="118" />
+                        <ComboBoxItem Content="Any%" HorizontalAlignment="Left" Width="118"/>
+                    </ComboBox>
+                    <Button Content="Load" VerticalAlignment="Center" FontSize="16" Width="80"></Button>
+                    <Button Content="Save" VerticalAlignment="Center" FontSize="16" Width="80"></Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,3">
+                    <TextBlock TextWrapping="Wrap" Text="Rabi-Ribi Status: " FontSize="16"/>
+                    <TextBlock TextWrapping="Wrap" Text="{Binding GameVer}" FontSize="16"/>
+                </StackPanel>
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBlock TextWrapping="Wrap" Text="Split at boss fight " FontSize="15" Margin="0,0,0,4" />
+                        <CheckBox Content="STARTED" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" VerticalContentAlignment="Center" />
+                        <CheckBox Content="ENDED" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" VerticalContentAlignment="Center" />
+
+                    </StackPanel>
+                    <Grid >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <CheckBox Content="Cocoa" FontSize="15" VerticalContentAlignment="Center" Margin="0,0,0,4" HorizontalAlignment="Left" />
+                        <CheckBox Content="Ribbon" FontSize="15" VerticalContentAlignment="Center" Grid.Column="1" Margin="0,0,0,4" HorizontalAlignment="Left" />
+                        <CheckBox Content="BOSS" FontSize="15" VerticalContentAlignment="Center" Grid.Column="2" Margin="0,0,0,4" HorizontalAlignment="Left" />
+                        <CheckBox Content="Ribbon" FontSize="15" VerticalContentAlignment="Center" Grid.Column="1" Margin="0,0,0,4" Grid.Row="1" HorizontalAlignment="Left" />
+                        <CheckBox Content="Cocoa" FontSize="15" VerticalContentAlignment="Center" Margin="0,0,0,4" Grid.Row="1" HorizontalAlignment="Left" />
+                        <CheckBox Content="BOSS" FontSize="15" VerticalContentAlignment="Center" Grid.Column="2" Margin="0,0,0,4" Grid.Row="1" HorizontalAlignment="Left" />
+
+                        <CheckBox Content="Cocoa" FontSize="15" VerticalContentAlignment="Center" Margin="0,0,0,4" HorizontalAlignment="Left" Grid.Row="2" />
+                        <CheckBox Content="Ribbon" FontSize="15" VerticalContentAlignment="Center" Grid.Column="1" Margin="0,0,0,4" HorizontalAlignment="Left" Grid.Row="2" />
+                        <CheckBox Content="BOSS" FontSize="15" VerticalContentAlignment="Center" Grid.Column="2" Margin="0,0,0,4" HorizontalAlignment="Left" Grid.Row="2" />
+
+                        <CheckBox Content="Cocoa" FontSize="15" VerticalContentAlignment="Center" Margin="0,0,0,4" Grid.Row="3" HorizontalAlignment="Left" />
+                        <CheckBox Content="Ribbon" FontSize="15" VerticalContentAlignment="Center" Grid.Column="1" Margin="0,0,0,4" Grid.Row="3" HorizontalAlignment="Left" />
+                        <CheckBox Content="BOSS" FontSize="15" VerticalContentAlignment="Center" Grid.Column="2" Margin="0,0,0,4" Grid.Row="3" HorizontalAlignment="Left" />
+
+                        <CheckBox Content="Cocoa" FontSize="15" VerticalContentAlignment="Center" Margin="0,0,0,4" Grid.Row="4" HorizontalAlignment="Left" />
+                        <CheckBox Content="Ribbon" FontSize="15" VerticalContentAlignment="Center" Grid.Column="1" Margin="0,0,0,4" Grid.Row="4" HorizontalAlignment="Left" />
+                        <CheckBox Content="BOSS" FontSize="15" VerticalContentAlignment="Center" Grid.Column="2" Margin="0,0,0,4" Grid.Row="4" HorizontalAlignment="Left" />
+
+                    </Grid>
+                </StackPanel>
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock TextWrapping="Wrap" Text="Split by Item" FontSize="15" Margin="0,0,5,0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        
+                        <Button Content="Add a item" VerticalAlignment="Center" FontSize="15"/>
+                        <Button Content="Add Item%" VerticalAlignment="Center" FontSize="15"/>
+                    </StackPanel>
+                </StackPanel>
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Margin="0">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+
+                            <TextBlock Text="Item " VerticalAlignment="Center"/>
+                            <ComboBox VerticalAlignment="Center" SelectedIndex="0">
+                                <ComboBoxItem Content="Hammer" HorizontalAlignment="Left"/>
+                            </ComboBox>
+                            <TextBlock Text="Level " VerticalAlignment="Center"/>
+                            <TextBox Text="1" VerticalAlignment="Center"/>
+                            <Button Content="Remove"></Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+
+                            <TextBlock Text="Item " VerticalAlignment="Center"/>
+                            <ComboBox VerticalAlignment="Center">
+                                <ComboBoxItem Content="Hammer" HorizontalAlignment="Left"/>
+                            </ComboBox>
+                            <TextBlock Text="Level " VerticalAlignment="Center"/>
+                            <TextBox Text="1" VerticalAlignment="Center"/>
+                            <Button Content="Remove"></Button>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+
+                            <TextBlock Text="Item " VerticalAlignment="Center"/>
+                            <ComboBox VerticalAlignment="Center">
+                                <ComboBoxItem Content="Hammer" HorizontalAlignment="Left"/>
+                            </ComboBox>
+                            <TextBlock Text="Level " VerticalAlignment="Center"/>
+                            <TextBox Text="1" VerticalAlignment="Center"/>
+                            <Button Content="Remove"></Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+
+                            <TextBlock Text="Item " VerticalAlignment="Center"/>
+                            <ComboBox VerticalAlignment="Center">
+                                <ComboBoxItem Content="Hammer" HorizontalAlignment="Left"/>
+                            </ComboBox>
+                            <TextBlock Text="Level " VerticalAlignment="Center"/>
+                            <TextBox Text="1" VerticalAlignment="Center"/>
+                            <Button Content="Remove"></Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+
+                            <TextBlock Text="Item " VerticalAlignment="Center"/>
+                            <ComboBox VerticalAlignment="Center">
+                                <ComboBoxItem Content="Hammer" HorizontalAlignment="Left"/>
+                            </ComboBox>
+                            <TextBlock Text="Level " VerticalAlignment="Center"/>
+                            <TextBox Text="1" VerticalAlignment="Center"/>
+                            <Button Content="Remove"></Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+
+                            <TextBlock Text="Item " VerticalAlignment="Center"/>
+                            <ComboBox VerticalAlignment="Center">
+                                <ComboBoxItem Content="Hammer" HorizontalAlignment="Left"/>
+                            </ComboBox>
+                            <TextBlock Text="Level " VerticalAlignment="Center"/>
+                            <TextBox Text="1" VerticalAlignment="Center"/>
+                            <Button Content="Remove"></Button>
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="Item%" VerticalAlignment="Center"/>
+
+                            <TextBox Text="10" VerticalAlignment="Center"/>
+                            <Button Content="Remove"></Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="Item%" VerticalAlignment="Center"/>
+
+                            <TextBox Text="10" VerticalAlignment="Center"/>
+                            <Button Content="Remove"></Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="Item%" VerticalAlignment="Center"/>
+
+                            <TextBox Text="50" VerticalAlignment="Center"/>
+                            <Button Content="Remove"></Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="Item%" VerticalAlignment="Center"/>
+
+                            <TextBox Text="100" VerticalAlignment="Center"/>
+                            <Button Content="Remove"></Button>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+
+
+                <StackPanel >
+                    <TextBlock TextWrapping="Wrap" Text="Options" FontSize="15" Margin="0,0,5,0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+                    <CheckBox Content="Start timer on game start" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4"/>
+                    <CheckBox Content="Reset timer when returning to title screen" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4"/>
+
+                    <CheckBox Content="Split when the computer is found" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4"/>
+                    <CheckBox Content="Split at Miru early (Any%)" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4"/>
+
+                    <CheckBox Content="Split the Side Chapter" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4"/>
+                   <CheckBox Content="Track In-Game Time" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4"/>
+                    <CheckBox Content="Show debug area" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel DockPanel.Dock="Right">
+                <TextBox TextWrapping="Wrap" Text="TextBox" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"  Margin="0,10" x:Name="Box" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Width="497"/>
+            </StackPanel>
+        </DockPanel>
+
+
+    </DockPanel>
 </Window>
