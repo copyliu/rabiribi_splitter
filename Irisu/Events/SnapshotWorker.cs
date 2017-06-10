@@ -127,10 +127,7 @@ namespace Irisu.Events
                 if (snapshot.minimapPosition == 1)
                 {
                     var bossFight = BossFightIdentifier.IdentifyBossFight(snapshot);
-                    if (bossFight.startingBosses.Count > 0)
-                    {
-                        events.Add(new BossStartEvent(bossFight.startingBosses.First()));
-                    }
+                    events.Add(new BossStartEvent(bossFight));
                     _inGameState.StartBossFight(bossFight);
                 }
                 else // snapshot.minimapPosition == 0
@@ -142,10 +139,8 @@ namespace Irisu.Events
                     }
                     else
                     {
-                        if (_inGameState.currentBossFight.startingBosses.Count > 0)
-                        {
-                            events.Add(new BossEndEvent(_inGameState.currentBossFight.startingBosses.First()));
-                        }
+                       
+                        events.Add(new BossEndEvent(_inGameState.currentBossFight));
                         _inGameState.FinishBossFight();
                     }
                 }

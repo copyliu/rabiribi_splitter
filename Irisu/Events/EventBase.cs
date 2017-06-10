@@ -4,6 +4,7 @@ using System.Data.OleDb;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Irisu.EventHelper;
 using Irisu.Memory;
 
 namespace Irisu.Events
@@ -96,9 +97,9 @@ namespace Irisu.Events
 
     public class BossStartEvent : EventBase
     {
-        public Boss Boss;
+        public BossFight Boss;
 
-        public BossStartEvent(Boss boss)
+        public BossStartEvent(BossFight boss)
         {
             this.Boss = boss;
             EventType=EventType.BossStart;
@@ -106,9 +107,9 @@ namespace Irisu.Events
     }
     public class BossEndEvent : EventBase
     {
-        public Boss Boss;
+        public BossFight Boss;
 
-        public BossEndEvent(Boss boss)
+        public BossEndEvent(BossFight boss)
         {
             this.Boss = boss;
             EventType = EventType.BossEnd;

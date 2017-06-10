@@ -18,7 +18,7 @@ namespace Irisu
             var window = Application.Current.MainWindow as MainWindow;
             window?.Dispatcher.Invoke(new Action(() =>
             {
-                window.Box.AppendText(text);
+                window.DebugLogTb.AppendText(text);
             }));
         }
     }
