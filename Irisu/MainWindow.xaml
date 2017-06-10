@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Irisu"
         xmlns:models="clr-namespace:Irisu.Models"
         mc:Ignorable="d"
-        Title="Irisu is watching you" d:DesignWidth="1012" d:DesignHeight="802" >
+        Title="Irisu is watching you" d:DesignWidth="1012" d:DesignHeight="838.045" >
     <DockPanel Margin="5">
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
             <TextBlock Text="v0.9" Margin="0,0,30,0" VerticalAlignment="Top" />
