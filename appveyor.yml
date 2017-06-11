@@ -1,5 +1,6 @@
 configuration: Debug
 before_build: nuget restore
+image: Visual Studio 2017
 artifacts:
   - path: Irisu\bin\Debug\Irisu.exe
     name: Irisu.exe
