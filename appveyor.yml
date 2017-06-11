@@ -1,0 +1,4 @@
+configuration: Debug
+artifacts:
+  - path: Irisu\bin\Debug\Irisu.exe
+    name: Irisu.exe
