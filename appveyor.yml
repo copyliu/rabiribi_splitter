@@ -1,4 +1,5 @@
 configuration: Debug
+before_build: nuget restore
 artifacts:
   - path: Irisu\bin\Debug\Irisu.exe
     name: Irisu.exe
