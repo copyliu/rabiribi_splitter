@@ -63,33 +63,37 @@
                             <RowDefinition />
                             <RowDefinition />
                             <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
-                        <TextBlock Text="Prologue" FontSize="15"></TextBlock>
+                        <TextBlock Text="Prologue" FontSize="15"/>
                         <CheckBox Content="Cocoa" FontSize="15" VerticalContentAlignment="Center" Margin="0,0,0,4" Grid.Row="1" HorizontalAlignment="Left" IsChecked="{Binding Cocoa1,Mode=TwoWay}" />
                         <CheckBox Content="Ribbon" FontSize="15" VerticalContentAlignment="Center" Grid.Column="1" Margin="0,0,0,4" Grid.Row="1" HorizontalAlignment="Left" IsChecked="{Binding Ribbon,Mode=TwoWay}" />
 
                         <CheckBox Content="Ashuri" IsChecked="{Binding Ashuri1,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Grid.Column="2" Margin="0,0,0,4" Grid.Row="1" HorizontalAlignment="Left" />
-                        <TextBlock Text="MainGame" FontSize="15" Grid.Row="2"></TextBlock>
+                        <TextBlock Text="MainGame" FontSize="15" Grid.Row="2"/>
 
                         <CheckBox Content="Ashuri" IsChecked="{Binding Ashuri2,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Margin="0,0,0,4" Grid.Row="3" HorizontalAlignment="Left" />
                         <CheckBox Content="Cicini" IsChecked="{Binding Cicini,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Grid.Column="1" Margin="0,0,0,4" Grid.Row="3" HorizontalAlignment="Left" />
-                        <CheckBox Content="Syaro" IsChecked="{Binding Syaro,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Grid.Column="2" Margin="0,0,0,4" Grid.Row="3" HorizontalAlignment="Left" IsEnabled="False" />
+                        <CheckBox Content="Syaro" IsChecked="{Binding Syaro,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Grid.Column="2" Margin="0,0,0,4" Grid.Row="3" HorizontalAlignment="Left" />
 
-                        <CheckBox Content="Vanilla" IsChecked="{Binding Vanilla,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Margin="0,0,0,4" Grid.Row="4" HorizontalAlignment="Left" IsEnabled="False" />
-                        <CheckBox Content="Chocolate" IsChecked="{Binding Chocolate,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Grid.Column="1" Margin="0,0,0,4" Grid.Row="4" HorizontalAlignment="Left" IsEnabled="False" />
+                        <CheckBox Content="Vanilla" IsChecked="{Binding Vanilla,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Margin="0,0,0,4" Grid.Row="4" HorizontalAlignment="Left" />
+                        <CheckBox Content="Chocolate" IsChecked="{Binding Chocolate,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Grid.Column="1" Margin="0,0,0,4" Grid.Row="4" HorizontalAlignment="Left" />
                         <CheckBox Content="Cocoa" IsChecked="{Binding Cocoa2,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Grid.Column="2" Margin="0,0,0,4" Grid.Row="4" HorizontalAlignment="Left" />
 
                         <CheckBox Content="Rita" IsChecked="{Binding Rita,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Margin="0,0,0,4" Grid.Row="5" HorizontalAlignment="Left" />
-                        <CheckBox Content="Saya" IsChecked="{Binding Saya,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Grid.Column="1" Margin="0,0,0,4" Grid.Row="5" HorizontalAlignment="Left" IsEnabled="False" />
-                        <CheckBox Content="Aruraune" IsChecked="{Binding Aruraune,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Grid.Column="2" Margin="0,0,0,4" Grid.Row="5" HorizontalAlignment="Left" IsEnabled="False" />
+                        <CheckBox Content="Saya" IsChecked="{Binding Saya,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Grid.Column="1" Margin="0,0,0,4" Grid.Row="5" HorizontalAlignment="Left" />
+                        <CheckBox Content="Aruraune" IsChecked="{Binding Aruraune,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Grid.Column="2" Margin="0,0,0,4" Grid.Row="5" HorizontalAlignment="Left" />
 
-                        <CheckBox Content="Nieve" IsChecked="{Binding Nieve,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Margin="0,0,0,4" Grid.Row="6" HorizontalAlignment="Left" IsEnabled="False" />
-                        <CheckBox Content="Nixie" IsChecked="{Binding Nixie,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Grid.Column="1" Margin="0,0,0,4" Grid.Row="6" HorizontalAlignment="Left" IsEnabled="False" />
-                        <CheckBox Content="KeKe Bunny" IsChecked="{Binding Keke,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Grid.Column="2" Margin="0,0,0,4" Grid.Row="6" HorizontalAlignment="Left" IsEnabled="False" />
+                        <CheckBox Content="Nieve" IsChecked="{Binding Nieve,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Margin="0,0,0,4" Grid.Row="6" HorizontalAlignment="Left" />
+                        <CheckBox Content="Nixie" IsChecked="{Binding Nixie,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Grid.Column="1" Margin="0,0,0,4" Grid.Row="6" HorizontalAlignment="Left" />
+                        <CheckBox Content="KeKe Bunny" IsChecked="{Binding Keke,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Grid.Column="2" Margin="0,0,0,4" Grid.Row="6" HorizontalAlignment="Left" />
 
                         <CheckBox Content="Seana1" IsChecked="{Binding Seana1,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Margin="0,0,0,4" Grid.Row="7" HorizontalAlignment="Left" />
                         <CheckBox Content="Seana2" IsChecked="{Binding Seana2,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Grid.Column="1" Margin="0,0,0,4" Grid.Row="7" HorizontalAlignment="Left" />
-                        <CheckBox Content="Pandora" IsChecked="{Binding Pandora,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Grid.Column="2" Margin="0,0,0,4" Grid.Row="7" HorizontalAlignment="Left" IsEnabled="False" />
+                        <CheckBox Content="Pandora" IsChecked="{Binding Pandora,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Grid.Column="2" Margin="0,0,0,4" Grid.Row="7" HorizontalAlignment="Left" />
 
                         <CheckBox Content="Kotori[Green]" IsChecked="{Binding Kotri1,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Margin="0,0,0,4" Grid.Row="8" HorizontalAlignment="Left" />
                         <CheckBox Content="Kotori[Blue]" IsChecked="{Binding Kotri2,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Grid.Column="1" Margin="0,0,0,4" Grid.Row="8" HorizontalAlignment="Left" />
@@ -103,14 +107,20 @@
                         <CheckBox Content="Noah" IsChecked="{Binding Noah1,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Grid.Column="1" Margin="0,0,0,4" Grid.Row="10" HorizontalAlignment="Left" />
                         <CheckBox Content="???" IsChecked="{Binding Noah3,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Grid.Column="2" Margin="0,0,0,4" Grid.Row="10" HorizontalAlignment="Left" />
 
-                        <TextBlock Text="PostGame" FontSize="15" Grid.Row="11"></TextBlock>
+                        <TextBlock Text="PostGame" FontSize="15" Grid.Row="11"/>
 
 
-                        <CheckBox Content="WWWWWW" IsChecked="{Binding Www,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Margin="0,0,0,4" Grid.Row="12" HorizontalAlignment="Left" IsEnabled="False" />
-                        <CheckBox Content="Rumi" IsChecked="{Binding Rumi,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Grid.Column="1" Margin="0,0,0,4" Grid.Row="12" HorizontalAlignment="Left" IsEnabled="False" />
-                        <CheckBox Content="Miriam" IsChecked="{Binding Miriam,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Grid.Column="2" Margin="0,0,0,4" Grid.Row="12" HorizontalAlignment="Left" IsEnabled="False" />
+                        <CheckBox Content="WWWWWW" IsChecked="{Binding Www,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Margin="0,0,0,4" Grid.Row="12" HorizontalAlignment="Left" />
+                        <CheckBox Content="Rumi" IsChecked="{Binding Rumi,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Grid.Column="1" Margin="0,0,0,4" Grid.Row="12" HorizontalAlignment="Left" />
+                        <CheckBox Content="Miriam" IsChecked="{Binding Miriam,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Grid.Column="2" Margin="0,0,0,4" Grid.Row="12" HorizontalAlignment="Left" />
 
-                        <CheckBox Content="Irisu" IsChecked="{Binding Irisu,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Margin="0,0,0,4" Grid.Row="13" HorizontalAlignment="Left" IsEnabled="False" />
+                        <CheckBox Content="Irisu" IsChecked="{Binding Irisu,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Margin="0,0,0,4" Grid.Row="13" HorizontalAlignment="Left" />
+                        <TextBlock Text="DLCs" FontSize="15" Grid.Row="14"></TextBlock>
+                        <CheckBox Content="Cats"   FontSize="15" VerticalContentAlignment="Center" Margin="0,0,0,4" Grid.Row="15" HorizontalAlignment="Left" IsEnabled="False" />
+                        <CheckBox Content="Saya2"  FontSize="15" VerticalContentAlignment="Center" Grid.Column="1" Margin="0,0,0,4" Grid.Row="15" HorizontalAlignment="Left" IsEnabled="False" />
+                        <CheckBox Content="Fairies"  FontSize="15" VerticalContentAlignment="Center" Grid.Column="2" Margin="0,0,0,4" Grid.Row="15" HorizontalAlignment="Left" IsEnabled="False" />
+                        <CheckBox Content="Noah"  FontSize="15" VerticalContentAlignment="Center" Margin="0,0,0,4" Grid.Row="16" HorizontalAlignment="Left" IsEnabled="False" />
+
 
                     </Grid>
                 </StackPanel>

@@ -38,18 +38,18 @@ namespace Irisu.Models
             {
                 _enabledBosses.Add(BossFight.Cicini);
             }
-//            if (_syaro)
-//            {
-//                _enabledBosses.Add(BossFight.Syaro);
-//            }
-//            if (_vanilla)
-//            {
-//                _enabledBosses.Add(BossFight.Vanilla);
-//            }
-//            if (_chocolate)
-//            {
-//                _enabledBosses.Add(BossFight.Chocolate);
-//            }
+            if (_syaro)
+            {
+                _enabledBosses.Add(BossFight.Syaro);
+            }
+            if (_vanilla)
+            {
+                _enabledBosses.Add(BossFight.Vanilla);
+            }
+            if (_chocolate)
+            {
+                _enabledBosses.Add(BossFight.Chocolate);
+            }
             if (_cocoa2)
             {
                 _enabledBosses.Add(BossFight.Cocoa2);
@@ -58,26 +58,26 @@ namespace Irisu.Models
             {
                 _enabledBosses.Add(BossFight.Rita);
             }
-//            if (_saya)
-//            {
-//                _enabledBosses.Add(BossFight.Saya);
-//            }
-//            if (_aruraune)
-//            {
-//                _enabledBosses.Add(BossFight.Aruraune);
-//            }
-//            if (_nieve)
-//            {
-//                _enabledBosses.Add(BossFight.Nieve);
-//            }
-//            if (_nixie)
-//            {
-//                _enabledBosses.Add(BossFight.Nixie);
-//            }
-//            if (_keke)
-//            {
-//                _enabledBosses.Add(BossFight.Keke);
-//            }
+            if (_saya)
+            {
+                _enabledBosses.Add(BossFight.Saya);
+            }
+            if (_aruraune)
+            {
+                _enabledBosses.Add(BossFight.Aruraune);
+            }
+            if (_nieve)
+            {
+                _enabledBosses.Add(BossFight.Nieve);
+            }
+            if (_nixie)
+            {
+                _enabledBosses.Add(BossFight.Nixie);
+            }
+            if (_keke)
+            {
+                _enabledBosses.Add(BossFight.Keke);
+            }
             if (_seana1)
             {
                 _enabledBosses.Add(BossFight.Seana1);
@@ -86,10 +86,10 @@ namespace Irisu.Models
             {
                 _enabledBosses.Add(BossFight.Seana2);
             }
-//            if (_pandora)
-//            {
-//                _enabledBosses.Add(BossFight.Pandora);
-//            }
+            if (_pandora)
+            {
+                _enabledBosses.Add(BossFight.Pandora);
+            }
             if (_kotri1)
             {
                 _enabledBosses.Add(BossFight.Kotri1);
@@ -126,22 +126,22 @@ namespace Irisu.Models
             {
                 _enabledBosses.Add(BossFight.Noah3);
             }
-//            if (_www)
-//            {
-//                _enabledBosses.Add(BossFight.WWW);
-//            }
-//            if (_rumi)
-//            {
-//                _enabledBosses.Add(BossFight.Rumi);
-//            }
-//            if (_miriam)
-//            {
-//                _enabledBosses.Add(BossFight.Miriam);
-//            }
-//            if (_irisu)
-//            {
-//                _enabledBosses.Add(BossFight.Irisu);
-//            }
+            if (_www)
+            {
+                _enabledBosses.Add(BossFight.WWW);
+            }
+            if (_rumi)
+            {
+                _enabledBosses.Add(BossFight.Rumi);
+            }
+            if (_miriam)
+            {
+                _enabledBosses.Add(BossFight.Miriam);
+            }
+            if (_irisu)
+            {
+                _enabledBosses.Add(BossFight.Irisu);
+            }
             OnPropertyChanged(nameof(EnabledBosses));
 
         }
