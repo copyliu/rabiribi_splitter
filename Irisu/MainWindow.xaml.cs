@@ -57,7 +57,7 @@ namespace Irisu
                 DebugLog("Split: Bossend");
                 SpeedrunSendSplit();
             });
-                        obs.Where(p=>p.EventArgs.EventType!=EventType.Test)//.Select(p=>(TestEvent)p.EventArgs)
+                        obs.Where(p=>p.EventArgs.EventType!=EventType.Item || p.EventArgs.EventType != EventType.ItemPercent)//.Select(p=>(TestEvent)p.EventArgs)
                             .ObserveOnDispatcher() //UI thread
                             .Subscribe (b =>
                             {

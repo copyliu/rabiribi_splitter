@@ -17,6 +17,7 @@ namespace Irisu.Events
         BossEnd,
         Music,
         Item,
+        ItemPercent,
         Map,
         Pos,
         Chapter,
@@ -116,22 +117,31 @@ namespace Irisu.Events
         }
     }
 
-    public class ItemGetEvent : EventBase
+    public class ItemEvent : EventBase
     {
-        public float Percent;
-        //todo items
         /// <summary>
         /// New items or leveled items, value = level
         /// </summary>
-        public Dictionary<Item,byte> NewItems;
+        public Dictionary<Item, byte> NewItems;
 
         public HashSet<Badge> NewBadges;
-        public ItemGetEvent(float p)
+
+        public ItemEvent()
         {
-            EventType=EventType.Item;
+            EventType = EventType.Item;
+            NewItems = new Dictionary<Item, byte>(); //will it cause performance issues?
+            NewBadges = new HashSet<Badge>();
+        }
+    }
+    public class ItemPercentEvent : EventBase
+    {
+        public float Percent;
+
+        public ItemPercentEvent(float p)
+        {
+            EventType=EventType.ItemPercent;
             Percent = p;
-            NewItems=new Dictionary<Item, byte>(); //will it cause performance issues?
-            NewBadges=new HashSet<Badge>();
+           
         }
     }
 
