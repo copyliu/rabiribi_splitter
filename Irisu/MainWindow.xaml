@@ -97,7 +97,7 @@
 
                         <CheckBox Content="Kotori[Green]" IsChecked="{Binding Kotri1,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Margin="0,0,0,4" Grid.Row="8" HorizontalAlignment="Left" />
                         <CheckBox Content="Kotori[Blue]" IsChecked="{Binding Kotri2,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Grid.Column="1" Margin="0,0,0,4" Grid.Row="8" HorizontalAlignment="Left" />
-                        <CheckBox Content="Kotori[Red]" IsChecked="{Binding Kotri3,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Grid.Column="2" Margin="0,0,0,4" Grid.Row="8" HorizontalAlignment="Left" />
+                        <CheckBox Content="Kotori[Pink]" IsChecked="{Binding Kotri3,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Grid.Column="2" Margin="0,0,0,4" Grid.Row="8" HorizontalAlignment="Left" />
 
                         <CheckBox Content="Alius1" IsChecked="{Binding Alius1,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Margin="0,0,0,4" Grid.Row="9" HorizontalAlignment="Left" />
                         <CheckBox Content="Alius2" IsChecked="{Binding Alius2,Mode=TwoWay}" FontSize="15" VerticalContentAlignment="Center" Grid.Column="1" Margin="0,0,0,4" Grid.Row="9" HorizontalAlignment="Left" />

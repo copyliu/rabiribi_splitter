@@ -39,33 +39,39 @@ namespace Irisu
         private static TcpClient tcpclient;
         private static NetworkStream networkStream;
         private static Option option=new Option();
+
         public MainWindow()
         {
             InitializeComponent();
             this.DataContext = option;
             var gamereader = new RabiReader();
-            var obs = Observable.FromEventPattern<RabiEventHandler, EventBase>(h => gamereader.GameEvent += h, h => gamereader.GameEvent -= h);
-            obs.Where(p => p.EventArgs.EventType == EventType.BossStart && option.Bossstart).Select(p=>(BossStartEvent)p.EventArgs)
-                .Where(p=>option.EnabledBosses.Contains( p.Boss)).Subscribe(b =>
-            {
-                DebugLog("Split: Bossstart");
-                SpeedrunSendSplit();
-            });
-            obs.Where(p => p.EventArgs.EventType == EventType.BossEnd && option.Bossend).Select(p => (BossEndEvent)p.EventArgs)
+            var obs = Observable.FromEventPattern<RabiEventHandler, EventBase>(h => gamereader.GameEvent += h,
+                h => gamereader.GameEvent -= h);
+            obs.Where(p => p.EventArgs.EventType == EventType.BossStart && option.Bossstart)
+                .Select(p => (BossStartEvent) p.EventArgs)
                 .Where(p => option.EnabledBosses.Contains(p.Boss)).Subscribe(b =>
                 {
-                DebugLog("Split: Bossend");
-                SpeedrunSendSplit();
-            });
-                        obs.Where(p=>p.EventArgs.EventType!=EventType.Item || p.EventArgs.EventType != EventType.ItemPercent)//.Select(p=>(TestEvent)p.EventArgs)
-                            .ObserveOnDispatcher() //UI thread
-                            .Subscribe (b =>
-                            {
-                                DebugLog(b.EventArgs.ToString());
-                            });
+                    DebugLog("Split: Bossstart");
+                    SpeedrunSendSplit();
+                });
+            obs.Where(p => p.EventArgs.EventType == EventType.BossEnd && option.Bossend)
+                .Select(p => (BossEndEvent) p.EventArgs)
+                .Where(p => option.EnabledBosses.Contains(p.Boss)).Subscribe(b =>
+                {
+                    DebugLog("Split: Bossend");
+                    SpeedrunSendSplit();
+                });
+            obs.Where(p => p.EventArgs.EventType == EventType.Item ||
+                           p.EventArgs.EventType == EventType.ItemPercent) //.Select(p=>(TestEvent)p.EventArgs)
+                .ObserveOnDispatcher() //UI thread
+                .Subscribe(b =>
+                {
+                    DebugLog(b.EventArgs.ToString());
+                });
 
 
         }
+
         private void SpeedrunSendSplit()
         {
             SendMessage("split\r\n");
