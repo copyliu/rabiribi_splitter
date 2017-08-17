@@ -120,12 +120,18 @@ namespace Irisu.Events
     {
         public float Percent;
         //todo items
-        //public HashSet<Item> AddItems;
+        /// <summary>
+        /// New items or leveled items, value = level
+        /// </summary>
+        public Dictionary<Item,byte> NewItems;
+
+        public HashSet<Badge> NewBadges;
         public ItemGetEvent(float p)
         {
             EventType=EventType.Item;
             Percent = p;
-
+            NewItems=new Dictionary<Item, byte>(); //will it cause performance issues?
+            NewBadges=new HashSet<Badge>();
         }
     }
 

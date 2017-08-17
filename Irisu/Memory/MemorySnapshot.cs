@@ -8,6 +8,93 @@ namespace Irisu.Memory
 {
     public static partial class StaticData
     {
+        public static Dictionary<Badge,int>[] BadgeAddess=new Dictionary<Badge, int>[]
+        {
+            new Dictionary<Badge, int>(),
+            new Dictionary<Badge, int>(),
+            new Dictionary<Badge, int>(),
+            new Dictionary<Badge, int>{{Badge.Health_Plus,0xD633AC},
+                {Badge.Health_Surge,0xD633B0},
+                {Badge.Mana_Plus,0xD633B4},
+                {Badge.Mana_Surge,0xD633B8},
+                {Badge.Crisis_Boost,0xD633BC},
+                {Badge.Atk_Grow,0xD633C0},
+                {Badge.Def_Grow,0xD633C4},
+                {Badge.Atk_Trade,0xD633C8},
+                {Badge.Def_Trade,0xD633CC},
+                {Badge.Arm_Strength,0xD633D0},
+                {Badge.Carrot_Boost,0xD633D4},
+                {Badge.Weaken,0xD633D8},
+                {Badge.Self_Defense,0xD633DC},
+                {Badge.Armored,0xD633E0},
+                {Badge.Lucky_Seven,0xD633E4},
+                {Badge.Hex_Cancel,0xD633E8},
+                {Badge.Pure_Love,0xD633EC},
+                {Badge.Toxic_Strike,0xD633F0},
+                {Badge.Frame_Cancel,0xD633F4},
+                {Badge.Health_Wager,0xD633F8},
+                {Badge.Mana_Wager,0xD633FC},
+                {Badge.Stamina_Plus,0xD63400},
+                {Badge.Blessed,0xD63404},
+                {Badge.Hitbox_Down,0xD63408},
+                {Badge.Cashback,0xD6340C},
+                {Badge.Survival,0xD63410},
+                {Badge.Top_Form,0xD63414},
+                {Badge.Tough_Skin,0xD63418},
+                {Badge.Erina_Badge,0xD6341C},
+                {Badge.Ribbon_Badge,0xD63420},
+                {Badge.Auto_Trigger,0xD63424},
+                {Badge.Liliths_Gift,0xD63428},}, 
+        };
+
+        public static Dictionary<Item, int>[] ItemAddress =new Dictionary<Item, int>[]
+        {
+            new Dictionary<Item, int>(),
+            new Dictionary<Item, int>(),
+            new Dictionary<Item, int>(),
+            new Dictionary<Item, int>{{Item.Piko_Hammer,0xD632B0},
+                {Item.Air_Jump,0xD632B4},
+                {Item.Sliding_Powder,0xD632B8},
+                {Item.Carrot_Bomb,0xD632BC},
+                {Item.Hour_Glass,0xD632C0},
+                {Item.Speed_Boost,0xD632C4},
+                {Item.Auto_Earrings,0xD632C8},
+                {Item.Ribbon,0xD632CC},
+                {Item.Soul_Heart,0xD632D0},
+                {Item.Rabi_Slippers,0xD632D4},
+                {Item.Bunny_Whirl,0xD632D8},
+                {Item.Quick_Barrette,0xD632DC},
+                {Item.Book_of_Carrot,0xD632E0},
+                {Item.Chaos_Rod,0xD632E4},
+                {Item.Hammer_Wave,0xD632E8},
+                {Item.Hammer_Roll,0xD632EC},
+                {Item.Light_Orb,0xD632F0},
+                {Item.Water_Orb,0xD632F4},
+                {Item.Fire_Orb,0xD632F8},
+                {Item.Nature_Orb,0xD632FC},
+                {Item.P_Hairpin,0xD63300},
+                {Item.Sunny_Beam,0xD63304},
+                {Item.Plus_Necklace,0xD63308},
+                {Item.Cyber_Flower,0xD6330C},
+                {Item.Healing_Staff,0xD63310},
+                {Item.Max_Bracelet,0xD63314},
+                {Item.Explode_Shot,0xD63318},
+                {Item.Air_Dash,0xD6331C},
+                {Item.Bunny_Strike,0xD63320},
+                {Item.Strange_Box,0xD63324},
+                {Item.Wall_Jump,0xD63328},
+                {Item.Spike_Barrier,0xD6332C},
+                {Item.Bunny_Amulet,0xD63330},
+                {Item.Charge_Ring,0xD63334},
+                {Item.Carrot_Shooter,0xD63338},
+                {Item.Super_Carrot,0xD6333C},
+                {Item.Rumi_Donut,0xD63340},
+                {Item.Rumi_Cake,0xD63344},
+                {Item.Golden_Carrot,0xD63348},
+                {Item.Cocoa_Bomb,0xD6334C},}
+            
+        };
+
         public static IdEnumAssociation<Boss> BossList = new IdEnumAssociation<Boss>
         {
             {1009, Boss.Cocoa, "Cocoa"},
@@ -316,7 +403,8 @@ namespace Irisu.Memory
 
         public readonly int minimapPosition;
 
-        
+        public readonly Dictionary<Badge, byte> badges;
+        public readonly Dictionary<Item, byte> items;
 
         public MemorySnapshot(MemoryHelper memoryHelper, int veridx) 
         {
@@ -401,6 +489,18 @@ namespace Irisu.Memory
                 if (isAlive) ++nActiveEntities;
                 ++entityArraySize;
             }
+            //read items
+            badges=new Dictionary<Badge, byte>();
+            foreach (var key in StaticData.BadgeAddess[veridx].Keys)
+            {
+                badges.Add(key,memoryHelper.GetMemoryValue<byte>(StaticData.BadgeAddess[veridx][key]));
+            }
+            items=new Dictionary<Item, byte>();
+            foreach (var key in StaticData.ItemAddress[veridx].Keys)
+            {
+                items.Add(key,memoryHelper.GetMemoryValue<byte>(StaticData.ItemAddress[veridx][key]));
+            }
+
         }
 
         private static int CountItems(MemoryHelper memoryHelper, int addrFirst, int addrLast)

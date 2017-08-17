@@ -172,16 +172,37 @@ namespace Irisu.Events
             #region item
 
             //todo all items
+
+
+            
             if (snapshot.itemPercent != prevSnapshot.itemPercent)
             {
-                events.Add(new ItemGetEvent(snapshot.itemPercent));
-            }
+                // test need
+                ItemGetEvent itemevt = new ItemGetEvent(snapshot.itemPercent);
 
+
+                foreach (var key in snapshot.badges.Keys)
+                {
+                    if (snapshot.badges[key] > prevSnapshot.badges[key])
+                    {
+                        itemevt.NewBadges.Add(key);
+                    }
+                }
+
+                foreach (var itemsKey in snapshot.items.Keys)
+                {
+                    if (snapshot.items[itemsKey] > prevSnapshot.items[itemsKey])
+                    {
+                        itemevt.NewItems.Add(itemsKey,snapshot.items[itemsKey]);
+                    }
+                }
+                events.Add(itemevt);
+            }
 
             #endregion
 
 
-//            events.Add(new TestEvent("ping!"));
+            //            events.Add(new TestEvent("ping!"));
 
             return events;
            
