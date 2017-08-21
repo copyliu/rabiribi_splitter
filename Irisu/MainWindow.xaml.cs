@@ -44,6 +44,7 @@ namespace Irisu
         {
             InitializeComponent();
             this.DataContext = option;
+            this.SplitList.ItemsSource = new List<string>() {"test", "test1"};
             var gamereader = new RabiReader();
             var obs = Observable.FromEventPattern<RabiEventHandler, EventBase>(h => gamereader.GameEvent += h,
                 h => gamereader.GameEvent -= h);
