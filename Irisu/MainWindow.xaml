@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Irisu"
         xmlns:models="clr-namespace:Irisu.Models"
         mc:Ignorable="d"
-        Title="Irisu is watching you" d:DesignWidth="1012" d:DesignHeight="838.045" >
+        Title="Irisu is watching you" Height="451.045" Width="670" >
     <DockPanel Margin="5">
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
             <TextBlock Text="v0.9" Margin="0,0,30,0" VerticalAlignment="Top" />
@@ -34,13 +34,13 @@
                     <TextBlock TextWrapping="Wrap" Text="{Binding GameVer}" FontSize="16"/>
                 </StackPanel>
                 <StackPanel  Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,3">
-                    <Button Content="Add" VerticalAlignment="Center" FontSize="16" Width="80"></Button>
-                    <Button Content="Remove" VerticalAlignment="Center" FontSize="16" Width="80"></Button>
-                    <Button Content="Up" VerticalAlignment="Center" FontSize="16" Width="80"></Button>
-                    <Button Content="Down" VerticalAlignment="Center" FontSize="16" Width="80"></Button>
+                    <Button Content="Add" VerticalAlignment="Center" FontSize="16" Width="80" Click="Add_OnClick"></Button>
+                    <Button Content="Remove" VerticalAlignment="Center" FontSize="16" Width="80" Click="Remove_OnClick"></Button>
+                    <Button Content="Up" VerticalAlignment="Center" FontSize="16" Width="80" IsEnabled="False"></Button>
+                    <Button Content="Down" VerticalAlignment="Center" FontSize="16" Width="80" IsEnabled="False"></Button>
                 </StackPanel>
-                <ListBox Height="100" x:Name="SplitList"/>
-                <StackPanel>
+                <ListBox Height="100" x:Name="SplitList" DisplayMemberPath="Name"/>
+                <StackPanel Visibility="Collapsed">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <TextBlock TextWrapping="Wrap" Text="Split at boss fight " FontSize="15" Margin="0,0,0,4" />
                         <CheckBox Content="STARTED" IsChecked="{Binding Bossstart,Mode=TwoWay}" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" VerticalContentAlignment="Center" />
@@ -131,7 +131,7 @@
 
                     </Grid>
                 </StackPanel>
-                <StackPanel IsEnabled="False">
+                <StackPanel IsEnabled="False"  Visibility="Collapsed">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <TextBlock TextWrapping="Wrap" Text="Split by Item" FontSize="15" Margin="0,0,5,0" HorizontalAlignment="Center" VerticalAlignment="Center" />
 
@@ -139,7 +139,7 @@
                         <Button Content="Add Item%" VerticalAlignment="Center" FontSize="15"/>
                     </StackPanel>
                 </StackPanel>
-                <Grid IsEnabled="False" >
+                <Grid IsEnabled="False"  Visibility="Collapsed">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="1*"/>
@@ -251,7 +251,7 @@
                 </StackPanel>
             </StackPanel>
             <DockPanel DockPanel.Dock="Right">
-                <TextBox TextWrapping="Wrap" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"  Margin="0,10" x:Name="DebugLogTb" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Width="497"/>
+                <TextBox TextWrapping="Wrap" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"  Margin="0,10" x:Name="DebugLogTb" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
             </DockPanel>
         </DockPanel>
 

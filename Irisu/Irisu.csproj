@@ -78,9 +78,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddSplit.xaml.cs">
+      <DependentUpon>AddSplit.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\Option.cs" />
+    <Compile Include="Models\SplitOption.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="RabiHelper\RabiReader.cs" />
+    <Page Include="AddSplit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

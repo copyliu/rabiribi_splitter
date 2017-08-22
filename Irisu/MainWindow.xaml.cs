@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -39,36 +40,50 @@ namespace Irisu
         private static TcpClient tcpclient;
         private static NetworkStream networkStream;
         private static Option option=new Option();
-
+        ObservableCollection<SplitOption> options=new ObservableCollection<SplitOption>();
         public MainWindow()
         {
             InitializeComponent();
             this.DataContext = option;
-            this.SplitList.ItemsSource = new List<string>() {"test", "test1"};
+            this.SplitList.ItemsSource = options;
             var gamereader = new RabiReader();
             var obs = Observable.FromEventPattern<RabiEventHandler, EventBase>(h => gamereader.GameEvent += h,
                 h => gamereader.GameEvent -= h);
-            obs.Where(p => p.EventArgs.EventType == EventType.BossStart && option.Bossstart)
-                .Select(p => (BossStartEvent) p.EventArgs)
-                .Where(p => option.EnabledBosses.Contains(p.Boss)).Subscribe(b =>
-                {
-                    DebugLog("Split: Bossstart");
-                    SpeedrunSendSplit();
-                });
-            obs.Where(p => p.EventArgs.EventType == EventType.BossEnd && option.Bossend)
-                .Select(p => (BossEndEvent) p.EventArgs)
-                .Where(p => option.EnabledBosses.Contains(p.Boss)).Subscribe(b =>
-                {
-                    DebugLog("Split: Bossend");
-                    SpeedrunSendSplit();
-                });
-            obs.Where(p => p.EventArgs.EventType == EventType.Item ||
-                           p.EventArgs.EventType == EventType.ItemPercent) //.Select(p=>(TestEvent)p.EventArgs)
-                .ObserveOnDispatcher() //UI thread
+
+
+            obs.Where(p => options.Any(o => o.Disabled == false))
+                .Where(p => p.EventArgs == options.First(o => o.Disabled == false))
                 .Subscribe(b =>
                 {
-                    DebugLog(b.EventArgs.ToString());
+                    DebugLog("Split:  " + options.First(o => o.Disabled == false));
+                    SpeedrunSendSplit();
+                    options.First(o => o.Disabled == false).Disabled = true;
+
                 });
+           
+            //
+            //
+            //            obs.Where(p => p.EventArgs.EventType == EventType.BossStart && option.Bossstart)
+            //                .Select(p => (BossStartEvent) p.EventArgs)
+            //                .Where(p => option.EnabledBosses.Contains(p.Boss)).Subscribe(b =>
+            //                {
+            //                    DebugLog("Split: Bossstart");
+            //                    SpeedrunSendSplit();
+            //                });
+            //            obs.Where(p => p.EventArgs.EventType == EventType.BossEnd && option.Bossend)
+            //                .Select(p => (BossEndEvent) p.EventArgs)
+            //                .Where(p => option.EnabledBosses.Contains(p.Boss)).Subscribe(b =>
+            //                {
+            //                    DebugLog("Split: Bossend");
+            //                    SpeedrunSendSplit();
+            //                });
+            //            obs.Where(p => p.EventArgs.EventType == EventType.Item ||
+            //                           p.EventArgs.EventType == EventType.ItemPercent) //.Select(p=>(TestEvent)p.EventArgs)
+            //                .ObserveOnDispatcher() //UI thread
+            //                .Subscribe(b =>
+            //                {
+            //                    DebugLog(b.EventArgs.ToString());
+            //                });
 
 
         }
@@ -146,6 +161,36 @@ namespace Irisu
         }
 
 
+        private void Add_OnClick(object sender, RoutedEventArgs e)
+        {
+            AddSplit w=new AddSplit();
+            w.Owner = this;
+            w.Closed+=WOnClosed;
+            w.ShowDialog();
+        }
 
+        private void WOnClosed(object sender, EventArgs eventArgs)
+        {
+            var w = sender as AddSplit;
+            if (w == null) return;
+            if (w.DialogResult != true)
+            {
+                return;
+            }
+            if (w.SplitOption != null)
+            {
+                options.Add(w.SplitOption);
+                
+            }
+            
+        }
+
+        private void Remove_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (SplitList.SelectedItem != null && options.Contains(((SplitOption) SplitList.SelectedItem)))
+            {
+                options.Remove((SplitOption)SplitList.SelectedItem);
+            }
+        }
     }
 }

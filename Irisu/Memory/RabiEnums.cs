@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace Irisu.Memory
 {
+
     public enum Badge
     {
         Health_Plus,
