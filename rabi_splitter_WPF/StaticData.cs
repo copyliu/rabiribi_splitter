@@ -151,20 +151,21 @@ namespace rabi_splitter_WPF
         };
 
 
-        public static int[] MapAddress = {0xA3353C, 0xA57020, 0xA5E0AC, 0xA600AC};
-        public static int[] EnemyPtrAddr = {0x00940EE0, 0x00964A1C, 0x0096BA3C, 0x0096DA3C};
-        public static int[] EnemyEntityHPOffset = {0x4c8, 0x4d0, 0x4d8, 0x4d8};
-        public static int[] EnemyEntityIDOffset = {0x4e4, 0x4ec, 0x4F4, 0x4F4};
-        public static int[] EnemyEntitySize = {0x6F4, 0x6FC, 0x704, 0x704};
+        public static int[] MapAddress = {0xA3353C, 0xA57020, 0xA5E0AC, 0xA600AC, 0x9FDBD8 };
+        public static int[] EnemyPtrAddr = {0x00940EE0, 0x00964A1C, 0x0096BA3C, 0x0096DA3C, 0x12DEABC };
+        public static int[] EnemyEntityHPOffset = {0x4c8, 0x4d0, 0x4d8, 0x4d8, 0x4d8 };
+        public static int[] EnemyEntityIDOffset = {0x4e4, 0x4ec, 0x4F4, 0x4F4, 0x4F4 };
+        public static int[] EnemyEntitySize = {0x6F4, 0x6FC, 0x704, 0x704,0x704};
         public static int[] MaxEntityEntry = {50, 50, 50, 50};
-        public static int[] MoneyAddress = {0xD3823C, 0xD5B9FC, 0xD63D2C, 0xD654CC};
-        public static string[] VerNames = {"1.65", "1.70", "1.71", "1.75"};
-        public static int[] MusicAddr = {0xA46294, 0xA69D98, 0xA70E28, 0x4FAB60};
+        public static int[] MoneyAddress = {0xD3823C, 0xD5B9FC, 0xD63D2C, 0xD654CC, 0x12D5954 };
+        public static string[] VerNames = { "1.65", "1.70", "1.71", "1.75", "1.8"};
+        
+        public static int[] MusicAddr = {0xA46294, 0xA69D98, 0xA70E28, 0x4FAB60, 0x57dc94 };
 
-        public static int[] TownMemberAddr = {0xD38934, 0xD5C0F4, 0xD63BC4, 0xD65BC4};
-        public static int[] IGTAddr = {0xD388E0, 0xD5C0A0, 0xD63B70, 0xD65B70};
+        public static int[] TownMemberAddr = {0xD38934, 0xD5C0F4, 0xD63BC4, 0xD65BC4, 0x12D604C };
+        public static int[] IGTAddr = {0xD388E0, 0xD5C0A0, 0xD63B70, 0xD65B70, 0x12D5FF8 };
 
-        public static int[] BlacknessAddr = {0, 0, 0, 0xA723B0};
-        public static int[] PlaytimeAddr = {0, 0, 0, 0xD642D8};
+        public static int[] BlacknessAddr = {0, 0, 0, 0xA723B0, 0x133B654 };
+        public static int[] PlaytimeAddr = {0, 0, 0, 0xD642D8, 0x12D4760 };
     }
 }
