@@ -155,7 +155,6 @@ namespace rabi_splitter_WPF
         public static int[] EnemyEntityHPOffset = {0x4c8, 0x4d0, 0x4d8, 0x4d8, 0x4d8 };
         public static int[] EnemyEntityIDOffset = {0x4e4, 0x4ec, 0x4F4, 0x4F4, 0x4F4 };
         public static int[] EnemyEntitySize = {0x6F4, 0x6FC, 0x704, 0x704,0x704};
-        public static int[] MaxEntityEntry = {50, 50, 50, 50};
         public static int[] MoneyAddress = {0xD3823C, 0xD5B9FC, 0xD63D2C, 0xD654CC, 0x12D898C };
         public static string[] VerNames = { "1.65", "1.70", "1.71", "1.75", "1.8"};
         
