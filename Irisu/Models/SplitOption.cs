@@ -12,6 +12,7 @@ using Irisu.Memory;
 
 namespace Irisu.Models
 {
+    [Serializable]
     public class SplitOption : INotifyPropertyChanged
     {
         public static bool operator ==(EventBase evt, SplitOption opt)
@@ -20,55 +21,58 @@ namespace Irisu.Models
             if (opt.EventType != evt.EventType) return false;
             switch (opt.EventType)
             {
-                    case EventType.BossStart:
-                        var bossstartevt = (BossStartEvent) evt;
-                        return bossstartevt.Boss.startingBosses.Contains((Boss) opt.Value);
+                case EventType.BossStart:
+                    var bossstartevt = (BossStartEvent) evt;
+                    return bossstartevt.Boss.startingBosses.Contains((Boss) opt.Value);
                 case EventType.BossEnd:
                     var bossendevt = (BossEndEvent) evt;
                     return bossendevt.Boss.startingBosses.Contains((Boss) opt.Value);
-                    case EventType.Chapter:
-                        return true;
-                    case EventType.TownMember:
-                        return true;
-                    case EventType.Item:
-                        var itemevt = (ItemEvent) evt;
-                        if (opt.Value is Item)
+                case EventType.Chapter:
+                    return true;
+                case EventType.TownMember:
+                    return true;
+                case EventType.Item:
+                    var itemevt = (ItemEvent) evt;
+                    if (opt.Value is int[] && ((int[]) opt.Value).Length == 2)
+                    {
+                        if (((int[]) opt.Value)[0] == 0)
                         {
-                            return itemevt.NewItems.ContainsKey((Item) opt.Value);
-                        }
-                        else if (opt.Value is Badge)
-                        {
-                            return itemevt.NewBadges.Contains((Badge) opt.Value);
+                            return itemevt.NewItems.ContainsKey((Item) ((int[]) opt.Value)[1]);
                         }
                         else
                         {
-                            return false;
+                            return itemevt.NewBadges.Contains((Badge) ((int[]) opt.Value)[1]);
+                        }
+                    }
+                    else
+                    {
+                        return false;
+                    }
 
-                        }
-                        case EventType.ItemPercent:
-                            var itempevt = (ItemPercentEvent) evt;
-                            return itempevt.Percent > (opt.Value as float?);
-                    case EventType.Map:
-                        var mapevt = (MapEvent) evt;
-                        return mapevt.NewMapId == (int)(Map)opt.Value;
-                    case EventType.Music:
-                        var musicevt = (MusicEvent) evt;
-                        return musicevt.NewMusicId == (int) (Music) opt.Value;
-                    case EventType.Pos:
-                        var posevt = (PosEvent) evt;
-                        if (opt.Value is int[] && ((int[]) opt.Value).Length == 2)
-                        {
-                            return posevt.NewCoordinate.x == ((int[]) opt.Value)[0] &&
-                                   posevt.NewCoordinate.y == ((int[]) opt.Value)[1];
-                        }
-                        else
-                        {
-                            return false;
-                        }
+                case EventType.ItemPercent:
+                    var itempevt = (ItemPercentEvent) evt;
+                    return itempevt.Percent > (opt.Value as float?);
+                case EventType.Map:
+                    var mapevt = (MapEvent) evt;
+                    return mapevt.NewMapId == (int) (Map) opt.Value;
+                case EventType.Music:
+                    var musicevt = (MusicEvent) evt;
+                    return musicevt.NewMusicId == (int) (Music) opt.Value;
+                case EventType.Pos:
+                    var posevt = (PosEvent) evt;
+                    if (opt.Value is int[] && ((int[]) opt.Value).Length == 2)
+                    {
+                        return posevt.NewCoordinate.x == ((int[]) opt.Value)[0] &&
+                               posevt.NewCoordinate.y == ((int[]) opt.Value)[1];
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 default:
                     return false;
             }
-                    
+
 
         }
 
@@ -104,9 +108,37 @@ namespace Irisu.Models
             }
             if (this.Value is int[])
             {
+
                 var pos = (int[]) Value;
-                if (pos.Length == 2) s += $"{this.EventType} ({pos[0]},{pos[1]})";
-                else s += $"{this.EventType} , Unknow";
+                if (EventType == EventType.Item)
+                {
+                    if (pos.Length == 2)
+                    {
+                        var type = pos[0] == 0 ? "Item" : "Badge";
+                        object item = pos[0] == 0 ? (object) (Item) pos[1] : (Badge) pos[1];
+                        s += $"{this.EventType} ({type},{item})";
+                    }
+                    else
+                    {
+                        s += $"{this.EventType} , Unknow";
+                    }
+                }
+                else if (EventType == EventType.Pos)
+                {
+                    if (pos.Length == 2)
+                    {
+                        s += $"{this.EventType} ({pos[0]},{pos[1]})";
+                    }
+                    else
+                    {
+                        s += $"{this.EventType} , Unknow";
+                    }
+                }
+
+                else
+                {
+                    s += $"{this.EventType} , Unknow";
+                }
             }
             else
             {

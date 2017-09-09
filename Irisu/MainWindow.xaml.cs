@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -28,7 +31,8 @@ using Irisu.Events;
 using Irisu.Memory;
 using Irisu.Models;
 using Irisu.RabiHelper;
-
+using Microsoft.Win32;
+using Newtonsoft.Json;
 namespace Irisu
 {
     /// <summary>
@@ -40,27 +44,53 @@ namespace Irisu
         private static TcpClient tcpclient;
         private static NetworkStream networkStream;
         private static Option option=new Option();
-        ObservableCollection<SplitOption> options=new ObservableCollection<SplitOption>();
+        ObservableCollection<SplitOption> splitoptions=new ObservableCollection<SplitOption>();
         public MainWindow()
         {
             InitializeComponent();
             this.DataContext = option;
-            this.SplitList.ItemsSource = options;
+            this.SplitList.ItemsSource = splitoptions;
             var gamereader = new RabiReader();
             var obs = Observable.FromEventPattern<RabiEventHandler, EventBase>(h => gamereader.GameEvent += h,
                 h => gamereader.GameEvent -= h);
 
 
-            obs.Where(p => options.Any(o => o.Disabled == false))
-                .Where(p => p.EventArgs == options.First(o => o.Disabled == false))
+            obs.Where(p => splitoptions.Any(o => o.Disabled == false))
+                .Where(p => p.EventArgs == splitoptions.First(o => o.Disabled == false))
                 .Subscribe(b =>
                 {
-                    DebugLog("Split:  " + options.First(o => o.Disabled == false));
+                    DebugLog("Split:  " + splitoptions.First(o => o.Disabled == false));
                     SpeedrunSendSplit();
-                    options.First(o => o.Disabled == false).Disabled = true;
+                    splitoptions.First(o => o.Disabled == false).Disabled = true;
 
                 });
-           
+            obs.Where(p => option.Autostart && p.EventArgs.EventType == EventType.Special &&
+                           ((SpecialEvent) p.EventArgs).Event == SpecialEvents.GameStart).Subscribe(
+                b =>
+                {
+                    DebugLog("GameStart!");
+                    SpeedrunSendStart();
+                });
+            obs.Where(p => option.Autoreset && p.EventArgs.EventType == EventType.Music &&
+                           (((MusicEvent)p.EventArgs).NewMusicId == (int)Music.THEME_OF_RABI_RIBI ||
+                            ((MusicEvent)p.EventArgs).NewMusicId == (int)Music.THEME_OF_RABI_RIBI_8BIT ||
+                            ((MusicEvent)p.EventArgs).NewMusicId == (int)Music.MAIN_MENU)
+                           ).Subscribe(
+                b =>
+                {
+                    DebugLog("GameReset!");
+                    foreach (var splitOption in splitoptions)
+                    {
+                        splitOption.Disabled = false;
+                    }
+                    SpeedrunSendReset();
+                });
+            obs.Where(p => option.SendIgt && p.EventArgs.EventType == EventType.InGameTimer).Subscribe(
+                b =>
+                {
+                    SpeedRunSendIgt(((TimerEvent) b.EventArgs).playtime_T);
+
+                });
             //
             //
             //            obs.Where(p => p.EventArgs.EventType == EventType.BossStart && option.Bossstart)
@@ -88,6 +118,19 @@ namespace Irisu
 
         }
 
+        private void SpeedRunSendIgt(float time)
+        {
+            SendMessage($"setgametime {time}\r\n");
+        }
+        void SpeedrunSendStart()
+        {
+            SendMessage("starttimer\r\n");
+        }
+
+        void SpeedrunSendReset()
+        {
+            SendMessage("reset\r\n");
+        }
         private void SpeedrunSendSplit()
         {
             SendMessage("split\r\n");
@@ -179,7 +222,7 @@ namespace Irisu
             }
             if (w.SplitOption != null)
             {
-                options.Add(w.SplitOption);
+                splitoptions.Add(w.SplitOption);
                 
             }
             
@@ -187,10 +230,92 @@ namespace Irisu
 
         private void Remove_OnClick(object sender, RoutedEventArgs e)
         {
-            if (SplitList.SelectedItem != null && options.Contains(((SplitOption) SplitList.SelectedItem)))
+            if (SplitList.SelectedItem != null && splitoptions.Contains(((SplitOption) SplitList.SelectedItem)))
             {
-                options.Remove((SplitOption)SplitList.SelectedItem);
+                splitoptions.Remove((SplitOption)SplitList.SelectedItem);
             }
+        }
+
+        private void Save_Clicked(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+            dlg.DefaultExt = ".json"; // Default file extension
+            dlg.Filter = "Splitter Settings (.json)|*.json"; // Filter files by extension
+
+            var result = dlg.ShowDialog();
+
+            if (result == true)
+            {
+                var filename = dlg.FileName;
+                foreach (var s in splitoptions)
+                {
+                    s.Disabled = false;
+                }
+               
+                System.IO.File.WriteAllText(filename, JsonConvert.SerializeObject(splitoptions.ToList(),new JsonSerializerSettings()
+                {
+                    TypeNameHandling = TypeNameHandling.All
+                }));
+
+                MessageBox.Show(this, "perset saved!");
+            }
+        }
+
+        private void Load_Clicked(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog dlg=new OpenFileDialog();
+            dlg.DefaultExt = ".json";
+            dlg.Filter = "Splitter Settings (.json)|*.json"; // Filter files by extension
+            var result = dlg.ShowDialog();
+            if (result == true)
+            {
+                var filename = dlg.FileName;
+                try
+                {
+                    var newoption=JsonConvert.DeserializeObject < List<SplitOption>>(System.IO.File.ReadAllText(filename), new JsonSerializerSettings()
+                    {
+                        TypeNameHandling = TypeNameHandling.All
+                    });
+                    splitoptions.Clear();
+                    foreach (var item in newoption)
+                    {
+                        item.Disabled = false;
+                        //typefix
+                        switch (item.EventType)
+                        {
+
+                            case EventType.BossEnd:
+                            case EventType.BossStart:
+                                item.Value = (Boss) item.Value;
+                                break;
+                            case EventType.Music:
+                                item.Value = (Music) item.Value;
+                                break;
+                            case EventType.Map:
+                                item.Value = (Map) item.Value;
+                                break;
+                            case EventType.ItemPercent:
+                                item.Value = (float)(double)item.Value;
+                                break;
+                            
+
+                        }
+
+                        splitoptions.Add(item);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    MessageBox.Show(this, "cannot load perset");
+                    DebugLog(exception.ToString());
+                }
+
+            }
+        }
+
+        private void SaveSplit_Clicked(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }

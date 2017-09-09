@@ -78,7 +78,14 @@ namespace Irisu.Events
             
             List<EventBase> events=new List<EventBase>();
 
-            //TODO
+            events.Add(new TimerEvent()
+            {
+                EventType = EventType.InGameTimer,
+                playtime = snapshot.playtime/ (float)60,
+                playtime_T = snapshot.t_playtime/(float)60
+                
+
+            });
 
 
             #region Detect Reload

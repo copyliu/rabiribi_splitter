@@ -23,6 +23,7 @@ namespace Irisu.Events
         Chapter,
         Special, // do we need this?
         TownMember,
+        InGameTimer
 
     }
 
@@ -42,6 +43,19 @@ namespace Irisu.Events
         }
     }
 
+    public class TimerEvent : EventBase
+    {
+        public float playtime;
+        public float playtime_T;
+        public float runtime;//not used
+        public float runtime_T;//not used
+
+        public TimerEvent()
+        {
+            EventType = EventType.InGameTimer;
+        }
+
+    }
     public class TestEvent : EventBase
     {
         public string Msg;

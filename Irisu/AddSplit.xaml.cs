@@ -130,7 +130,10 @@ namespace Irisu
                                 MessageBox.Show(this, "Item not selected!");
                                 return;
                             }
-                            opt.Value = ItemSelect.SelectedValue;
+                            var value= new int[2];
+                            value[0] = ItemSelect.SelectedValue is Item ? 0 : 1;
+                            value[1] =(int) ItemSelect.SelectedValue;
+                            opt.Value = value;
                             opt.EventType=EventType.Item;
                             break;
                         case "ItemPercent":
