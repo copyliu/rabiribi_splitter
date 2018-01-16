@@ -24,6 +24,49 @@ namespace rabi_splitter_WPF
     /// </summary>
     public partial class MainWindow : Window
     {
+        public struct MapTileCoordinate
+        {
+            public readonly int x;
+            public readonly int y;
+
+            public MapTileCoordinate(int x, int y)
+            {
+                this.x = x;
+                this.y = y;
+            }
+
+            public static MapTileCoordinate FromWorldPosition(int mapid, float px, float py)
+            {
+                // Note: a game-tile is 64x64
+                // A map-tile is 1280x720. (20 x 11.25 game tiles)
+                int x = (int)(px / 1280) + mapid * 25;
+                int y = (int)(py / 720);
+
+                return new MapTileCoordinate(x, y);
+            }
+
+            public override string ToString()
+            {
+                return $"({x}, {y})";
+            }
+
+            #region Equals, Hashcode
+            // override object.Equals
+            public override bool Equals(object obj)
+            {
+                if (obj == null || GetType() != obj.GetType()) return false;
+                var other = (MapTileCoordinate)obj;
+                return x == other.x && y == other.y;
+            }
+
+            // override object.GetHashCode
+            public override int GetHashCode()
+            {
+                return x.GetHashCode() * 31 + y.GetHashCode();
+            }
+            #endregion
+        }
+
         private MainContext mainContext;
         private DebugContext debugContext;
         private PracticeModeContext practiceModeContext;
@@ -38,8 +81,9 @@ namespace rabi_splitter_WPF
             var processlist = Process.GetProcessesByName("rabiribi");
             if (processlist.Length > 0)
             {
-
                 Process process = processlist[0];
+                var memoryHelper = new MemoryHelper(process);
+
                 if (process.MainWindowTitle != mainContext.oldtitle)
                 {
                     var result = titleReg.Match(process.MainWindowTitle);
@@ -77,7 +121,7 @@ namespace rabi_splitter_WPF
 
                 #region read igt
 
-                int igt = MemoryHelper.GetMemoryValue<int>(process, StaticData.IGTAddr[mainContext.veridx]);
+                int igt = memoryHelper.GetMemoryValue<int>(StaticData.IGTAddr[mainContext.veridx]);
                 if (igt > 0 && mainContext.Igt)
                 {
                     sendigt((float)igt / 60);
@@ -98,7 +142,7 @@ namespace rabi_splitter_WPF
                     // So we use a switch to "prime" the canReload flag whenever it detects the PLAYTIME increasing.
                     // the canReload flag is unset when a reload is detected, and remains unset until PLAYTIME starts increasing again.
 
-                    int playtime = MemoryHelper.GetMemoryValue<int>(process, StaticData.PlaytimeAddr[mainContext.veridx]);
+                    int playtime = memoryHelper.GetMemoryValue<int>(StaticData.PlaytimeAddr[mainContext.veridx]);
                     reloaded = playtime < mainContext.lastplaytime;
 
                     if (playtime > mainContext.lastplaytime) mainContext.canReload = true;
@@ -118,7 +162,7 @@ namespace rabi_splitter_WPF
 
                 if (mainContext.Computer)
                 {
-                    var newmoney = MemoryHelper.GetMemoryValue<int>(process, StaticData.MoneyAddress[mainContext.veridx]);
+                    var newmoney = memoryHelper.GetMemoryValue<int>(StaticData.MoneyAddress[mainContext.veridx]);
                     if (newmoney - mainContext.lastmoney == 17500)
                     {
                         SpeedrunSendSplit();
@@ -129,13 +173,30 @@ namespace rabi_splitter_WPF
 
                 #endregion
 
-                int mapid = MemoryHelper.GetMemoryValue<int>(process, StaticData.MapAddress[mainContext.veridx]);
+                int mapid = memoryHelper.GetMemoryValue<int>(StaticData.MapAddress[mainContext.veridx]);
                 if (mainContext.lastmapid != mapid)
                 {
                     PracticeModeMapChangeTrigger(mainContext.lastmapid, mapid);
                     DebugLog("newmap: " + mapid + ":" + StaticData.GetMapName(mapid));
+                    mainContext.GameMap = StaticData.GetMapName(mapid);
                     mainContext.lastmapid = mapid;
                 }
+
+                #region MapTile
+                {
+                    int entityArrayPtr = memoryHelper.GetMemoryValue<int>(StaticData.EnemyPtrAddr[mainContext.veridx]);
+                    float px = memoryHelper.GetMemoryValue<float>(entityArrayPtr + StaticData.EnemyEntityXPositionOffset[mainContext.veridx], false);
+                    float py = memoryHelper.GetMemoryValue<float>(entityArrayPtr + StaticData.EnemyEntityYPositionOffset[mainContext.veridx], false);
+                    var mapTile = MapTileCoordinate.FromWorldPosition(mapid, px, py);
+                    if (!mapTile.Equals(mainContext.lastMapTile))
+                    {
+                        PracticeModeMapTileChangeTrigger(mainContext.lastMapTile, mapTile);
+                        //DebugLog($"Map Tile: ({mapTile.x}, {mapTile.y})");
+                        mainContext.GameMapTile = $"({mapTile.x}, {mapTile.y})";
+                        mainContext.lastMapTile = mapTile;
+                    }
+                }
+                #endregion
 
 
                 #region checkTM
@@ -147,12 +208,12 @@ namespace rabi_splitter_WPF
                 #region Music
 
                 int musicaddr = StaticData.MusicAddr[mainContext.veridx];
-                int musicid = MemoryHelper.GetMemoryValue<int>(process, musicaddr);
+                int musicid = memoryHelper.GetMemoryValue<int>(musicaddr);
 
                 #region Detect Start Game
 
                 if (musicid == 53){
-                    int blackness = MemoryHelper.GetMemoryValue<int>(process, StaticData.BlacknessAddr[mainContext.veridx]);
+                    int blackness = memoryHelper.GetMemoryValue<int>(StaticData.BlacknessAddr[mainContext.veridx]);
                     if (mainContext.previousBlackness == 0 && blackness >= 100000)
                     {
                         // Sudden increase by 100000
@@ -300,21 +361,19 @@ namespace rabi_splitter_WPF
 
                         if (StaticData.IsValidMap(mapid))
                         {
-                            int ptr = MemoryHelper.GetMemoryValue<int>(process, StaticData.EnemyPtrAddr[mainContext.veridx]);
+                            int ptr = memoryHelper.GetMemoryValue<int>(StaticData.EnemyPtrAddr[mainContext.veridx]);
                             List<int> bosses = new List<int>();
                             for (var i = 0; i < 50; i++)
                             {
                                 ptr = ptr + StaticData.EnemyEntitySize[mainContext.veridx];
 
-                                var emyid = MemoryHelper.GetMemoryValue<int>(process,
-                                    ptr + StaticData.EnemyEntityIDOffset[mainContext.veridx], false);
+                                var emyid = memoryHelper.GetMemoryValue<int>(ptr + StaticData.EnemyEntityIDOffset[mainContext.veridx], false);
                                 if (StaticData.IsBoss(emyid))
                                 {
                                     bosses.Add(emyid);
                                     if (emyid == 1053)
                                     {
-                                        Noah3HP = MemoryHelper.GetMemoryValue<int>(process,
-                                            ptr + StaticData.EnemyEntityHPOffset[mainContext.veridx], false);
+                                        Noah3HP = memoryHelper.GetMemoryValue<int>(ptr + StaticData.EnemyEntityHPOffset[mainContext.veridx], false);
                                     }
 
                                 }
@@ -366,7 +425,7 @@ namespace rabi_splitter_WPF
                                     }
                                 }
 
-                                int newTM = MemoryHelper.GetMemoryValue<int>(process, StaticData.TownMemberAddr[mainContext.veridx]);
+                                int newTM = memoryHelper.GetMemoryValue<int>(StaticData.TownMemberAddr[mainContext.veridx]);
                                 if (newTM - mainContext.lastTM == 1 && f) //for after 1.71 , 1.71 isn't TM+2 at once when skip Nixie, it's TM+1 twice
 
                                 {
@@ -402,7 +461,7 @@ namespace rabi_splitter_WPF
 
                 if (mainContext.DebugArea)
                 {
-                    int ptr = MemoryHelper.GetMemoryValue<int>(process, StaticData.EnemyPtrAddr[mainContext.veridx]);
+                    int ptr = memoryHelper.GetMemoryValue<int>(StaticData.EnemyPtrAddr[mainContext.veridx]);
                     //                    List<int> bosses = new List<int>();
                     //                    List<int> HPS = new List<int>();
 //                    this.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => debugContext.BossList.Clear()));
@@ -410,10 +469,8 @@ namespace rabi_splitter_WPF
                     for (var i = 0; i < 50; i++)
                     {
                         ptr += StaticData.EnemyEntitySize[mainContext.veridx];
-                        debugContext.BossList[i].BossID = MemoryHelper.GetMemoryValue<int>(process,
-                            ptr + StaticData.EnemyEntityIDOffset[mainContext.veridx], false);
-                        debugContext.BossList[i].BossHP = MemoryHelper.GetMemoryValue<int>(process,
-                            ptr + StaticData.EnemyEntityHPOffset[mainContext.veridx], false);
+                        debugContext.BossList[i].BossID = memoryHelper.GetMemoryValue<int>(ptr + StaticData.EnemyEntityIDOffset[mainContext.veridx], false);
+                        debugContext.BossList[i].BossHP = memoryHelper.GetMemoryValue<int>(ptr + StaticData.EnemyEntityHPOffset[mainContext.veridx], false);
 
 
 
@@ -476,6 +533,12 @@ namespace rabi_splitter_WPF
         {
             if (mainContext.PracticeMode) DebugLog("Practice Mode Trigger Music Change " + oldMusicId + " -> " + newMusicId);
             practiceModeContext.SendTrigger(SplitCondition.MusicChange(oldMusicId, newMusicId));
+        }
+
+        private void PracticeModeMapTileChangeTrigger(MapTileCoordinate oldMapTile, MapTileCoordinate newMapTile)
+        {
+            //if (mainContext.PracticeMode) DebugLog("Practice Mode Trigger Map Tile Change " + oldMapTile + " -> " + newMapTile);
+            practiceModeContext.SendTrigger(SplitCondition.MapTileChange(oldMapTile, newMapTile));
         }
 
         private void SendPracticeModeMessages()

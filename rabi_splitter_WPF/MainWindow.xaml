@@ -40,6 +40,20 @@
                         <local:SplitConditionSettings VerticalAlignment="Top" Label="Split Timer When" SplitConditionObject="{Binding SplitTimerSetting}"/>
                         <local:SplitConditionSettings VerticalAlignment="Top" Label="Reset Timer When" SplitConditionObject="{Binding ResetTimerSetting}"/>
                     </StackPanel>
+                    <StackPanel Margin="0,10,0,0">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,3">
+                            <TextBlock TextWrapping="Wrap" Text="Music: " FontSize="16"/>
+                            <TextBlock TextWrapping="Wrap" Text="{Binding GameMusic}" FontSize="16"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,3">
+                            <TextBlock TextWrapping="Wrap" Text="Map: " FontSize="16"/>
+                            <TextBlock TextWrapping="Wrap" Text="{Binding GameMap}" FontSize="16"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,3">
+                            <TextBlock TextWrapping="Wrap" Text="Map Tile: " FontSize="16"/>
+                            <TextBlock TextWrapping="Wrap" Text="{Binding GameMapTile}" FontSize="16"/>
+                        </StackPanel>
+                    </StackPanel>
                 </StackPanel>
                 <StackPanel Visibility="{Binding PracticeMode, Converter={StaticResource InvertableBooleanToVisibilityConverter}, ConverterParameter=VisibleWhenFalse, FallbackValue=Visible}">
                     <CheckBox Content="Split when BOSS music STARTS" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,4" IsChecked="{Binding MusicStart, Mode=TwoWay}"/>

@@ -175,6 +175,8 @@ namespace rabi_splitter_WPF
         private int _serverPort;
         private string _gameVer;
         private string _gameMusic;
+        private string _gameMap;
+        private string _gameMapTile;
         private bool _igt;
         public bool _autoReset;
         public bool _autoStart;
@@ -384,6 +386,28 @@ namespace rabi_splitter_WPF
             }
         }
 
+        public string GameMap
+        {
+            get { return _gameMap; }
+            set
+            {
+                if (value == _gameMap) return;
+                _gameMap = value;
+                OnPropertyChanged(nameof(GameMap));
+            }
+        }
+
+        public string GameMapTile
+        {
+            get { return _gameMapTile; }
+            set
+            {
+                if (value == _gameMapTile) return;
+                _gameMapTile = value;
+                OnPropertyChanged(nameof(GameMapTile));
+            }
+        }
+
         public bool Igt
         {
             get { return _igt; }
@@ -456,6 +480,7 @@ namespace rabi_splitter_WPF
         public int lastmapid;
         public int lastmusicid;
         public int lastplaytime = 0;
+        public MainWindow.MapTileCoordinate lastMapTile = MainWindow.MapTileCoordinate.FromWorldPosition(0,0,0);
         public bool canReload = false; // set to true when playtime increases
 
         private bool bossbattle;
@@ -464,7 +489,7 @@ namespace rabi_splitter_WPF
         public int lastTM;
         public DateTime LastTMAddTime;
         private bool _noah1Reload;
-
+        
         public MainContext()
         {
             this.MusicEnd = true;

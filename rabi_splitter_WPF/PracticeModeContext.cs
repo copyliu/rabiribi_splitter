@@ -6,6 +6,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
+using MapTileCoordinate = rabi_splitter_WPF.MainWindow.MapTileCoordinate;
+
 namespace rabi_splitter_WPF
 {
     public enum SplitTrigger
@@ -16,6 +18,7 @@ namespace rabi_splitter_WPF
         Reload,
         MapChange,
         MusicChange,
+        MapTileChange,
     }
 
     public enum ParameterOptions
@@ -81,6 +84,12 @@ namespace rabi_splitter_WPF
         private ExtendedOptions<Map> _mapTypeTo;
         private ExtendedOptions<Music> _musicTypeFrom;
         private ExtendedOptions<Music> _musicTypeTo;
+        private bool _mapTileFromAny;
+        private int _mapTileFromX;
+        private int _mapTileFromY;
+        private bool _mapTileToAny;
+        private int _mapTileToX;
+        private int _mapTileToY;
 
         #region Dictionaries 
 
@@ -96,6 +105,7 @@ namespace rabi_splitter_WPF
             {SplitTrigger.Reload, "Reload"},
             {SplitTrigger.MapChange, "Map Change"},
             {SplitTrigger.MusicChange, "Music Change"},
+            {SplitTrigger.MapTileChange, "Map Tile Change"},
         };
 
         // Captions for Split Trigger Parameter Options
@@ -172,6 +182,18 @@ namespace rabi_splitter_WPF
             return new SplitCondition() { TriggerType = SplitTrigger.MusicChange, MusicTypeFrom = oldMusicExtended, MusicTypeTo = newMusicExtended };
         }
 
+        public static SplitCondition MapTileChange(MapTileCoordinate oldMapTile, MapTileCoordinate newMapTile)
+        {
+            return new SplitCondition()
+            {
+                TriggerType = SplitTrigger.MapTileChange,
+                MapTileFromX = oldMapTile.x,
+                MapTileFromY = oldMapTile.y,
+                MapTileToX = newMapTile.x,
+                MapTileToY = newMapTile.y,
+            };
+        }
+
         public bool Matches(SplitCondition condition)
         {
             if (TriggerType != condition.TriggerType) return false;
@@ -184,6 +206,11 @@ namespace rabi_splitter_WPF
             {
                 if (!(MusicTypeFrom.option == ParameterOptions.Any || MusicTypeFrom.Equals(condition.MusicTypeFrom))) return false;
                 if (!(MusicTypeTo.option == ParameterOptions.Any || MusicTypeTo.Equals(condition.MusicTypeTo))) return false;
+            }
+            if (TriggerType == SplitTrigger.MapTileChange)
+            {
+                if (!(MapTileFromAny || (MapTileFromX == condition.MapTileFromX && MapTileFromY == condition.MapTileFromY))) return false;
+                if (!(MapTileToAny || (MapTileToX == condition.MapTileToX && MapTileToY == condition.MapTileToY))) return false;
             }
             return true;
         }
@@ -244,6 +271,72 @@ namespace rabi_splitter_WPF
                 if (value.Equals(_musicTypeTo)) return;
                 _musicTypeTo = value;
                 OnPropertyChanged(nameof(MusicTypeTo));
+            }
+        }
+
+        public bool MapTileFromAny
+        {
+            get { return _mapTileFromAny; }
+            set
+            {
+                if (value.Equals(_mapTileFromAny)) return;
+                _mapTileFromAny = value;
+                OnPropertyChanged(nameof(MapTileFromAny));
+            }
+        }
+
+        public int MapTileFromX
+        {
+            get { return _mapTileFromX; }
+            set
+            {
+                if (value.Equals(_mapTileFromX)) return;
+                _mapTileFromX = value;
+                OnPropertyChanged(nameof(MapTileFromX));
+            }
+        }
+
+        public int MapTileFromY
+        {
+            get { return _mapTileFromY; }
+            set
+            {
+                if (value.Equals(_mapTileFromY)) return;
+                _mapTileFromY = value;
+                OnPropertyChanged(nameof(MapTileFromY));
+            }
+        }
+
+        public bool MapTileToAny
+        {
+            get { return _mapTileToAny; }
+            set
+            {
+                if (value.Equals(_mapTileToAny)) return;
+                _mapTileToAny = value;
+                OnPropertyChanged(nameof(MapTileToAny));
+            }
+        }
+
+        public int MapTileToX
+        {
+            get { return _mapTileToX; }
+            set
+            {
+                if (value.Equals(_mapTileToX)) return;
+                _mapTileToX = value;
+                OnPropertyChanged(nameof(MapTileToX));
+            }
+        }
+
+        public int MapTileToY
+        {
+            get { return _mapTileToY; }
+            set
+            {
+                if (value.Equals(_mapTileToY)) return;
+                _mapTileToY = value;
+                OnPropertyChanged(nameof(MapTileToY));
             }
         }
 
