@@ -500,12 +500,12 @@ namespace rabi_splitter_WPF
             this.Alius1 = true;
             this.Tm2 = true;
             this.Irisu1 = true;
-            this.DontSplitOnReload = false;
+            this.DontSplitOnReload = true;
             this.DebugArea = false;
             this.ServerPort = 16834;
             this.Igt = true;
             this.Noah1Reload = false;
-            this.AutoStart = false;
+            this.AutoStart = true;
             this.AutoReset = true;
             this.ForceAlius1 = false;
 
