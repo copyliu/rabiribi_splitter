@@ -130,6 +130,11 @@ namespace rabi_splitter_WPF
             {Music.ARTBOOK_INTRO, "ARTBOOK INTRO"},
             {Music.RABI_RIBI_PIANO_TITLE, "RABI-RIBI PIANO TITLE"},
             {Music.MISCHIEVOUS_MASQUERADE, "MISCHIEVOUS MASQUERADE"},
+            {Music.PLAY_ROUGH,"DLC - PLAY ROUGH"},
+            {Music.FINALE,"DLC - FINALE"},
+            {Music.ESCAPE,"DLC - ESCAPE"},
+            {Music.HALL_OF_MEMORY,"DLC - HALL OF MEMORY"},
+            {Music.LAST_100SEC,"DLC - LAST 100SEC"}
         };
 
         public static readonly Music[] BossMusics = new[]

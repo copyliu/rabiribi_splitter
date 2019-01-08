@@ -115,6 +115,12 @@ namespace rabi_splitter_WPF
         ARTBOOK_INTRO,
         RABI_RIBI_PIANO_TITLE,
         MISCHIEVOUS_MASQUERADE,
+        PLAY_ROUGH,
+        FINALE,
+        ESCAPE,
+        HALL_OF_MEMORY,
+        LAST_100SEC,
+
     }
 
     // A list of tuples (id, enum, string)
