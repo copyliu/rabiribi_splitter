@@ -149,7 +149,7 @@ namespace rabi_splitter_WPF
                     if (mainContext.canReload && playtime < mainContext.lastplaytime)
                     {
                         PracticeModeSendTrigger(SplitTrigger.Reload);
-                        DebugLog("Reload Game!");
+                        DebugLog($"Reload Game! {playtime}/{mainContext.lastplaytime}");
                         mainContext.canReload = false;
                     }
                     mainContext.lastplaytime = playtime;
